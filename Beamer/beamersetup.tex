@@ -1,0 +1,67 @@
+\documentclass{beamer}
+\usetheme{Singapore}
+\setbeamertemplate{navigation symbols}{}
+
+% Packages
+	\usepackage[utf8x]{inputenc}								% Danish language support
+	\usepackage{amsmath, amssymb, amsfonts}		% Math symbolic jargon
+	\usepackage{mathrsfs}										% Provides the \mathscr{} curly font
+	\usepackage{stmaryrd}										% Provides the \lightning symbol, among others
+
+% User-defined commands
+	% General things	
+	\newcommand{\eq}[1]{\begin{align*} #1 \end{align*}}
+	\newcommand{\eqq}[1]{\begin{align*} #1\\ \end{align*}}
+	
+	% Declared operators
+	\DeclareMathOperator{\sgn}{sgn}
+	\DeclareMathOperator{\lcm}{lcm}
+	\DeclareMathOperator{\ran}{ran}
+	\DeclareMathOperator{\cod}{cod}
+	\DeclareMathOperator{\dom}{dom}	
+	\DeclareMathOperator{\rank}{rank}
+	\DeclareMathOperator{\Lr}{\Leftrightarrow}
+	\DeclareMathOperator{\lr}{\leftrightarrow}
+	\DeclareMathOperator{\psubset}{\subsetneq}
+	\DeclareMathOperator{\psupset}{\supsetneq}
+	\DeclareMathOperator{\elsub}{\preceq}
+	\DeclareMathOperator{\elsup}{\succeq}
+	\DeclareMathOperator{\pelsub}{\prec}
+	\DeclareMathOperator{\pelsup}{\succ}
+	\DeclareMathOperator{\nmodels}{\nvDash}
+	\DeclareMathOperator{\contr}{\lightning}
+	\DeclareMathOperator{\nsubset}{\nsubseteq}
+	\DeclareMathOperator{\nsupset}{\nsupseteq}
+	\DeclareMathOperator{\proves}{\vdash}
+	\DeclareMathOperator{\nproves}{\nvdash}
+	\DeclareMathOperator{\biproves}{\dashv\vdash}
+	\DeclareMathOperator{\ac}{AC}
+	\DeclareMathOperator{\zf}{ZF}
+	\DeclareMathOperator{\zfc}{ZFC}
+	\DeclareMathOperator{\gch}{GCH}
+	\DeclareMathOperator{\ch}{CH}
+	\DeclareMathOperator{\on}{On}
+	\DeclareMathOperator{\con}{Con}
+	\DeclareMathOperator{\sh}{SH}
+	\DeclareMathOperator{\restr}{\upharpoonright}
+	\DeclareMathOperator{\Def}{Def}
+	\DeclareMathOperator{\id}{id}
+	\DeclareMathOperator{\ot}{ot}
+	\DeclareMathOperator{\fst}{fst}
+	\DeclareMathOperator{\snd}{snd}
+	\DeclareMathOperator{\fin}{Fin}
+	\DeclareMathOperator{\ds}{DS}
+	\DeclareMathOperator{\height}{ht}
+	\DeclareMathOperator{\ult}{Ult}
+	\DeclareMathOperator{\crit}{crit}
+	
+	% Redeclared operators
+	\renewcommand{\subset}{\subseteq}
+	\renewcommand{\supset}{\supseteq}
+	\renewcommand{\char}{\text{char}}
+	
+	% Convenient shortcuts
+	\newcommand{\bra}[1]{\langle #1\rangle}
+	\newcommand{\godel}[1]{\ulcorner #1 \urcorner}
+	\newcommand{\down}[1]{{\downarrow #1}}
+	\newcommand{\up}[1]{{\uparrow #1}}

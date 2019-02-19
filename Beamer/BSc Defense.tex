@@ -1,0 +1,206 @@
+\input{beamersetup.tex}
+
+\title{{\scshape\small Bachelor Defense}\\ Gödel's Constructible Universe}
+\author{Dan Saattrup Nielsen}
+\date{{\tiny June 24, 2014}}
+
+\begin{document}
+
+\begin{frame}[plain]
+	\titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+	\begin{itemize}
+		\item Construction of the construcible universe $L$
+		\item Relative consistency of AC and GCH
+		\item Combinatorics in $L$
+		\item Measurable cardinals are not constructible
+	\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section[Construction of $L$]{Construction of the constructible universe $L$}
+\stepcounter{subsection}
+\begin{frame}{Construction of the constructible universe $L$}
+	\begin{itemize}
+		\item We would like to build the \textit{minimal} universe satisfying $\zf$
+		\pause\item Restrict the power set operation
+		\pause\item Naively, $x\in\Def(X)$ iff
+			\eq{
+			x=\{y\in X\mid\exists\varphi(\exists p_1,\hdots,p_n\in X)\varphi[y,p_1,\hdots,p_n]\}
+			}
+			\pause -- does not work!
+		\pause\item Internalise formulas \textit{within} set theory
+		\pause\item Truth: construct $\textsf{sat}(M,\godel\varphi)$, corresponding to $M\models\varphi$
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\begin{block}{Definition}
+		Let $X$ be a set. Then the \textit{definable power set} is given as
+		\eq{
+			\Def(X):=\{x\in X\mid&(\exists\godel\varphi\in\mathscr L_X)(\exists p_1,\hdots,p_n\in X)\\
+&\textsf{sat}[X,\godel{\varphi(\dot x,\dot p_1,\hdots,\dot p_n)}]\}
+		}
+	\end{block}
+	
+	\pause\begin{block}{Definition}
+		Define $L_0:=\emptyset$, $L_{\alpha+1}:=\Def(L_\alpha)$ and $L_\delta:=\bigcup_{\gamma<\delta}L_\gamma$ for $\delta$ limit. Then the \textit{constructible universe} is given by $L:=\bigcup_{\alpha\in\on}L_\alpha$.
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\begin{block}{Axiom of Constructibility}
+		$V{=}L$ is an abbreviation for $\forall x(\exists\alpha\in\on)(x\in L_\alpha)$.
+	\end{block}
+	
+	\pause\begin{block}{Lemma}
+	$V{=}L$ holds \textit{inside} $L$ itself.
+	\end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section[$\con(\zf)\Rightarrow\con(\zfc+\gch)$]{Relative consistency of AC and GCH}
+\stepcounter{subsection}
+\begin{frame}{Relative consistency of AC and GCH}
+	\begin{block}{Definition}
+		A class $M$ is an \textit{inner model} (of $\zf$) if
+		\begin{enumerate}
+			\item $M$ is transitive;
+			\item $\on\subset M$;
+			\item every axiom of $\zf$ holds in $M$.
+		\end{enumerate}
+	\end{block}
+	
+	\pause\begin{block}{Theorem}
+		$L$ is the \textit{smallest} inner model.
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\begin{block}{Theorem (Gödel)}
+		Axiom of Choice holds in $L$. In fact, \textit{Global Choice} holds in $L$.
+	\end{block}
+	
+	\pause\begin{block}{Condensation Lemma (Gödel)}
+		Let $\delta$ be a limit ordinal and $X\preceq_1 L_\delta$. Then there is a unique limit ordinal $\alpha\leq\delta$ and a unique isomorphism $\pi:\bra{X,\in}\cong\bra{L_\alpha,\in}$, which fixes every transitive $Y\subset X$.
+	\end{block}
+	
+	\pause\begin{block}{Generalized Continuum Hypothesis}
+		GCH is the statement that $2^\kappa=\kappa^+$ for all infinite cardinals $\kappa$.
+	\end{block}		
+	
+	\pause\begin{block}{Theorem (Gödel)}
+		$V{=}L$ implies GCH.
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\begin{proof}
+		\begin{itemize}
+			\item Let $\kappa$ be an infinite cardinal and $A\subset\kappa$. We find $\beta\in\on$ such that $\beta<\kappa^+$ and $A\in L_\beta$, because then $\mathcal{P}(\kappa)\subset L_{\kappa^+}$ and thus $2^\kappa=|\mathcal{P}(\kappa)|\leq |L_{\kappa^+}|=\kappa^+$
+			\pause\item Say $A\in L_\alpha$. Find $X\preceq L_\alpha$ with $|X|=\kappa$ and $\kappa\cup\{A\}\subset X$
+			\pause\item Collapse $X$ to some $L_\beta$, making $|\beta|=|L_\beta|=|X|=\kappa$
+			\pause\item As $\pi:\bra{X,\in}\cong\bra{L_\beta,\in}$, $a\in A\Lr\pi(a)\in\pi(A)$ and hence $\pi(A)=\pi"A$
+			\pause\item But $\pi$ fixes transitive $\kappa$, so $A=\pi"A=\pi(A)\in L_\beta$.
+		\end{itemize}
+	\end{proof}
+	
+	\pause\begin{block}{Corollary}
+		$\con(\zf)\Rightarrow\con(\zfc+\gch)$.
+	\end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section[Combinatorics in $L$]{Combinatorics in $L$}
+\stepcounter{subsection}
+\begin{frame}{Combinatorics in $L$}
+	\begin{block}{Theorem (Cantor)}
+		$\bra{\mathbb{R},<}$ is the (up to isomorphism) unique complete dense linear ordering without endpoints, containing a countable dense subset.
+	\end{block}
+	
+	\pause\begin{block}{Suslin's Hypothesis (SH)}
+		$\bra{\mathbb{R},<}$ is the (up to isomorphism) unique complete dense linear ordering without endpoints, where every set of disjoint intervals is countable.
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\begin{block}{Definition}
+		$\diamondsuit$ is the statement that there exists a sequence $(A_\alpha)_{\alpha<\omega_1}$, such that for every $A\subset\omega_1$, the set $\{\alpha\in\on\mid A\cap\alpha=A_\alpha\}$ is stationary.
+	\end{block}
+	
+	\pause\begin{block}{Theorem (Jensen)}
+		$\diamondsuit$ implies $\lnot\sh$.
+	\end{block}
+	
+	\pause\begin{block}{Theorem (Jensen)}
+		$\diamondsuit$ holds in $L$.
+	\end{block}
+	
+	\pause\begin{block}{Corollary}
+		$\con(\zf)\Rightarrow\con(\zf+\diamondsuit+\lnot\sh)$.
+	\end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section[No measurables in $L$]{Measurable cardinals are not constructible}
+\stepcounter{subsection}
+\begin{frame}{Measurable cardinals are not constructible}
+	\begin{block}{Definition}
+		Let $\kappa$ be an infinite cardinal. Then a filter $D$ is $\kappa$-\textit{complete} if $\bigcap X\in D$ for every $X\subset D$ with $|X|<\kappa$.
+	\end{block}
+	
+	\pause\begin{block}{Lemma}
+		Let $D$ be a filter over a set $I$ with $|I|=\kappa$. If $D$ is $\kappa^+$-complete then $D$ is principal.
+	\end{block}
+	
+	\pause\begin{block}{Definition}
+		A \textit{measurable cardinal} is a cardinal $\kappa$ with a ``maximally complete'' free filter; i.e. on which there exists a free $\kappa$-complete ultrafilter.
+	\end{block}
+	
+	\pause\begin{block}{Theorem (Scott)}
+		$V{=}L$ implies that there exists no measurable cardinal.
+	\end{block}
+\end{frame}	
+
+\begin{frame}
+	\begin{proof}[Proof sketch]
+		Say $\kappa$ is the least measurable cardinal. \pause Then:
+		\begin{itemize}
+			\item For non-trivial elementary $j:\mathfrak{A}\preceq_1\mathfrak{B}$ with $B\subset A$, there is least $\alpha\in\on$ such that $j(\alpha)>\alpha$; define $\crit j:=\alpha$
+			\pause\item The class ultrapower $\ult:=\bra{\Pi_{i\in I}V/U^\times,\in_U}$ is well-defined and we have $d:\bra{V,\in}\preceq\ult$
+			\pause\item $\ult$ is subject to the Mostowski collapse, so we have $j:V\preceq M\cong\ult$, resulting in the inner model $M$
+			\pause\item If $\kappa$ is a measurable cardinal with $j:V\preceq M\cong\ult$, then $\crit j=\kappa$
+			\pause\item $M\models``j(\kappa)\text{ is the least measurable cardinal}"$
+			\pause\item $L$ is the least inner model, so $M=L$ and hence $j(\kappa)$ is the least measurable, but $j(\kappa)>\kappa$, $\contr$.
+		\end{itemize}
+	\end{proof}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section[Perspective]{Perspective}
+\stepcounter{subsection}
+
+\begin{frame}{Perspective}
+	\begin{block}{The inner model problem (1960's)}
+		Given any large cardinal $\kappa$, can we find a canonical inner model like $L$, in which $\kappa$ exists?
+	\end{block}
+	
+	\vspace{20pt}
+	
+	\pause This problem spawned an entire mathematical field called \textit{inner model theory}. There is ongoing progress, but it remains unsolved.
+\end{frame}
+
+\begin{frame}
+	\begin{center}
+	\Large Thank you for listening.
+	\end{center}
+\end{frame}
+
+\end{document}

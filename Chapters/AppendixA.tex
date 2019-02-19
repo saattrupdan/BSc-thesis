@@ -1,0 +1,576 @@
+\chapter{A treatment of $\mathscr L$}
+\thispagestyle{fancy}
+\label{apxA}
+
+As $\mathscr L$ is the language on which $L$ is founded, we find it necessary to include here a proper treatment of it. Our main goal in this chapter is to show that the formula $\mathsf{sat}(M,\godel{\varphi(\vec{x})})$ is absolute for $L$, and also proving that $\Def$ and $v=L_\alpha$ are $\Delta_1^{\zf}$ and $L_\delta$-absolute for limit $\delta>\omega$. To help reading comprehension, we will in this chapter use the notation $\varphi:\equiv\psi$ to say that we \textit{define} $\varphi$ to be $\psi$ and (henceforth) write $\varphi,\psi,\chi$ instead of $\godel\varphi,\godel\psi,\godel\chi$ due to them always being sets throughout the chapter. Furthermore if $s$ is a sequence, we define $s_k:=s(k)$.
+
+\section{The theory $\ds$}
+To be able to achieve the above mentioned absoluteness result, we need to work in a weaker theory than $\zf$, as the limit $L_\delta$'s do not satisfy things like Replacement. This was done in Devlin \cite{Devlin} using a theory called Basic Set Theory, abbreviated BS. Later on, Stanley \cite{Stanley} pointed out errors in this theory in a review of Devlin's book, causing a few of the fundamental lemmas to be outright wrong (counter-examples were found by Solovay). After some time, Mathias \cite{Mathias} did a thorough analysis of the situation and came up with multiple possible solutions; i.e. theories which are stronger than Devlin's BS theory, but still weak enough for the $L_\delta$'s to satisfy it, for limit $\delta>\omega$. Here we introduce one of Mathias' solutions, namely the theory Devlin Strengthened, abbreviated $\ds$:
+
+\defi[$\ds$]{\ 
+\begin{enumerate}
+\item \textit{Extensionality}: $\forall x\forall y[\forall z(z\in x\lr z\in y)\to(x=y)]$;
+\item \textit{$\Pi_1$ foundation}: $\forall\vec{a}\forall x[(\forall y(y\in x\lr\varphi(\vec{a},y))\land x\neq\emptyset)\to(\exists z\in x)(z\cap x=\emptyset)]$ with $\varphi(\vec{a},y)$ being a $\Pi_1$ formula;
+\item \textit{Pairing}: $\forall x\forall y\exists z\forall w[w\in z\lr(w=x\lor w=y)]$;
+\item \textit{Union}: $\forall x\exists y\forall z[z\in y\lr(\exists u\in x)(z\in u)]$;
+\item \textit{Infinity}: $\exists x[\mathsf{on}(x)\land x\neq\emptyset\land(\forall y\in x)(\exists z\in x)(y\in z)]$;
+\item \textit{Finite Power Set}: $\forall x\exists y\forall w[w\in y\lr(w\subset x\land\mathsf{isFin}(w)]$;
+\item \textit{$\Delta_0$ comprehension}: $\forall\vec{a}\forall x\exists y\forall z[z\in y\lr z\in x\land\varphi(\vec{a},z))]$, with $\varphi(\vec{a},z)$ being a $\Delta_0$ formula.
+\end{enumerate}
+}
+
+The Finite Power Set axiom in other words states that $\mathcal{S}(x):=\{y\subset x\mid\mathsf{isFin}(y)\}$ is a set for all sets $x$. Notice the change in the Infinity Axiom, now stating that an infinite \textit{ordinal} exists, rather than just any infinite set. It is easily checked that $\ds$ is a subtheory of $\zf$, as every axiom in $\ds$ is a theorem or an axiom of $\zf$. We will need a few basic complexity results regarding $\ds$, where this first one will be stated without proof.
+
+\lemm{\ 
+\label{DS Lemma}
+\begin{enumerate}
+\item ``$x\in\mathcal{S}(y)$'' is $\Delta_1^{\ds}$;
+\item ``$x=\mathcal{S}(y)$'' is $\Delta_1^{\ds}$;
+\item ``$x=y+z$'' is $\Delta_1^{\ds}$.
+\end{enumerate}
+}
+\proof{
+See Corollaries 8.11, 8.13 and 8.16 in \cite{Mathias}, where the results follow after a thorough analysis of $\ds$.
+}
+
+\lemm{
+\label{DS prod Lemma}
+``$x=y\times z$'' is $\Delta_1^{\ds}$.
+}
+\proof{
+We have that $``x=y\times z"$ is logically equivalent to the formula
+\eq{
+&x\subset\mathcal{S}(\mathcal{S}(y\cup z))\land(\forall w\in x)(\mathsf{isOrdPair}(w)\land\fst w\in y\land\snd w\in z)\land\\
+&(\forall w\in y)(\forall w'\in z)(\bra{w,w'}\in x),
+}
+
+which is $\Delta_1^{\ds}$ by Lemma \ref{DS Lemma}(i).
+}
+
+$\ds$ also has a recursion principle:
+\lemm[Finite $\Delta_0$-recursion]{
+\label{DS Recursion Lemma}
+($\ds$) Let $G:V\to V$ be a $\Delta_0$ class function and $n<\omega$. Then there is a unique function $F$ with $\dom F=n$ and $F(k)=G(F\restr k)$.
+}
+\proof{
+``Existence'': As $G(x)$ is a set for all sets $x$, any finite collection $\{G(x_1),\hdots,G(x_n)\}$ is a set by Pairing. Thus $F\subset n\times X$ for some finite set $X$, where $n\times X$ is a set by Lemma \ref{DS prod Lemma}. As both $n$ and $X$ are $\Delta_0$-definable, $F$ is a set by $\Delta_0$-Comprehension.\\
+
+``Uniqueness'': Let $F'$ be another such function. As $F\approx n\approx F'$, $F\approx F'$. But $F(0)=G(0)=F'(0)$, $F(1)=G(\{\bra{0,G(0)}\})=F'(1)$ and so on, finitely many times. Hence by Extensionality, $F=F'$.
+}
+
+\section{Analysis of $\mathsf{sat}$}
+Starting from scratch, we slowly build up our arsenal of $\mathscr L$-formulas. Recall the correspondence between $\mathscr L$ and our regular language of set theory with constants for each set, denoted $\mathcal{L}_\in^+$:
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{| c | c |}
+	\hline
+	$\mathcal{L}_\in^+$ & $\mathscr L$\\\hline
+	( & 0\\
+	) & 1\\
+	$v_n$ & $\bra{2,n}$\\
+	$\dot x$ & $\bra{3,x}$\\
+	$\in$ & 4\\
+	$=$ & 5\\
+	$\land$ & 6\\
+	$\lnot$ & 7\\
+	$\exists$ & 8\\\hline
+\end{tabular}
+\end{figure}
+
+We start with the basics and construct $\Delta_0$ formulas $\mathsf{isVar}(v_0)$, $\mathsf{isConst}(v_0)$, $\mathsf{isPForm}(v_0)$ and $\mathsf{isFinSeq}(v_0)$ stating that $v_0$ is a variable, constant, primitive formula, sequence and finite sequence, respectively:
+\eq{
+\mathsf{isVar}(x):\equiv&\mathsf{isOrdPair}(x)\land\fst x=2\land\mathsf{isNat}(\snd x)\\
+\mathsf{isConst}(x):\equiv&\mathsf{isOrdPair}(x)\land\fst x=3\\
+\mathsf{isSeq}(s):\equiv&\mathsf{isFct}(s)\land(\forall n\in\dom s)\mathsf{isNat}(n)\\
+\mathsf{isFinSeq}(s):\equiv&\mathsf{isSeq}(s)\land(\exists n\in\dom s)(\forall m\in\dom s)(m\in n\lor m=n)\\
+\mathsf{isPForm}(s):\equiv&\mathsf{isFinSeq}(s)\land\dom s=5\land s_0=0\land (s_1=4\lor s_1=5)\land\\
+&(\mathsf{isVar}(s_2)\lor\mathsf{isConst}(s_2))\land(\mathsf{isVar}(s_3)\lor\mathsf{isConst}(s_3))\land s_4=1\\
+}
+
+We then begin building our basic $\mathscr L$-formulas:
+
+\begin{itemize}
+\item $\mathsf{F}_\in(\varphi,x,y)$, saying that $\varphi$ is of the form $(x\in y)$:
+\eq{
+\mathsf{F}_\in(\varphi,x,y):\equiv&\mathsf{isFinSeq}(\varphi)\land\dom\varphi=5\land \varphi_0=0\land \varphi_1=4\land \varphi_2=x\land\\
+&\varphi_3=y\land\varphi_4=1
+}
+\item $\mathsf{F}_=(\varphi,x,y)$, saying that $\varphi$ is of the form $(x=y)$:
+\eq{
+\mathsf{F}_=(\varphi,x,y):\equiv&\mathsf{isFinSeq}(\varphi)\land\dom\varphi=5\land \varphi_0=0\land\varphi_1=5\land\varphi_2=x\land\\
+&\varphi_3=y\land\varphi_4=1
+}
+\item $\mathsf{F}_\land(\varphi,\psi,\chi)$, saying that $\varphi$ is of the form $(\psi\land\chi)$:
+\eq{
+\mathsf{F}_\land(\varphi,\psi,\chi):\equiv&\mathsf{isFinSeq}(\varphi)\land\mathsf{isFinSeq}(\psi)\land\mathsf{isFinSeq}(\chi)\land\dom\varphi=\dom\psi+\dom\chi+3\land\\
+&\varphi_0=0\land\varphi_1=6\land\varphi(\dom\varphi-1)=1\land(\forall i\in\dom\varphi)(\varphi_{i+2}=\psi_i)\land\\
+&(\forall i\in\dom\chi)(\varphi_{\dom\psi+i+2}=\chi_i)
+}
+\item $\mathsf{F}_\lnot(\varphi,\psi)$, saying that $\varphi$ is of the form $(\lnot\psi)$:
+\eq{
+\mathsf{F}_\lnot(\varphi,\psi):\equiv&\mathsf{isFinSeq}(\varphi)\land\mathsf{isFinSeq}(\psi)\land\dom\varphi=\dom\psi+3\land\varphi_0=0\land\varphi_1=7\land\\
+&\varphi_{\dom\varphi-1}=1\land(\forall i\in\dom\psi)(\varphi_{i+2}=\psi_i)
+}
+\item $\mathsf{F}_\exists(\varphi,x,\psi)$, saying that $\varphi$ is of the form $(\exists x \psi)$:
+\eqq{
+\mathsf{F}_\exists(\varphi,x,\psi):\equiv&\mathsf{isFinSeq}(\varphi)\land\mathsf{isFinSeq}(\psi)\land\dom\varphi=\dom\psi+4\land \varphi_0=0\land\varphi_1=8\land\\
+&\varphi_2=x\land\varphi_{\dom\varphi-1}=1\land(\forall i\in\dom\psi)(\varphi_{i+1}=\psi_i).
+}
+\end{itemize}
+
+These are all $\Delta_0$ except $\mathsf{F}_\land(\varphi,\psi,\chi)$, which will be $\Delta_1^{\ds}$ due to its use of addition.
+
+\lemm{
+$\mathsf{F}_\land(\varphi,\psi,\chi)$ is $\Delta_1^{\ds}$.
+}
+\proof{
+The troublesome clause here is ``$\dom\varphi=\dom\psi+\dom\chi+3$'', as both $\dom\psi$ and $\dom\chi$ are arbitrary. But as this clause is $\Delta_1^{\ds}$ by Lemma \ref{DS Lemma}, the result follows.
+}
+
+Now, to be able to construct our internalized formulas in $\mathscr L$, we will need two formulas. The first one will be $\mathsf{build}(\varphi,\psi)$, expressing that $\varphi$ is ``built'' from the finite sequence of formulas $\psi_0,\hdots,\psi_n$, where by ``built'' we mean that $\psi_n=\varphi$ and every $\psi_i$ is either atomic or is constructed from one of two of the $\psi_j$'s by means of a logical connective or quantifier. It is defined thus, and is clearly $\Delta_1^{\ds}$ due to its use of $\mathsf{F}_\land$:
+\eqq{
+\mathsf{build}(\varphi,\psi):\equiv&\mathsf{isFinSeq}(\psi)\land\psi_{\dom\psi-1}=\varphi\land(\forall i\in\dom\psi)[\mathsf{isPForm}(\psi_i)\lor\\
+&(\exists j,k\in i)\mathsf{F}_\land(\psi_i,\psi_j,\psi_k)\lor(\exists j\in i)\mathsf{F}_\lnot(\psi_i,\psi_j)\lor\\
+&(\exists j\in i)(\exists u\in\ran\varphi)(\mathsf{isVar}(u)\land\mathsf{F}_\exists(\psi_i,u,\psi_j))].
+}
+
+Now we can construct the formula $\mathsf{isForm}(\varphi):\equiv\exists f\mathsf{build}(\varphi,f)$, stating that $\varphi$ is an $\mathscr L$-formula. To prove the complexity of $\mathsf{isForm}$, we first need to construct a formula $\mathsf{isSeqSet}(u,a,n)$ saying ``$u={^{<n}}a$'', where $^{<n}a:=\bigcup_{k<n}{^k}a$. We do this by the following formula:
+\eqq{
+\mathsf{isSeqSet}(u,a,n):\equiv&\exists s[\mathsf{isFinSeq}(s)\land\mathsf{isNat}(n)\land\dom s=n\land u=\bigcup\ran s\land\\
+&(\forall i\in\dom s)(\forall x\in s_i)(\mathsf{isFinSeq}(x)\land\dom x=i\land(\forall j\in i)(x_j\in a))\land\\
+&(\forall i\in\dom s)(\forall j\in i)(\forall x\in s_j)(\forall p\in a)(i=j+1\to x\cup\{\bra{i,p}\}\in s_i)].
+}
+
+\lemm{
+\label{isSeqSetExists Lemma}
+$\ds\proves\forall x(\forall n<\omega)\exists y(y={^{<n}}x)$.
+}
+\proof{
+Given a set $x$ and $n<\omega$, $^{<n}x\subset\mathcal{S}(\omega\times x)$, since $\mathcal{S}(\omega\times x)$ is a set by Lemma \ref{DS prod Lemma}. Thus by $\Delta_0$ comprehension we get that
+\eq{
+{^{<n}}x=\{f\in\mathcal{S}(\omega\times x)\mid\mathsf{isFct}[f]\land (\exists m<n)(\dom f=m\land(\forall k<m)(f(k)\in x))\},
+}
+
+so $\ds$ proves that it is a set, due to the formula clearly being $\Delta_0$.
+}
+
+\lemm{
+\label{isSeqSet Lemma}
+$\mathsf{isSeqSet}(u,a,n)$ is $\Delta_1^{\ds}$.
+}
+\proof{
+Clearly $\mathsf{isSeqSet}(u,a,n)$ is $\Sigma_1$. We have that $\ds\proves\forall a(\forall n\in\omega)\exists u(\mathsf{isSeqSet}(u,a,n))$ by Lemma \ref{isSeqSetExists Lemma}. But we furthermore have that $\ds$ proves that $^{<n}a$ is unique by Lemma \ref{DS Recursion Lemma}, so
+\eq{
+\ds\proves\mathsf{isSeqSet}(u,a,n)\lr(\mathsf{isNat}(n)\land\forall z(\mathsf{isSeqSet}(z,a,n)\to z=u)),
+}
+
+which proves that $\mathsf{isSeqSet}(u,a,n)$ is $\Pi_1^{\ds}$; thus we have the result.
+}
+
+\lemm{
+$\mathsf{isForm}(\varphi)$ is $\Delta_1^{\ds}$.
+}
+\proof{
+$\mathsf{isForm}(\varphi)$ is clearly $\Sigma_1$. The $f$ in $\exists f\mathsf{build}(\varphi,f)$ is an element of the collection
+\eq{
+A(\varphi):=^{<\dom\varphi+1}\left(^{<\dom\varphi+1}\ran\varphi\right),
+}
+
+which is a set by Lemma \ref{isSeqSetExists Lemma}, so $f$ exists. Furthermore we clearly have $\ds\proves\forall x\exists y[y=A(x)]$, so
+\eq{
+\ds\proves\mathsf{isForm}(\varphi)\lr&\mathsf{isFinSeq}(\varphi)\land\forall u\forall v((\mathsf{isSeqSet}(u,\ran\varphi,\dom\varphi+1)\land\\
+&\mathsf{isSeqSet}(v,u,\dom\varphi+1))\to(\exists f\in v)\mathsf{build}(\varphi,f)),
+}
+
+and we thus have that $\mathsf{isForm}(\varphi)$ is $\Pi_1^{\ds}$, making it $\Delta_1^{\ds}$.
+}
+
+For future reference, we construct a formula where the constants is bounded by a given set as $\mathsf{isBConst}(x,u):\equiv\mathsf{isConst}(x)\land\fst x\in u$, and by replacing each instance of $\mathsf{isConst}(x)$ with $\mathsf{isBConst}(x,u)$ in the formulas $\mathsf{isPForm}(\varphi)$ and $\mathsf{isForm}(\varphi)$, we obtain the formulas $\mathsf{isBPForm}(\varphi,u)$ and $\mathsf{isBForm}(\varphi,u)$. Then clearly $\mathsf{isBForm}(\varphi,u)$ iff $\varphi$ is a formula of $\mathscr L_u$.\\
+
+Now, we need to be able to treat free variables of formulas as well as substitutions in formulas. We start with constructing a formula $\mathsf{isFree}(\varphi,x)$, stating that $x$ is the set of free variables occurring in the $\mathscr L$-formula $\varphi$. We do this by ``capturing'' the free variables in each of the stages occurring in $\mathsf{build}(\varphi,\psi)$:
+\eq{
+\mathsf{isFree}(\varphi,x):\equiv&\exists\psi\exists f[\mathsf{build}(\varphi,\psi)\land\mathsf{isFinSeq}(f)\land\dom f=\dom\psi\land x=f_{\dom f-1}\land\\
+&(\forall i\in\dom f)[(\exists j,k\in i)[\mathsf{F}_\land(\psi_i,\psi_j,\psi_k)\land f_i=f_j\cup f_k]\lor\\
+&(\exists j\in i)[\mathsf{F}_\lnot(\psi_i,\psi_j)\land f_i=f_j]\lor\\
+&(\exists j\in i)(\exists u\in\ran\varphi)[\mathsf{isVar}(u)\land\mathsf{F}_\exists(\psi_i,u,\psi_j)\land (f_i=f_j\backslash\{u\})]\lor\\
+&[\mathsf{isPForm}(\psi_i)\land[[\mathsf{isVar}((\psi_i)_2)\land\mathsf{isVar}((\psi_i)_3)\land f_i=\{(\psi_i)_2,(\psi_i)_3\}]\lor\\
+&[\mathsf{isVar}((\psi_i)_2)\land\mathsf{isConst}((\psi_i)_3)\land f_i=\{(\psi_i)_2\}]\lor\\
+&[\mathsf{isConst}((\psi_i)_2)\land\mathsf{isVar}((\psi_i)_3)\land f_i=\{(\psi_i)_3\}]\lor\\
+&[\mathsf{isConst}((\psi_i)_2)\land\mathsf{isConst}((\psi_i)_3)\land f_i=\emptyset]]]].
+}
+
+\lemm{
+$\mathsf{isFree}(\varphi,x)$ is $\Delta_1^{\ds}$.
+}
+\proof{
+Clearly it is $\Sigma_1$. As the set $x$ is furthermore unique by Lemma \ref{DS Recursion Lemma}, we have that
+\eq{
+\ds\proves\mathsf{isFree}(\varphi,x)\lr[\mathsf{isForm}(\varphi)\land\forall z(\mathsf{isFree}(\varphi,z)\to z=x)],
+}
+
+so $\mathsf{isFree}(\varphi,x)$ is $\Pi_1^{\ds}$, and thus $\Delta_1^{\ds}$.
+}
+
+Now, for the substitution we construct a formula $\mathsf{sub}(\varphi',\varphi,v,t)$, saying that $\varphi'$ is the result of substituting each occurrence of the variable $v$ in $\varphi$ with the constant $t$. We do this again by fixing a ``$\mathsf{build}$-sequence", and substituting every occurrence of $v$ with $t$ at each step. If we reach a quantifier, then we need to cancel any substitutions made within its scope. To increase legibility, we split the formula up and treat the case where $\varphi$ is atomic separately, resulting in the formula $\mathsf{subAtom}(\varphi',\varphi,v,t)$:
+\eq{
+\mathsf{subAtom}(\varphi',\varphi,v,t):\equiv&\mathsf{isPForm}(\varphi')\land\mathsf{isPForm}(\varphi)\land\mathsf{isVar}(v)\land\mathsf{isConst}(t)\land[(\mathsf{F}_=(\varphi,\varphi_2,\varphi_3)\land\\
+&[(\varphi_2\neq v\land\varphi_3\neq v\land\varphi'=\varphi)\lor(\varphi_2=v\land\varphi_3\neq v\land\mathsf{F}_=(\varphi',t,\varphi_3))\lor\\
+&(\varphi_2\neq v\land\varphi_3=v\land\mathsf{F}_=(\varphi',\varphi_2,t))\lor(\varphi_2=v\land\varphi_3=v\land\mathsf{F}_=(\varphi',t,t))])\lor\\
+&(\mathsf{F}_\in(\varphi,\varphi_2,\varphi_3)\land[(\varphi_2\neq v\land\varphi_3\neq v\land\varphi'=\varphi)\lor\\
+&(\varphi_2=v\land\varphi_3\neq v\land\mathsf{F}_\in(\varphi',t,\varphi_3))\lor(\varphi_2\neq v\land\varphi_3=v\land\mathsf{F}_\in(\varphi',\varphi_2,t))\lor\\
+&(\varphi_2=v\land\varphi_3=v\land\mathsf{F}_\in(\varphi',t,t))])]
+}
+
+We can now define the substitution formula $\mathsf{sub}(\varphi',\varphi,v,t)$ as follows:
+\eq{
+\mathsf{sub}(\varphi',\varphi,v,t):\equiv&\mathsf{isForm}(\varphi')\land\mathsf{isForm}(\varphi)\land\mathsf{isVar}(v)\land\mathsf{isConst}(t)\land\exists\psi\exists\chi[\mathsf{build}(\varphi,\psi)\land\\
+&\mathsf{isFinSeq}(\chi)\land\dom\chi=\dom\psi\land\chi_{\dom\chi-1}=\varphi'\land\\
+&(\forall i\in\dom\psi)[(\exists j,k\in i)(\mathsf{F}_\land(\psi_i,\psi_j,\psi_k)\land\mathsf{F}_\land(\chi_i,\chi_j,\chi_k))\lor\\
+&(\exists j\in i)(\mathsf{F}_\lnot(\psi_i,\psi_j)\land\mathsf{F}_\lnot(\chi_i,\chi_j))\lor\\
+&(\exists j\in i)(\exists u\in\ran\varphi)(\mathsf{isVar}(u)\land u\neq v\land\mathsf{F}_\exists(\psi_i,u,\psi_j)\land\mathsf{F}_\exists(\chi_i,u,\chi_j))\lor\\
+&(\exists j\in i)(\mathsf{F}_\exists(\psi_i,v,\psi_j)\land\chi_i=\psi_i)\lor\\
+&\mathsf{subAtom}(\chi_i,\psi_i,v,t)]].
+}
+
+Here the clause ``$\chi_i=\psi_i$" on the penultimate line expresses the previously mentioned idea to cancel any substitutions made within a quantifiers scope.
+
+\lemm{
+$\mathsf{sub}(\varphi',\varphi,v,t)$ is $\Delta_1^{\ds}$.
+}
+\proof{
+As the substituted formula is unique by Lemma \ref{DS Recursion Lemma}, we have that
+\eq{
+\ds\proves\mathsf{sub}(\varphi',\varphi,v,t)\lr\mathsf{isForm}(\varphi)\land\mathsf{isVar}(v)\land\mathsf{isConst}(t)\land\forall\psi[\mathsf{sub}(\psi,\varphi,v,t)\to\psi=\varphi'],
+}
+
+granting a $\Pi_1^{\ds}$ formula, and the lemma follows.
+}
+
+We are finally ready to define the satisfaction relation $\mathsf{sat}(u,\varphi)$, which we want to express that $\varphi\in\mathscr L_u$ and $\varphi$ is true within $u$, with each constant symbol $\dot x$ replaced by the corresponding set $x$. The idea behind the construction is to define two functions $f,g$ with domain $\omega$, such that $f(0)$ is the set of all atomic formulas of $\mathscr L_u$, and $f(i+1)$ is the set of $\mathscr L_u$-formulas, constructed from the formulas of $f(i)$ via the use of a single logical connective or quantifier. The function $g$ is then defined as the function taking all formulas from $f$ which have no free variables and which are true in $u$. The reason for even having $f$ is to treat the negation case. Even though $f,g$ has an infinite domain, what we will use in practice is $f\restr n, g\restr n$ for some sufficiently large $n<\omega$, which is sufficient as our formulas are finite. We start again by considering the atomic case separately:
+\eq{
+\mathsf{satAtom}(u,\varphi):\equiv(\exists x,y\in u)(x\in y\land\mathsf{F}_\in(\varphi,\bra{3,x},\bra{3,y}))\lor(\exists x\in u)\mathsf{F}_=(\varphi,\bra{3,x},\bra{3,x}).
+}
+
+\lemm{
+$\mathsf{satAtom}(u,\varphi)$ is $\Delta_0$.
+}
+\proof{
+The only troublesome clauses are the ones such as $(\exists x,y\in u)\mathsf{F}_\in(\varphi,\bra{3,x},\bra{3,y})$ due to presence of the pairs, but observe that we can write out $\mathsf{satAtom}(u,\varphi)$ as
+\eq{
+&(\exists x,y\in u)(\exists x',y'\in\ran\varphi)(x\in y\land x'=\bra{3,x}\land y'=\bra{3,y}\land\mathsf{F}_\in(\varphi,x',y'))\lor\\
+&(\exists x\in u)(\exists x'\in\ran\varphi)(x'=\bra{3,x}\land\mathsf{F}_=(\varphi,x', x')),
+}
+
+from which it is easily seen.
+}
+
+We can now write out a formula, $\mathsf{almostSat}(u,\varphi)$, which does what we want it to do, but we are going to do some changes to make sure it is $\Delta_1^{\ds}$, which, after all, is our prime goal in this section. The formula is given thus:
+\eq{
+\mathsf{al}&\mathsf{mostSat}(u,\varphi):\equiv\\
+&u\neq\emptyset\land\mathsf{isBForm}(\varphi,u)\land\exists f\exists g[\mathsf{isFinSeq}(f)\land\mathsf{isFinSeq}(g)\land\dom f=\dom g\land\varphi\in g_{\dom g-1}\land\\
+&\forall\psi(\psi\in f_0\lr\mathsf{isBPForm}(\psi,u))\land\forall\psi(\psi\in g_0\lr\mathsf{satAtom}(\psi,u))\land\\
+&(\forall j\in\dom f)(\forall i\in j)(\forall\psi)[\psi\in f_{i+1}\lr(\psi\in f_i\lor(\exists\chi,\chi'\in f_i)\mathsf{F}_\land(\psi,\chi,\chi')\lor\\
+&(\exists\chi\in f_i)\mathsf{F}_\lnot(\psi,\chi)\lor(\exists\chi\in f_i)(\exists v\in\ran\psi)(\mathsf{isVar}(v)\land\mathsf{F}_\exists(\psi,v,\chi))]\land\\
+&(\forall j\in\dom g)(\forall i\in j)(\forall\psi)[\psi\in g_{i+1}\lr(\psi\in g_i\lor(\exists\chi,\chi'\in g_i)\mathsf{F}_\land(\psi,\chi,\chi')\lor\\
+&(\exists\chi\in f_i)(\chi\notin g_i\land\mathsf{F}_\lnot(\psi,\chi))\lor(\exists\chi\in f_i)(\exists v\in\ran\psi))(\exists x\in u)(\exists\chi'\in g_i)[\mathsf{isVar}(v)\land\\
+&\mathsf{F}_\exists(\psi,v,\chi)\land\mathsf{sub}(\chi',\chi,v,\bra{3,x})]]].
+}
+
+It is a bit of a mouthful, but by near inspection this in fact captures the aforementioned idea. Now, the problem with this formula is the unbounded quantifiers $\forall\psi$, $\forall f$, $\forall g$ as well as the ones occurring in $\mathsf{sub}(\chi',\chi,v,\bra{3,x})$. Define $X:=9\cup\{v_i\mid i<\omega\}\cup\{\bra{3,x}\mid x\in u\}$ and
+\eq{
+w(u,\varphi):={^{\dom\varphi+1}}X\cup{^{\dom\varphi+1}}\left({^{\dom\varphi+1}}X\right).
+}
+
+It is easily seen that if we bound every unbounded quantifier in $\mathsf{almostSat}(u,\varphi)$ by $w(u,\varphi)$, we get a logically equivalent $\Delta_0$ formula $\mathsf{bAlmostSat}(u,\varphi,w)$. This requires $\ds$ to prove that $w(u,\varphi)$ is a set for all $u$ and $\varphi$ though, but this follows from Lemma \ref{isSeqSetExists Lemma}. We can now define $\mathsf{sat}(u,\varphi)$ as
+\eq{
+\mathsf{sat}(u,\varphi):\equiv&\exists w\exists x\exists y\exists a\exists b\exists t[a=\{\bra{3,x}\mid x\in u\}\land b=\{v_i\mid i\in t\}\land\\
+&[(\mathsf{on}(t)\land\mathsf{isLimit}(t)\land(\forall i\in t)((\exists j\in i)(i=j+1)\lor i=\emptyset)]\land\\
+&\mathsf{isSeqSet}(x,9\cup a\cup b,\dom\varphi+1)\land\mathsf{isSeqSet}(y,x,\dom\varphi+1)\land\\
+&w=x\cup y\land\mathsf{bAlmostSat}(u,\varphi,w)].
+}
+
+\lemm{
+\label{sat Lemma}
+$\mathsf{sat}(u,\varphi)$ is $\Delta_1^{\ds}$ and $\Sigma_1$.
+}
+\proof{
+It is clearly $\Sigma_1$. As we furthermore have that
+\eq{
+\ds\proves\mathsf{sat}(u,\varphi)\lr\mathsf{isBForm}(\varphi,u)\land\mathsf{isFree}(\varphi,\emptyset)\land\forall\psi(\lnot[\mathsf{F}_\lnot(\psi,\varphi)\land\mathsf{sat}(u,\psi)]),
+}
+
+it follows that $\mathsf{sat}(u,\varphi)$ is $\Pi_1^{\ds}$, and thus $\Delta_1^{\ds}$, since it is also $\Sigma_1^{\ds}$.
+}
+
+We see that this definition of $\mathsf{sat}$ is the ``correct'' one, as it coincides with our usual metamathematical satisfaction relation $\models$.
+
+\lemm{
+\label{sat is models Lemma}
+Let $\varphi(v_1,\hdots,v_n)$ be a formula. Then
+\eq{
+\zf\proves\forall M(\forall x_1\in M)\cdots(\forall x_n\in M)(M\models\varphi[\vec{x}]\lr \mathsf{sat}[M,\godel{\varphi(\dot x_1,\hdots\dot x_n)}]).
+}
+}
+\proof{
+Induction on the complexity of $\varphi$. \textit{Atomic step:} $``\Leftarrow"$: Directly from the definition of $\textsf{sat}$. $``\Rightarrow"$: If $\varphi$ is $(v_0\in v_1)$ and $M\models(x\in y)$ then $\godel{\varphi(\dot x,\dot y)}=04\bra{3,x}\bra{3,y}1$, so $\mathsf{F}_\in[\godel\varphi,\bra{3,x},\bra{3,y}]$ holds; hence $\mathsf{sat}[M,\godel\varphi]$ holds. If $\varphi$ is $(v_0=v_1)$ and $M\models(x=y)$ then $\godel{\varphi(\dot x,\dot y)}=05\bra{3,x}\bra{3,y}1=05\bra{3,x}\bra{3,x}1$ and hence $\mathsf{F}_=[\godel\varphi,\bra{x,3},\bra{x,3}]$ holds; hence $\mathsf{sat}[M,\godel\varphi]$ holds.\\
+
+\textit{Sentential step:} $``\Leftarrow"$: Since $\mathsf{sat}[M,\godel\varphi]$ holds, there is some $i<\omega$ such that $\godel\varphi\in g(i+1)$ by definition of $\mathsf{sat}$. If $\varphi$ is $(\psi\land\chi)$, then $\mathsf{F}_\land[\godel\varphi,\godel\psi,\godel\chi]$ holds, so $\godel\psi,\godel\chi\in g(i)$. By induction hypothesis, $M\models\psi[\vec{x}]$ and $M\models\chi[\vec{x}]$, so $M\models\varphi[\vec{x}]$ by definition of $\models$. If $\varphi$ is $(\lnot\psi)$, then $\mathsf{F}_\lnot[\godel\varphi,\godel\psi]$ holds, meaning $\godel\psi\notin g(i)$ and thus by induction hypothesis, $M\nmodels\psi[\vec{x}]$ and thus $M\models\varphi[\vec{x}]$.\\
+
+$``\Rightarrow"$: If $\varphi$ is $(\psi\land\chi)$, then $M\models\psi[\vec{x}]$ and $M\models\chi[\vec{x}]$ by definition of $\models$, so by induction hypothesis $\mathsf{sat}[M,\godel\psi]$ and $\mathsf{sat}[M,\godel\chi]$ holds; thus there is some $i,j<\omega$ with $\godel\psi\in g(i)$ and $\godel\chi\in g(j)$ and thus $\godel\varphi\in g(\max\{i,j\}+1)$, implying $\mathsf{sat}[M,\godel\varphi]$. If $\varphi$ is $(\lnot\psi)$ then $M\nmodels\psi[\vec{x}]$, so $\godel\psi\in f(i)$ and $\godel\psi\notin g(i)$ for some $i<\omega$ by induction assumption; thus $\mathsf{sat}[M,\godel\varphi]$ again.\\
+
+\textit{Quantifier step:} Assume $\varphi$ is $(\exists v_0\psi)$. $``\Leftarrow"$: There is some $y\in M$ such that $\mathsf{sat}[M,\godel{\psi(\dot y,\dot x_1,\hdots,\dot x_n)}]$ holds, which by induction hypothesis means $M\models\psi[y,\vec{x}]$; thus $M\models\varphi[\vec{x}]$ by definition of $\models$. $``\Rightarrow"$: By definition of $\models$, $M\models\psi[y,\vec{x}]$ for some $y\in M$. Then $\mathsf{sat}[M,\godel\psi]$ holds by induction assumption, so there is some $i<\omega$ with $\godel\psi\in g(i)$. Then by definition, $\mathsf{sat}[M,\godel\varphi]$ holds.
+}
+
+\section{Analysis of $\Def(x)$ and $v=L_\alpha$}
+
+\theo{
+\label{L_delta models ds Theorem}
+Let $\delta\in\on$ be a limit ordinal satisfying $\delta>\omega$. Then $L_\delta\models\ds$.
+}
+\proof{
+$L_\delta$ is transitive by Lemma \ref{Basic props of L Lemma}, and Extensionality and $\Pi_1$-Foundation are satisfied by transitivity and $\Pi_1$ downwards absoluteness. We show that $L_\delta$ satisfies conditions (iii)-(vii).
+(iii): Let $x,y\in L_\delta$. Find $\alpha<\delta$ such that $x,y\in L_\alpha$. Then
+\eq{
+\{x,y\}=\{z\in L_\alpha\mid L_\alpha\models z=x\lor z=y\}\in L_{\alpha+1}\subset L_\delta.
+}
+
+(iv): Let $x\in L_\delta$ and find $\alpha<\delta$ such that $x\in L_\alpha$. As $L_\alpha$ is transitive, we have $\bigcup x\subset L_\alpha$ and furthermore
+\eq{
+\bigcup x=\{z\in L_\alpha\mid L_\alpha\models(\exists u\in x)(z\in u)\}\in L_{\alpha+1}\subset L_\delta.
+}
+
+(v): $\omega\in L_\delta$ since $\delta>\omega$.
+
+(vi): Let $x\in L_\delta$, find $\alpha<\delta$ such that $x\in L_\alpha$. Since every finite subset of $L_\alpha$ is definable with parameters in $L_\alpha$ and thus belong to $L_{\alpha+1}$, we have that
+\eq{
+\mathcal{S}(x)=\{z\in L_{\alpha+1}\mid L_{\alpha+1}\models\mathsf{isFin}[z]\land(\forall y\in z)(y\in x)\}\in L_{\alpha+2}\subset L_\delta.
+}
+
+(vii): Let $R\subset L_\delta$ be $\Delta_0$-definable with parameters in $L_\delta$, witnessed by the $\Delta_0$ formula $\varphi(\vec{v})$ and parameters $\vec{a}\in L_\delta$. Let $u\in L_\delta$; we need to show that $R\cap u\in L_\delta$. Pick $\alpha<\delta$ such that $u,\vec{a}\in L_\alpha$. By transitivity $u\subset L_\alpha$, so
+\eq{
+R\cap u=\{x\mid x\in u\land x\in R\}=\{x\in L_\alpha\mid x\in u\land x\in R\}.
+}
+
+As $\varphi$ is $\Delta_0$, we have that $L_\delta\models\varphi[\vec{a}]\lr L_\alpha\models\varphi[\vec{a}]$, as $\vec{a}\in L_\alpha$. Thus
+\eq{
+R\cap u=\{x\in L_\alpha\mid L_\alpha\models x\in u\land\varphi[x,\vec{a}]\}\in L_{\alpha+1}\subset L_\delta.
+}
+}
+
+Notice that as $L_\delta$ for limit $\delta>\omega$ is a model of $\ds$, we have that every $\Delta_1^{\ds}$-formula is absolute for such $L_\delta$ by Lemma \ref{Rel Levy Abs Lemma}. We want to construct a formula expressing that $v=\Def(u)$. Ideally this should be $\Delta_1^{\ds}$ from which we could conclude $L_\delta$-absoluteness for limit $\delta>\omega$, but $\ds$ is simply too weak a theory to allow such a construction. Instead we will construct a $\Delta_1^{\zf}$ formula, and we will use the $\Delta_1^{\ds}$ results that we have proved so far (in conjunction with the above Theorem \ref{L_delta models ds Theorem}) to show that it actually \textit{is} the case that it is $L_\delta$-absolute for limit $\delta>\omega$. We start off with a first attempt.
+\eqq{
+\mathsf{almostDef}(v,u):\equiv&(\forall x\in v)(\exists\varphi)[\mathsf{isBForm}(\varphi,u)\land\mathsf{isFree}(\varphi,\{v_0\})\land x\subset u\land\\
+&(\forall z\in u)(z\in x\lr\exists\psi(\mathsf{sub}(\psi,\varphi,v_0,\dot z)\land\mathsf{almostSat}(u,\psi)))]\land\\
+&\forall\varphi[(\mathsf{isBForm}(\varphi,u)\land\mathsf{isFree}(\varphi,\{v_0\}))\to\\
+&(\exists x\in v)[x\subset u\land(\forall z\in u)(z\in x\lr\exists\psi(\mathsf{sub}(\psi,\varphi,v_0,\dot z)\land\mathsf{almostSat}(u,\psi)))]]
+}
+
+The formula is equivalent to $v=\Def(u)$, as can be easily seen. But it is clearly not $\Delta_1^{\zf}$, so we proceed as we have done before, by trying to bound all the quantifiers in the formula. The reason for using $\mathsf{almostSat}(u,\psi)$ over $\mathsf{sat}(u,\psi)$ was to make it easier to construct such a bound - as the two formulas are equivalent, the meaning remains the same. We would like to use the bound
+\eq{
+\Bound(u):={^{<\omega}}f(u)\cup{^{<\omega}}({^{<\omega}}f(u))\cup{^{<\omega}}\mathcal{S}(\{v_i\mid i<\omega\}),
+}
+
+where $f(u):=9\cup\{v_i\mid i<\omega\}\cup\{\bra{3,x}\mid x\in u\}$. But to be able to use this bound, we need to make sure that $u=\Bound(v)$ is $\Delta_1^{\zf}$. We start by constructing the formula $y={^{<\omega}} x$.
+\eq{
+y={^{<\omega}} x:\equiv&\exists f[\mathsf{isFct}(f)\land\dom f=\omega\land f(0)=\{\emptyset\}\land y=\bigcup\ran f\land\\
+&(\forall n<\omega)(\forall s\in f(n+1))(\exists t\in f(n))(\exists a\in x)(s=t\cup\{\bra{n,a}\})\land\\
+&(\forall n<\omega)(\forall s\in f(n))(\forall a\in x)(\exists t\in f(n+1))(t=s\cup\{\bra{n,a}\})]
+}
+
+\lemm{
+\label{seq Lemma}
+$y={^{<\omega}}x$ is $\Delta_1^{\zf}$ and $L_\delta$-absolute for limit $\delta>\omega$.
+}
+\proof{
+The potential trouble comes from the use of $\omega$. But by first appending the clause
+\eq{
+\exists w[\emptyset\in w\land\mathsf{on}(w)\land(\forall u\in w)\mathsf{isNat}(u)\land(\forall u\in w)(\exists v\in w)(u\in v)]
+}
+
+to the formula, and thereafter replacing each instance of $\omega$ with $w$, we arrive at a $\Sigma_1$ formula. By $\in$-recursion, we can construct the unique recursive function $f$ appearing in the formula $y={^{<\omega}}x$, which means that we have
+\eq{
+\zf\proves y={^{<\omega}}x\lr\forall z(z={^{<\omega}}x\to z=y),
+}
+
+so $y={^{<\omega}}x$ is $\Delta_1^{\zf}$. Now, to show that it is $L_\delta$-absolute we only need to show downwards absoluteness, as upwards absoluteness follows from the formula being $\Sigma_1$. This is to say that assuming $y={^{<\omega}}x$ for $x\in L_\delta$, we need to show that $y\in L_\delta$ and $f\in L_\delta$ as well, where $f$ is the recursive function defining $y$. Pick $\alpha<\delta$ such that $x\in L_\alpha$. For any $a\in x$ we have $\bra{n,a}=\{\{n\},\{n,a\}\}\in L_{\alpha+1}$ for all $n<\omega$, so every finite sequence from $x$ is in $L_{\alpha+2}$, making ${^{<\omega}}x\in L_{\alpha+3}\subset L_\delta$. Since we furthermore have that
+\eq{
+y={^{<\omega}}x\Lr(\exists n<\omega)(s\in {^{<n}}x),
+}
+
+then $L_\delta\models y={^{<\omega}}x$ as well, due to $z={^{<n}}x$ being absolute for $L_\delta$ cf. Theorem \ref{L_delta models ds Theorem} since it is $\Delta_1^{\ds}$ by Lemma \ref{isSeqSet Lemma}. For $f$, we have that
+\eq{
+f=\{\bra{s,n}\mid s={^nx}\land n<\omega\},
+}
+
+where it is clear that ${^nx}\in L_{\alpha+3}$, making $\bra{{^nx},n}\in L_{\alpha+5}$ for all $n<\omega$, concluding $f\in L_{\alpha+6}\subset L_\delta$. Note that $y={^nx}\Lr y=\{z\in{^{<n+1}x}\mid L_\delta\models\dom z=n\}$, so we again have that $L_\delta\models f=\{\bra{s,n}\mid s={^nx}\land n<\omega\}$ by Theorem \ref{L_delta models ds Theorem}, since ${^{<n}}x=y$ is $\Delta_1^{\ds}$ by Lemma \ref{isSeqSet Lemma}.
+}
+
+We also need the formula $y=\mathcal{S}(x)$, given by
+\eq{
+y=\mathcal{S}(x):\equiv\exists z(z={^{<\omega}}x\land y=\{\ran u\mid u\in z\}).
+}
+
+\lemm{
+$y=\mathcal{S}(x)$ is $\Delta_1^{\zf}$ and $L_\delta$-absolute for limit $\delta>\omega$.
+}
+\proof{
+It is clearly $\Sigma_1$ and like in Lemma \ref{seq Lemma} by $\in$-recursion we get $\zf\proves\forall x\exists ! y(y=\mathcal{S}(x))$, so it is $\Delta_1^{\zf}$. We showed in Theorem \ref{L_delta models ds Theorem} that $\mathcal{S}(x)\in L_\delta$ for $x\in L_\delta$, and by definition of $\ds$ and Theorem \ref{L_delta models ds Theorem} we have that $y=\mathcal{S}(x)\Lr L_\delta\models y=\mathcal{S}(x)$.
+}
+
+We can now write down the formula for $w=\Bound(u)$:
+\eq{
+w=\Bound(u):\equiv&\exists a\exists b\exists c\exists d\exists e\exists f[(\forall z\in d)\mathsf{isVar}(z)\land(\forall i<\omega)(v_i\in d)\land\\
+&(\forall z\in e)\mathsf{isBConst}(z,u)\land(\forall z\in u)(\bra{3,z}\in e)\land a={^{<\omega}}(9\cup d\cup e)\land\\
+&b={^{<\omega}}a\land f=\mathcal{S}(d)\land c={^{<\omega}}f\land w=a\cup b\cup c].
+}
+
+By letting $\mathsf{bAlmostDef}(w,v,u)$ be the formula gotten by replacing each unbounded quantifier with $w$, we can define $v=\Def(u)$ as
+\eq{
+v=\Def(u):\equiv\exists w[w=\Bound(u)\land\mathsf{bAlmostDef}(w,v,u)].
+}
+
+By the same procedure, \textit{mutatis mutandis}, as in the previous two lemmas, we achieve our first goal in this section.
+\lemm{
+\label{Def Lemma}
+$y=\Def(x)$ is $\Delta_1^{\zf}$ and $L_\delta$-absolute for limit $\delta>\omega$.
+}
+\proof{
+Clearly $y=\Def(x)$ is $\Sigma_1$. As $\Def(x)$ is furthermore unique as it is defined by $\in$-recursion, we have that
+\eq{
+\zf\proves y=\Def(x)\lr \forall z(z=\Def(x)\to z=y),
+}
+
+making $y=\Def(x)$ $\Delta_1^{\zf}$. Furthermore for $x\in L_\delta$ we can find $\alpha<\delta$ such that $x\in L_\alpha$, meaning that $\Def(x)\in L_{\alpha+2}$. As $\Def(x)$ consists of formulas absolute for $L_\delta$, $\delta>\omega$ ($\textsf{almostSat}$, $\textsf{isFree}$, $\textsf{sub}$ and so on), it will also be absolute for such $L_\delta$.
+}
+
+Now we continue towards defining the formula $v=L_\alpha$. We start by defining the formula $f=\{\bra{\gamma,L_\gamma}\mid\gamma\leq\alpha\}$, which is equivalent to the following.
+\eq{
+\mathsf{almostPred}(f,\alpha):\equiv&\mathsf{on}(\alpha)\land\mathsf{isFct}(f)\land\dom f=\alpha+1\land f(0)=\emptyset\land\\
+&(\forall\gamma\in\dom f)[((\mathsf{isLimit}(\gamma)\land\gamma>0)\to f(\gamma)=\bigcup\{f(\xi)\mid\xi<\gamma\})\land\\
+&(\mathsf{isSucc}(\gamma)\to\mathsf{almostDef}(f(\gamma),f(\gamma-1)))].
+}
+
+Again we did not use $v=\Def(u)$, as we want to bound this formula. In this case, the bound $\Bound(\bigcup\ran f)$ is sufficient, as only the function values are arguments in $\mathsf{almostDef}$; we thus in the same way as previously obtain the formula $\mathsf{bAlmostPred}(w,f,\alpha)$ and we define
+\eq{
+f=\{\bra{\gamma,L_\gamma}\mid\gamma\leq\alpha\}:\equiv\exists w[w=\Bound(\bigcup\ran f)\land\mathsf{bAlmostPred}(w,f,\alpha)].
+}
+
+\lemm{
+$f=\{\bra{\gamma,L_\gamma}\mid\gamma\leq\alpha\}$ and $L_\delta$-absolute for limit $\delta>\omega$.
+}
+\proof{
+By writing out $f(\gamma)=\bigcup\{f(\xi)\mid\xi<\gamma\}$ to
+\eq{
+(\forall x\in f(\gamma))(\exists\xi\in\gamma)(x\in f(\xi))\land(\forall\xi\in\gamma)(f(\xi)\subset f(\gamma)),
+}
+
+the formula is clearly seen to be $\Sigma_1$. Furthermore we have that
+\eq{
+\zf\proves(\forall\alpha\in\on)\exists f(f=\{\bra{\gamma,L_\gamma}\mid\gamma\leq\alpha\},
+}
+
+as we can construct it by $\in$-recursion. The second part of the lemma is trivial, as it can easily be shown that $\{\bra{\gamma,L_\gamma}\mid\gamma\leq\alpha\}\in L_{\alpha+4}$ for all $\alpha>\omega$ and it is built up from formulas which we have shown are $\Delta_1^{\ds}$ and hence absolute for $L_\delta$, $\delta>\omega$.
+}
+
+Now we arrive at the goal of this section: we define
+\eq{
+v=L_\alpha:\equiv\exists f[f=\{\bra{\gamma,L_\gamma}\mid\gamma\leq\alpha\}\land x=f(\alpha)],
+}
+
+and by essentially the same arguments as in the previous lemmas, we get the following.
+\qlemm{
+\label{v=L_gamma Lemma}
+$v=L_\alpha$ is $\Delta_1^{\zf}$, $\Sigma_1$ and $L_\delta$-absolute for limit $\delta>\omega$.
+}
+
+\section{Analysis of $<_L$}
+In this section we will show that $<_L$ is definable by a $\Delta_1$ formula as well as being $L_\delta$-absolute for limit $\delta>\omega$. We start off by analysing the formula $x=\godel{\varphi_n}$.
+
+\lemm{
+$x=\godel{\varphi_n}$ is $\Delta_1^{\zf}$ and $\Sigma_1$.
+}
+\proof{
+We start off by defining the lexicographic ordering $<_{\text{lex}}$ on the set $\{\godel{\varphi_n}\mid n<\omega\}$:
+\eq{
+\godel{\varphi_k}<_{\text{lex}}\godel{\varphi_n}:\equiv&\dom\godel{\varphi_k}<\dom\godel{\varphi_n}\lor(\exists m<\omega)(\forall l<n)(\godel{\varphi_k}(l)=\godel{\varphi_n}(l)\land\\
+&\godel{\varphi_k}(m)<_{\rank}\godel{\varphi_n}(m)),
+}
+
+which is seen to be $\Delta_1^{\zf}$ and $\Sigma_1$, as $\rank$ is $\Delta_1^{\zf}$- and $\Sigma_1$-definable cf. Lemma \ref{rank Lemma}. Now define
+\eq{
+x=\godel{\varphi_n}:\equiv&\mathsf{isBForm}(x,\emptyset)\land(\forall k<n)(\godel{\varphi_k}<_{\text{lex}} x)\land(\forall m>n)(x<_{\text{lex}}\godel{\varphi_m}),
+}
+
+which is then seen to be both $\Delta_1^{\zf}$ and $\Sigma_1$.
+}
+
+We now move on to defining the class functions $A$, $N$ and $P$, and in this regard we will use abbreviations such as $x=\{y\in z\mid\textsf{sat}(z,\godel{\varphi(\dot y)})\}$ for their obvious formal counterparts.
+
+\lemm{
+The following class functions $A:L\to\on$, $N:L\to\omega$, $P:L\to L$ are $\Delta_1^{\zf}$- and $\Sigma_1$-definable:
+\begin{itemize}
+\item $A(x):=\min\{\alpha\in\on\mid x\in L_{\alpha+1}\}$;
+\item $N(x):=\min\{n<\omega\mid x=\{y\in L_{A(x)}\mid(\exists\vec{t}\in L_{A(x)})(L_{A(x)}\models\varphi_n[y,t_1,\hdots, t_n])\}\}$;
+\item $P(x):=\{\bra{t_1,\hdots,t_n}\mid \vec{t}\in L_{A(x)}\land x=\{y\in L_{A(x)}\mid L_{A(x)}\models\varphi_{N(x)}[y,t_1,\hdots, t_n]\}\}$.
+\end{itemize}
+}
+\proof{
+We have that
+\eq{
+\alpha=A(x):\equiv\textsf{on}(\alpha)\land x\in L_{\alpha+1}\land(\forall\gamma<\alpha)(x\notin L_{\gamma+1}),
+}
+
+which is seen to be $\Delta_1^{\zf}$ and $\Sigma_1$ as well, due to $x=L_\alpha$ being both $\Delta_1^{\zf}$ and $\Sigma_1$, cf. Lemma \ref{v=L_gamma Lemma}. For $N$, we can define it as
+\eq{
+n=N(x):\equiv&\textsf{isNat}(n)\land x=\bigcup\{\{y\in L_{A(x)}\mid\textsf{sat}(L_{A(x)},\godel{\varphi_n(\dot y,\dot t_1,\hdots,\dot t_m)})\}\mid t_1,\hdots,t_m\in L_{A(x)}\}\land\\
+&(\forall k<n)(x\neq\bigcup\{\{y\in L_{A(x)}\mid\textsf{sat}(L_{A(x)},\godel{\varphi_k(\dot y,\dot t_1,\hdots,\dot t_m)})\}\mid t_1,\hdots,t_m\in L_{A(x)}\}),
+}
+
+which is $\Delta_1^{\zf}$ and $\Sigma_1$ as well ($\textsf{sat}$ is $\Delta_1^{\zf}$ and $\Sigma_1$ cf. Lemma \ref{sat Lemma}). Lastly we define $P$ as
+\eq{
+x=P(x):\equiv&(\forall y\in x)(\exists\vec{t}\in L_{A(x)})(y=\bra{t_1,\hdots,t_n}\land\\
+&x=\{z\in L_{A(x)}\mid\textsf{sat}(L_{A(x)},\godel{\varphi_{N(x)}(\dot z,\dot t_1,\hdots,\dot t_n)})\}\land\\
+&(\forall\vec{t}\in L_{A(x)})(x=\{z\in L_{A(x)}\mid\textsf{sat}(L_{A(x)},\godel{\varphi_{N(x)}(\dot z,\dot t_1,\hdots,t_n)})\}\\
+&\to\bra{t_1,\hdots,t_n}\in x),
+}
+
+which again is seen to be $\Delta_1^{\zf}$ and $\Sigma_1$.
+}
+
+\lemm{
+The global well-ordering on $L$, $<_L$, is $\Delta_1^{\zf}$- and $\Sigma_1$-definable.
+}
+\proof{
+ $<_0=\emptyset$ is clearly $\Delta_0$. For successor ordinals we have that
+\eq{
+x<_{\alpha+1}y:\equiv&A(x)\in A(y)\lor(A(x)=A(y)\land N(x)\in N(y))\lor\\
+&(A(x)=A(y)\land N(x)=N(y)\land\min_{<_{A(x)}^*}P(x)<_{A(x)}^*\min_{<_{A(x)}^*}P(y)),
+}
+
+which is $\Delta_1^{\zf}$ and $\Sigma_1$ if we can show that the ordering $<_\alpha^*$ is $\Delta_1^{\zf}$ and $\Sigma_1$, where $<_\alpha^*$ is the lexicographic ordering induced by $<_\alpha$ on the $n$-tuples $\bra{t_1,\hdots,t_n}$ with $t_1,\hdots,t_n\in L_\alpha$. But we have that
+\eq{
+\bra{t_1,\hdots,t_n}<_\alpha^*\bra{s_1,\hdots,s_m}:\equiv& n<m\lor(n=m\land(\exists k<n)(\forall l<k)(t_l=s_l)\land t_k<_\alpha s_k)\land \\
+&t_1,\hdots,t_n,s_1,\hdots,s_m\in L_\alpha),
+}
+
+which is clearly $\Delta_1^{\zf}$ and $\Sigma_1$. Thus $<_\alpha$ is $\Delta_1^{\zf}$ and $\Sigma_1$ for every $\alpha\in\on$, whence $<_L$ can be defined as
+\eq{
+x<_Ly:\equiv\exists\alpha(\mathsf{on}(\alpha)\land x<_\alpha y),
+}
+
+making it $\Sigma_1$. But as $<_\alpha$ is clearly a linear order by construction for every $\alpha\in\on$, we also have that
+\eq{
+x<_Ly\equiv\forall\alpha(\mathsf{on}(\alpha)\to\lnot(y<_\alpha x\lor y=x)),
+}
+
+so it is $\Pi_1^{\zf}$ as well, making it $\Delta_1^{\zf}$.
+}
+
+\lemm{
+\label{<_L is L_delta definable Lemma}
+The formula defining $<_L$ is $L_\delta$-absolute for limit $\delta>\omega$.
+}
+\proof{
+Let $x,y\in L_\delta$. Then $L_\delta\models x<_Ly\Rightarrow L\models x<_Ly$ by upwards absoluteness since $<_L$ is $\Sigma_1$; assume thus $L\models x<_Ly$. We need to show that $L_\delta\models x<_Ly$. Set $\beta\in\on$ to be the least such that $x,y\in L_\beta$. Then $L\models x<_\beta y$, since the $<_\alpha$'s have to agree by construction. By minimality of $\beta$ we have that $<_\beta\in L_{\beta+3}\subset L_\delta$. Furthermore $<_\beta$ is $L_\delta$-absolute for limit $\delta>\omega$ by the previous absoluteness results in this appendix and the definition of the formula defining $<_\beta$. Thus $(\exists\beta\in L_\delta)(x<_\beta y)$ and $L_\delta\models\exists\beta(x<_\beta y)$, which by definition means that $L_\delta\models x<_Ly$.
+}

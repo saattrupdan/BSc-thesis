@@ -1,0 +1,56 @@
+\begin{thebibliography}{Wan83}
+
+\bibitem[CK12]{ChangKeisler}
+C.~C. Chang and H.~J Keisler.
+\newblock {\em Model Theory}.
+\newblock Dover Publications, third edition, 2012.
+
+\bibitem[Dev84]{Devlin}
+Keith~J. Devlin.
+\newblock {\em Constructibility}.
+\newblock Springer-Verlag, 1984.
+
+\bibitem[Hil83]{Hilbert}
+David Hilbert.
+\newblock {\em On the Infinite}.
+\newblock Philosophy of Mathematics: selected readings. Cambridge University
+  Press, second edition, 1983.
+
+\bibitem[Jec03]{Jech}
+Thomas Jech.
+\newblock {\em Set Theory}.
+\newblock Springer-Verlag, third edition, 2003.
+
+\bibitem[Kan09]{Kanamori}
+Akihiro Kanamori.
+\newblock {\em The Higher Infinite}.
+\newblock Springer-Verlag, second edition, 2009.
+
+\bibitem[KM78]{KanamoriMagidor}
+K.~Kanamori and M.~Magidor.
+\newblock The evolution of large cardinal axioms in set theory.
+\newblock {\em Higher set theory}, 669:99--275, 1978.
+
+\bibitem[Mar02]{Marker}
+David Marker.
+\newblock {\em Model Theory: An Introduction}.
+\newblock Springer-Verlag, 2002.
+
+\bibitem[Mat04]{Mathias}
+A.~R.~D. Mathias.
+\newblock Weak systems of {G}andy, {J}ensen and {D}evlin.
+\newblock {\em Set Theory, Centre de Recerca Matemàtica, Barcelona}, pages
+  149--224, 2003-2004.
+
+\bibitem[Sta87]{Stanley}
+Lee~J. Stanley.
+\newblock Review: Constructibility by {K}eith {D}evlin.
+\newblock {\em The Journal of Symbolic Logic}, 52(3):864--867, 1987.
+
+\bibitem[Wan83]{Wang}
+Hao Wang.
+\newblock {\em From Mathematics to Philosophy}.
+\newblock Philosophy of Mathematics: selected readings. Cambridge University
+  Press, second edition, 1983.
+
+\end{thebibliography}

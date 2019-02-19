@@ -1,0 +1,220 @@
+% Document definition
+\documentclass[a4paper,11pt,openany]{book}
+
+% Packages
+	% General packages
+	\usepackage[utf8x]{inputenc}								% Danish language support
+	\usepackage{sectsty}											% Makes it possible to manipulate fonts
+	\usepackage[light]{antpolt}									% Provides awesome font
+	\usepackage{hyperref}											% Provides \url and clickable links in the pdf
+	\usepackage{cleveref}											% Provides \cref and \Cref for including text before references
+	\usepackage{graphicx}										% Provides the \includegraphics[]{} command
+	\usepackage{comment}										% Provides comment-environment for multi-line commenting
+	\usepackage{twoopt}											% Allows adding commands with two optional arguments
+	\usepackage{natbib}											% Provides \citep for bibliography referencing
+	\usepackage{setspace}											% Provides onehalfspacing environment
+	\usepackage{enumitem}										% Provides control of spacing in lists
+	\usepackage{amsbsy}											% Provides \boldsymbol command
+	\usepackage{lastpage}											% Provides LastPage variable
+	
+	% Math packages
+	\usepackage{amsmath, amssymb, amsfonts}		% Math symbolic jargon
+	\usepackage{amsthm}											% Theorem environment
+	\usepackage{mathrsfs}										% Provides the \mathscr{} curly font
+	\usepackage{stmaryrd}										% Provides the \lightning symbol, among others
+	\usepackage{proof}												% Natural deduction with \infer
+	\usepackage{tikz}												% Awesome diagrams
+		\usetikzlibrary{matrix,arrows}								% Matrices and arrows for style points
+		\tikzset{middlearrow/.style={								% Middle arrows for quotient spaces
+        	decoration={markings, mark=at
+        		position 0.5 with {\arrow{#1}}},
+        	postaction={decorate}
+    	}}
+		
+	% Page layout
+	\usepackage{fullpage}											% Reduces margins
+	\usepackage{wallpaper}										% Adds the \ThisLRCornerWallPaper command
+	\usepackage{fancyhdr}										% Provides headers
+	\usepackage[T1]{fontenc}									% Used for vertical line in chapter headings
+	\usepackage{titlesec, blindtext, color}					% Chapter heading setup
+	\usepackage{changepage}									% Provides adjustwidth environment for claims
+
+% Font size
+\sectionfont{\large}
+\chapterfont{\LARGE}
+
+% Titlesec setup
+\definecolor{gray75}{gray}{0.75}
+\titleformat{\chapter}[hang]{\huge\scshape}{\thechapter\hspace{20pt}\textcolor{gray75}{|}\hspace{20pt}}{0pt}{\huge\scshape}
+\titlespacing*{\chapter}{0pt}{0pt}{40pt}
+\titleformat{\section}[hang]{\Large\scshape}{\thesection}{2ex}{}[]
+
+% Prevent widows and orphans
+\widowpenalty = 10000
+\clubpenalty = 10000
+
+% List spacing
+\setlist{nolistsep}
+
+% No indent
+\setlength{\parindent}{0in}
+
+% Theorem environment
+\newtheoremstyle{scthmstyle}		% Name
+	{15pt}										% Space above
+	{15pt}										% Space below
+	{\itshape}									% Body font
+	{}												% Indent amount
+	{\scshape\bfseries}					% Theorem head font
+	{.}												% Punctuation after theorem head
+	{.5em}										% Space after theorem head
+	{}												% Theorem head spec (can be left empty, meaning ënormalí)
+
+\newtheoremstyle{scdefstyle} 		% Name
+	{20pt}										% Space above
+	{20pt}										% Space below
+	{\normalfont}							% Body font
+	{}												% Indent amount
+	{\scshape\bfseries}					% Theorem head font
+	{.}												% Punctuation after theorem head
+	{.5em}										% Space after theorem head
+	{}												% Theorem head spec (can be left empty, meaning ënormalí)
+
+\newtheoremstyle{scremstyle} 	% Name
+	{15pt}										% Space above
+	{15pt}										% Space below
+	{\normalfont}							% Body font
+	{}												% Indent amount
+	{\scshape\bfseries}					% Theorem head font
+	{.}												% Punctuation after theorem head
+	{.5em}										% Space after theorem head
+	{}												% Theorem head spec (can be left empty, meaning ënormalí)
+
+\newtheoremstyle{scclaistyle} 		% Name
+	{15pt}										% Space above
+	{15pt}										% Space below
+	{\normalfont}							% Body font
+	{0.5cm}										% Indent amount
+	{\scshape\bfseries}					% Theorem head font
+	{.}												% Punctuation after theorem head
+	{.5em}										% Space after theorem head
+	{}												% Theorem head spec (can be left empty, meaning ënormalí)
+	
+\theoremstyle{scthmstyle}
+\newtheorem{theorem}[subsection]{Theorem}
+\newtheorem{proposition}[subsection]{Proposition}
+\newtheorem{lemma}[subsection]{Lemma}
+\newtheorem{corollary}[subsection]{Corollary}
+\newtheorem{conjecture}[subsection]{Conjecture}
+\theoremstyle{scdefstyle}
+\newtheorem{definition}[subsection]{Definition}
+\newtheorem{example}[subsection]{Example}
+\theoremstyle{scremstyle}
+\newtheorem{remark}[subsection]{Remark}
+\theoremstyle{scclaistyle}
+\newtheorem{claim}[subsubsection]{Claim}
+
+% User-defined commands
+	% General things	
+	\newcommand{\eq}[1]{\begin{align*} #1 \end{align*}}
+	\newcommand{\eqq}[1]{\begin{align*} #1\\ \end{align*}}
+	\newcommand{\pic}[2]{\begin{center}\includegraphics[scale=#2]{#1.jpg}\\\end{center}}
+	\renewcommand{\labelenumi}{(\roman{enumi}) }	% Using roman numerals in lists
+	\renewcommand{\b}[1]{{\bf #1}}
+	\newcommand{\abstract}[1]{\begin{quote}{\footnotesize\textsc{Abstract.} #1}\\\end{quote}}
+	
+	% Theorem environments
+	\newcommandtwoopt{\theo}[3][][]{\begin{theorem}[#1]\label[theorem]{#2}#3\end{theorem}}
+	\newcommandtwoopt{\prop}[3][][]{\begin{proposition}[#1]\label[proposition]{#2}#3\end{proposition}}
+	\newcommandtwoopt{\lemm}[3][][]{\begin{lemma}[#1]\label[lemma]{#2}#3\end{lemma}}
+	\newcommandtwoopt{\coro}[3][][]{\begin{corollary}[#1]\label[corollary]{#2}#3\end{corollary}}
+	\newcommandtwoopt{\conj}[3][][]{\begin{conjecture}[#1]\label[conjecture]{#2}#3\end{conjecture}}
+	\newcommandtwoopt{\defi}[3][][]{\begin{definition}[#1]\label[definition]{#2}#3\end{definition}}
+	\newcommandtwoopt{\exam}[3][][]{\begin{example}[#1]\label[example]{#2}#3\end{example}}
+	\newcommandtwoopt{\rema}[3][][]{\begin{remark}[#1]\label[remark]{#2}#3\end{remark}}
+	
+	\newcommandtwoopt{\qtheo}[3][][]{\begin{theorem}[#1]\label[theorem]{#2}#3$\qed$\end{theorem}}
+	\newcommandtwoopt{\qprop}[3][][]{\begin{proposition}[#1]\label[proposition]{#2}#3$\qed$\end{proposition}}
+	\newcommandtwoopt{\qlemm}[3][][]{\begin{lemma}[#1]\label[lemma]{#2}#3$\qed$\end{lemma}}
+	\newcommandtwoopt{\qcoro}[3][][]{\begin{corollary}[#1]\label[corollary]{#2}#3$\qed$\end{corollary}}
+	
+	\newcommand{\proofretard}{\textsc{Proof.} }
+	\renewcommand{\proof}[1]{\textsc{Proof.} #1$\qed$\\}
+	\newcommand{\clai}[3][]{\begin{claim}[#1]#2\end{claim}}
+	\newcommand{\cproof}[1]{\begin{adjustwidth}{0.5cm}{0pt}\textsc{Proof of claim.} #1$\hfill\diamondsuit$\\\end{adjustwidth}}
+	\renewcommand{\qed}{\hfill\blacksquare}
+	\newcommand{\qedeq}{\tag*{$\blacksquare$}}
+	
+	% Declared operators
+	\DeclareMathOperator{\sgn}{sgn}
+	\DeclareMathOperator{\lcm}{lcm}
+	\DeclareMathOperator{\ran}{ran}
+	\DeclareMathOperator{\cod}{cod}
+	\DeclareMathOperator{\dom}{dom}	
+	\DeclareMathOperator{\cond}{cond}
+	\DeclareMathOperator{\rank}{rank}
+	\DeclareMathOperator{\xor}{\oplus}
+	\DeclareMathOperator{\nor}{\downarrow}
+	\DeclareMathOperator{\nand}{\uparrow}
+	\DeclareMathOperator{\biglor}{\bigvee}
+	\DeclareMathOperator{\bigland}{\bigwedge}
+	\DeclareMathOperator{\Lr}{\Leftrightarrow}
+	\DeclareMathOperator{\lr}{\leftrightarrow}
+	\DeclareMathOperator{\ip}{\perp\!\!\!\perp}
+	\DeclareMathOperator{\psubset}{\subsetneq}
+	\DeclareMathOperator{\psupset}{\supsetneq}
+	\DeclareMathOperator{\elsub}{\preceq}
+	\DeclareMathOperator{\elsup}{\succeq}
+	\DeclareMathOperator{\pelsub}{\prec}
+	\DeclareMathOperator{\pelsup}{\succ}
+	\DeclareMathOperator{\nmodels}{\nvDash}
+	\DeclareMathOperator{\contr}{\lightning}
+	\DeclareMathOperator{\nsubset}{\nsubseteq}
+	\DeclareMathOperator{\nsupset}{\nsupseteq}
+	\DeclareMathOperator{\proves}{\vdash}
+	\DeclareMathOperator{\nproves}{\nvdash}
+	\DeclareMathOperator{\biproves}{\dashv\vdash}
+	\DeclareMathOperator{\gal}{Gal}
+	\DeclareMathOperator{\ac}{AC}
+	\DeclareMathOperator{\zf}{ZF}
+	\DeclareMathOperator{\zfc}{ZFC}
+	\DeclareMathOperator{\gch}{GCH}
+	\DeclareMathOperator{\ch}{CH}
+	\DeclareMathOperator{\on}{On}
+	\DeclareMathOperator{\con}{Con}
+	\DeclareMathOperator{\cf}{cf}
+	\DeclareMathOperator{\im}{Im}
+	\DeclareMathOperator{\sh}{SH}
+	\DeclareMathOperator{\kh}{KH}
+	\DeclareMathOperator{\restr}{\upharpoonright}
+	\DeclareMathOperator{\Def}{Def}
+	\DeclareMathOperator{\id}{id}
+	\DeclareMathOperator{\ot}{ot}
+	\DeclareMathOperator{\fst}{fst}
+	\DeclareMathOperator{\snd}{snd}
+	\DeclareMathOperator{\fin}{Fin}
+	\DeclareMathOperator{\ds}{DS}
+	\DeclareMathOperator{\Bound}{Bound}
+	\DeclareMathOperator{\height}{ht}
+	\DeclareMathOperator{\ult}{Ult}
+	\DeclareMathOperator{\crit}{crit}
+	\DeclareMathOperator{\bSigma}{\boldsymbol\Sigma}
+	\DeclareMathOperator{\bPi}{\boldsymbol\Pi}
+	\DeclareMathOperator{\bDelta}{\boldsymbol\Delta}
+	
+	% Redeclared operators
+	\renewcommand{\subset}{\subseteq}
+	\renewcommand{\supset}{\supseteq}
+	\renewcommand{\char}{\text{char}}
+	
+	% Convenient shortcuts
+	\newcommand{\vto}[2]{\begin{pmatrix}#1\\#2\end{pmatrix}}
+	\newcommand{\vtre}[3]{\begin{pmatrix}#1\\#2\\#3\end{pmatrix}}
+	\newcommand{\mto}[4]{\begin{pmatrix} #1 & #2 \\ #3 & #4\end{pmatrix}}
+	\newcommand{\mtre}[9]{\begin{pmatrix} #1 & #2 & #3 \\ #4 & #5 & #6 \\ #7 & #8 & #9\end{pmatrix}}
+	\newcommand{\bra}[1]{\langle #1\rangle}
+	\newcommand{\norm}[1]{\left|\left|#1\right|\right|}
+	\newcommand{\godel}[1]{\ulcorner #1 \urcorner}
+	\newcommand{\down}[1]{{\downarrow #1}}
+	\newcommand{\up}[1]{{\uparrow #1}}
+	\newcommand{\los}{{\fontfamily{arial}\selectfont \L}o\' s}

@@ -1,0 +1,419 @@
+\chapter{An alternative universe}
+\thispagestyle{fancy}
+
+We would like to construct a transitive class model of $\zfc$ consisting of only the \textit{bare minimum} of sets, only allowing sets which have to be there by necessity of $\zfc$. So at the very least, for every $X$ in the universe and $\varphi$ a formula, our new universe has to contain the set
+\eq{
+\{x\in X\mid\varphi(x)\}
+}
+
+to satisfy Comprehension. The problem arises when we want to write up this intuitive idea explicitly. An approach to constructing such a minimal universe would be to construct it analogously to $V$, but with a restrictive power set operation instead, which only includes the definable subsets. We thus want to define the \textit{definable power set} $\Def(X)$ of a set $X$ as
+\eq{
+\{x\mid\exists\varphi(\exists t_1\in X)\cdots(\exists t_n\in X)(\forall y\in X)(y\in x\lr X\models\varphi[y,t_1,\hdots,t_n])\}
+}
+
+but as $\varphi$ is not a set, the quantifier $\exists\varphi$ does not make any sense. Our first goal is then to formally define our universe to model this intuitive idea.
+
+\section{Construction of $L$}
+We define a new language $\mathscr L$, which is to be the \textit{internal} variant of our language of set theory. The symbols and formulas of $\mathscr L$ will then be \textit{sets}, making it possible to state propositions in the language of set theory about the nature of the formulas of $\mathscr L$. We start off by defining our logical symbols. First of all, $\mathscr L$ is really going to be the internal version of an \textit{extended} language of set theory $\mathcal{L}_\in^+:=\{\in\}\cup\{\dot x\mid x=x\}$, where we also have constant symbols $\dot x$ for every set $x$. We encode parentheses $``("$, $``)"$, variables $v_n$ for all $n\geq 0$, constant symbols $\dot x$ (for the corresponding set $x$), the relations $\in$ and $=$, as well as the adequate set $\{\land,\lnot,\exists\}$ of logical connectives; the rest of the logical symbols such as $\lor, \to, \forall$ will be counted as abbreviations. Formally, our encoding will be a class function $\godel{\cdot}:\mathcal{L}_\in^+\to V$, defined as in Figure \ref{Figure 1}.
+
+\begin{figure}[h]
+\label{Figure 1}
+\centering
+\begin{tabular}{| c | c |}
+	\hline
+	Symbol & Set\\	\hline
+	( & 0\\
+	) & 1\\
+	$v_n$ & $\bra{2,n}$\\
+	$\dot x$ & $\bra{3,x}$\\
+	$\in$ & 4\\
+	$=$ & 5\\
+	$\land$ & 6\\
+	$\lnot$ & 7\\
+	$\exists$ & 8\\\hline
+\end{tabular}
+\caption{Encoding of symbols in $\mathscr L$}
+\end{figure}
+
+We define the formulas in $\mathscr L$ to be \textit{sequences} of symbols. An atomic formula such as $(v_0\in v_1)$ would thus be encoded as the sequence $04\bra{2,0}\bra{2,1}1$. For ease of notation, set $\mathscr L_X$ to be $\mathscr L$ with only constant symbols from the set $X$. Note that $\mathscr L$ is a proper class and $\mathscr L_X$ is a set for all $X$.
+
+\defi[Gödel encoding symbol]{
+For every formula $\varphi$, denote by $\godel\varphi$ the corresponding encoded formula in $\mathscr L$; i.e. $\godel\varphi$ is a set.
+}
+
+We are still not set for defining our universe though; we now lack an internal \textit{uniform} notion of satisfaction, corresponding to the metamathematical $\models$, where uniformity in this context means that it should be independent of the particular choice of formula; the same satisfaction notion should work in all cases. This is worked out in detail in Appendix \ref{apxA}, resulting in the $L$-absolute formula $\mathsf{sat}(M,\godel{\varphi(\dot x_1,\hdots,\dot x_n)})$, which expresses that $\godel{\varphi(\dot x_1,\hdots,\dot x_n)}\in\mathscr L_M$ encodes a formula $\varphi(\vec{v})$ and $\varphi[\vec{x}]$ is true in $M$. We would thus like $\mathsf{sat}$ to correspond to our metamathematical satisfaction notion $\models$, and indeed, we have the following lemma.
+
+\lemm{
+Let $\varphi(v_1,\hdots,v_n)$ be a formula. Then
+\eq{
+\zf\proves\forall M(\forall x_1\in M)\cdots(\forall x_n\in M)(M\models\varphi[x_1,\hdots,x_n]\lr \mathsf{sat}[M,\godel{\varphi(\dot x_1,\hdots\dot x_n)}]).
+}
+}
+\proof{
+See Lemma \ref{sat is models Lemma} in the appendix.
+}
+
+As this lemma implies that $\{x\in X\mid X\models\varphi[x]\}=\{x\in X\mid\mathsf{sat}[X,\godel{\varphi(\dot x)}]\}$, we will often denote such a set by the former. We are now well-equipped to define our universe properly.
+
+\defi[Definable power set]{
+For any set $X$, define the \textit{definable power set} $\Def(X)$ as
+\eq{
+\Def(X):=\{x\in\mathcal{P}(X)\mid(\exists\godel\varphi\in\mathscr L_X)(\exists\vec{p}\in X)\mathsf{sat}[X,\godel{\varphi(\dot x,\dot p_1,\hdots,\dot p_n)}]\}
+}
+}
+
+\defi[Constructible universe]{
+Define by $\in$-recursion on $\on$ the sets $L_\alpha :=\bigcup_{\gamma<\alpha}\Def(L_\gamma)$ (i.e.\ $L_0:=\emptyset$, $L_{\alpha+1}=\Def(L_\alpha)$ and $L_\delta=\bigcup_{\gamma<\delta}L_\gamma$ for limit $\delta\in\on$). Then the \textit{constructible universe} is given as $L:=\bigcup_{\alpha\in\on}L_\alpha$.
+}
+
+We start off by showing some basic properties of $L$.
+
+\lemm{
+\label{Basic props of L Lemma}
+Let $\alpha,\beta\in\on$. Then:
+\begin{enumerate}
+\item $\alpha\leq\beta\Rightarrow L_\alpha\subset L_\beta$;
+\item $L_\alpha$ is transitive (and $L$ is thus transitive as well);
+\item $L_\alpha\subset V_\alpha$;
+\item $\alpha\leq\omega\Rightarrow L_\alpha=V_\alpha$;
+\item $\alpha<\beta\Rightarrow \alpha,L_\alpha\in L_\beta$;
+\item $L\cap\alpha=L_\alpha\cap\on=\alpha$ (and hence $\on\subset L$);
+\item $\alpha\geq\omega\Rightarrow |L_\alpha|=|\alpha|$.
+\end{enumerate}
+}
+\proof{
+(i) and (ii): Transfinite induction on $\beta$. $``\beta=0"$: trivial. $``\beta$ limit$"$: As (i) holds for all $\gamma<\beta$ \textit{ex hypothesi} and any $\gamma<\beta$ will belong to some $L_\xi$ for $\xi<\beta$, (i) follows by the definition of union; (ii) arises from the fact that a union of transitive sets is transitive. $``\beta=\gamma+1"$: For (i), it suffices to show that $L_\gamma\subset L_\beta$. Let $x\in L_\gamma$. Then by induction hypothesis of (ii), $x\subset L_\gamma$. Thus $x=\{y\in L_\gamma\mid L_\gamma\models y\in x\}$ by $\Delta_0$ absoluteness of $y\in x$ for $L_\gamma$, so $x\in\Def(L_\gamma)=L_\beta$. For (ii), let $x\in y\in L_\beta$. Then $y\subset L_\gamma$, as $\Def(L_\gamma)\subset\mathcal{P}(L_\gamma)$. Thus $x\in L_\gamma$ and hence $x\in L_\beta$, as we just proved $L_\gamma\subset L_\beta$.\\
+
+(iii): Straightforward transfinite induction on $\alpha$. (iv): Induction on $\alpha$. The induction start is trivial, so let $\alpha<\omega$ and assume that $L_\alpha=V_\alpha$. As $L_{\alpha+1}\subset V_{\alpha+1}$ by (iii), it suffices to show that $V_{\alpha+1}\subset L_{\alpha+1}$. Let $x\in V_{\alpha+1}$, so $x\subset V_\alpha=L_\alpha$ and as $V_\alpha$ is finite, we have that $x=\{a_1,\hdots,a_n\}$ for $a_1,\hdots,a_n\in L_\alpha$, and hence by $\Delta_0$ absoluteness
+\eq{
+x=\{y\in L_\alpha\mid L_\alpha\models y=a_1\lor\hdots\lor y=a_n\}\in\Def(L_\alpha)=L_{\alpha+1}.
+}
+
+Thus we also have that $L_\omega=\bigcup_{\alpha<\omega}L_\alpha=\bigcup_{\alpha<\omega}V_\alpha=V_\omega$.\\
+
+(v): By (i) it is sufficient to show that $\alpha, L_\alpha\in L_{\alpha+1}$. Firstly we have that
+\eq{
+L_\alpha=\{x\in L_\alpha\mid L_\alpha\models x =  x\}\in\Def(L_\alpha)=L_{\alpha+1},
+}
+
+so it remains to show that $\alpha\in L_{\alpha+1}$, which we will prove by transfinite induction on $\alpha$. Assume that $\gamma\in L_{\gamma+1}$ for all $\gamma<\alpha$. As $L_{\gamma+1}\subset L_\alpha$ by (i), we have that $\alpha\subset L_\alpha$. As $\alpha\notin L_\alpha$ (an easy transfinite induction), we have by (ii) that $\alpha=L_\alpha\cap\on$. But since $\mathsf{on}(v_0)$ is $\Delta_0$, it is absolute for $L_\alpha$:
+\eq{
+\alpha=\{x\in L_\alpha\mid L_\alpha\models\mathsf{on}[x]\}\in\Def(L_\alpha)=L_{\alpha+1}.
+}
+
+(vi): We proved in (v) that $L_\alpha\cap\on=\alpha$. Then $L\cap\alpha=L\cap (L_\alpha\cap\on)=L_\alpha\cap\on=\alpha$. (vii): (vi) entails that $|\alpha|=|L_\alpha\cap\on|\leq|L_\alpha|$ for all $\alpha\in\on$. We prove by transfinite induction on $\alpha\geq\omega$ that $|L_\alpha|\leq|\alpha|$. $``\alpha=\omega"$: a countable union of finite sets is countable. $``\alpha=\beta+1"$: Assume $|L_\beta|\leq|\beta|$. Since $|\mathscr L_{L_\beta}|=\aleph_0+|L_\beta|=|L_\beta|$, we have that
+\eq{
+|L_{\beta+1}|=|\Def(L_\beta)|=|L_\beta|\leq|\beta|=|\beta+1|.
+}
+
+$``\alpha$ limit'': Assume $|L_\gamma|\leq|\gamma|$ for all $\gamma<\alpha$. Then we have that
+\eq{
+|L_\alpha|=\left|\bigcup_{\gamma<\alpha}L_\gamma\right|\leq\sum_{\gamma<\alpha}|L_\gamma|\leq\sum_{\gamma<\alpha}|\alpha|=|\alpha|\cdot|\alpha|=|\alpha|,
+}
+
+so the theorem is proved.
+}
+
+$L$ also satisfies a reflection principle: truths in the universe are always reflected down to some limit stage in the hierarchy.
+
+\theo[Reflection Theorem]{
+\label{Reflection Theorem}
+Let $\varphi(\vec{v})$ be a formula. Then
+\eq{
+\zf\proves(\forall\alpha\in\on)(\exists\delta>\alpha)(\mathsf{isLimit}(\delta)\land(\forall\vec{x}\in L_\delta)(\varphi^L[\vec{x}]\lr\varphi^{L_\delta}[\vec{x}])).
+}
+}
+\proof{
+Let $\alpha\in\on$ and $\varphi(\vec{v})$ a formula. We will first find a suitable $\delta>\alpha$; let $\varphi_0(\vec{v}_0),\hdots,\varphi_n(\vec{v}_n)$ be such that $\varphi_n$ is $\varphi$, $\varphi_0$ is atomic, and $\varphi_{i+1}(\vec{v}_{i+1})$ is obtained from $\varphi_i(\vec{v}_i)$ by means of a single logical operation, for all $i\leq n$ (thus the $\varphi_i$'s consist of $\varphi$'s ``logical parts''). Now construct the class functions $f_i:L\to\on$ for $i\leq n$ as follows:
+\begin{itemize}
+\item If $\varphi_i(\vec{v}_i)$ is atomic or of the form $\varphi_j(\vec{v}_j)\land\varphi_k(\vec{v}_k)$ or $\lnot\varphi_j(\vec{v}_j)$ for $j,k<i$, then set $f_i(\vec{x}_i):=0$;
+\item If $\varphi_i(\vec{v}_i)$ is of the form $\exists y\varphi_j(y,\vec{v}_i)$ for $j<i$, then set
+\eq{
+f_i(\vec{x}_i):=\min\{\alpha\in\on\mid (\exists y\in L)\varphi_j^L[y, x_1,\hdots, x_n]\to(\exists y\in L_\alpha)\varphi_j^L[y, x_1,\hdots, x_n]\}.
+}
+\end{itemize}
+
+\clai{
+There exists a limit ordinal $\delta>\alpha$ such that $(\forall i\leq n)(\forall\vec{x}_i\in L_\delta)(f_i(\vec{x}_i)<\delta)$.
+}
+
+\cproof{
+Define the function $G:\omega\to\on$ recursively as follows. Set $G(0):=\alpha+1$. For $k<\omega$, let $G(k+1)$ be a limit ordinal satisfying that $(\forall x\in L_{G(k)})(\forall i\leq n)(f_i(\vec{x}_i)<G(k+1))$, which exists by Replacement. Finally define $\delta:=\bigcup_{n<\omega}G(n)$, which is clearly a limit ordinal with the wanted properties.
+}
+
+Now given our $\delta$, we prove by induction that $\varphi_i^L[\vec{x}_i]\lr\varphi_i^{L_\delta}[\vec{x}_i]$ for every $i\leq n$ and $\vec{x}_i\in L_\delta$. The atomic, conjunction and negation step are trivial, so suppose $\varphi_i(\vec{v}_i)$ is $\exists y\varphi_j(y,\vec{v}_i)$ with $j<i$. Let $\vec{x}_i\in L_\delta$. We show each implication separately.\\
+
+``$\Rightarrow$": Assume $\varphi_i^L[\vec{x}_i]$, meaning $(\exists y\in L)\varphi_j^L[y,\vec{x}_i]$. Then by construction of $\delta$ we have $(\exists y\in L_\delta)\varphi_j^L[y,\vec{x}_i]$. But now by induction we have $\varphi_j^{L_\delta}[y,\vec{x}_i]$, so $\varphi_i^{L_\delta}[\vec{x}_i]$.
+
+``$\Leftarrow$": Assume $\varphi_i^{L_\delta}[\vec{x}_i]$, meaning $(\exists y\in L_\delta)\varphi_j^{L_\delta}[y,\vec{x}_i]$. By induction we have $(\exists y\in L_\delta)\varphi_j^L[y,\vec{x}_i]$, so in particular $(\exists y\in L)\varphi_j^L[y,\vec{x}_i]$, which is to say that $\varphi_i^L[\vec{x}_i]$.
+}
+
+\section{$L$ as an inner model of $\zf$}
+\defi[Inner model]{
+An \textit{inner model} $M$ of a theory $T$ is a transitive class containing all the ordinals and which satisfies $\zf\proves\sigma^M$ for every sentence $\sigma$ in the theory $T$.
+}
+
+We will often say $M$ is an inner model to mean an inner model of $\zf$.
+
+\theo{
+\label{L satisfies ZF Theorem}
+$\zf\proves\sigma^L$ for every axiom $\sigma$ of $\zf$.
+}
+\proof{
+\textit{Extensionality}: Extensionality is $\Pi_1$ and thus downwards absolute for transitive classes by Lemma \ref{Levy Abs Lemma}.\\
+
+\textit{Union}: Let $x\in L$, i.e. $x\in L_\alpha$ for some $\alpha\in\on$. Define $y:=\bigcup x$. Then $y\subset L_\alpha$ as $L_\alpha$ is transitive. By Union in $V$ we have that $\forall z(z\in y\lr(\exists w\in x)(z\in w))$, which is $\Pi_1$, so it holds in $L_\alpha$ as well. We thus have that 
+\eqq{
+y=\{z\in L_\alpha\mid L_\alpha\models(\exists w\in x)(z\in w)\}\in\Def(L_\alpha)=L_{\alpha+1}\subset L.
+}
+
+\textit{Infinity}: Follows from $\omega\in L_{\omega+1}\subset L$ by Lemma \ref{Basic props of L Lemma}(v)\\
+
+\textit{Power Set}: Let $x\in L$. We have to construct $y\in L$, satisfying $(\forall z\in L)(z\in y\lr z\subset x)$. Set $y:=\{z\in\mathcal{P}(x)\mid z\in L\}$ by using Power Set and Comprehension in $V$; it thus remains to show that $y\in L$. Define $f(z)$ to be the least $\alpha\in\on$ so $z\in L_\alpha$, and use Replacement to find $\beta\in\on$ greater than all $f(z)$ for $z\in y$. Then clearly $y\subset L_\beta$, meaning that
+\eqq{
+y=\{z\in L_\beta\mid L_\beta\models z\subset x\}\in\Def(L_\beta)=L_{\beta+1}\subset L.
+}
+
+\textit{Foundation}: Foundation is $\Pi_1$ and therefore downwards absolute for transitive classes by Lemma \ref{Levy Abs Lemma}.\\
+
+\textit{Comprehension}: Let $\varphi(v_0,\hdots,v_n)$ be some formula, and $x,a_1,\hdots,a_n\in L$. We are required to construct some $y\in L$ satisfying $(\forall z\in L)[z\in y\lr(z\in x\land\varphi^L[z,a_1,\hdots,a_n])]$; we start by picking $\alpha\in\on$ such that $x,a_1,\hdots,a_n\in L_\alpha$. By the Reflection Theorem \ref{Reflection Theorem} we can construct limit $\delta>\alpha$ satisfying
+\eq{
+(\forall z_0\in L_\delta)\cdots(\forall z_n\in L_\delta)(\varphi^{L_\delta}[z_0,\hdots,z_n]\lr\varphi^L[z_0,\hdots,z_n]).
+}
+
+Now we construct
+\eq{
+y:=\{z\in L_\delta\mid L_\delta\models\varphi[z, a_1,\hdots, a_n]\land z\in x\}\in\Def(L_\delta)=L_{\delta+1}\subset L.
+}
+
+But then we have that
+\eqq{
+\{z\in x\mid\varphi^L[z,a_1,\hdots,a_n]\}=\{z\in x\mid\varphi^{L_\delta}[z,a_1,\hdots,a_n]\}=y\in L.
+}
+
+\textit{Replacement}: Let $\varphi(v_0,\hdots,v_n)$ be a formula, $a_2,\hdots,a_n\in L$ be given and assume that $(\forall x\in L)(\exists y\in L)\varphi^L[y,x,a_2,\hdots,a_n]$. We have to show that for any $u\in L$ we can construct $v\in L$ satisfying
+\eq{
+[(\forall x\in u)(\exists y\in v)\varphi[y,x,a_2,\hdots,a_n]]^L,
+}
+
+which is to say that
+\eq{
+(\forall x\in u)(\exists y\in v)\varphi^L[y,x,a_2,\hdots,a_n]
+}
+
+since $L$ is transitive. Let $x\in u$. Denote again by $f(x)$ the least ordinal $\alpha$ satisfying that $(\exists y\in L_\alpha)\varphi^L[y,x,a_2,\hdots,a_n]$. Using Replacement in $V$ let $\beta$ surpass all $f(x)$ for $x\in u$. Set $v:=L_\beta$, which satisfies that $v\in L$. We thus have that $(\forall x\in u)(\exists y\in v)\varphi^L[y,x,a_2,\hdots,a_n]$, and we are finished.
+}
+
+\lemm{
+\label{L^M=L Lemma}
+Let $M$ be an inner model. Then for any $\alpha\in\on$ we have $L_\alpha\in M$ and $L_\alpha^M=L_\alpha$ (meaning $[v_0=L_\alpha]^M\lr v_0=L_\alpha$), implying that $L^M=L$.
+}
+\proof{
+Define the class function $F:\on\to M$ by $\in$-recursion on $\on$:
+\eq{
+F(\alpha):=\bigcup\{y\mid [y=\Def(z)]^M\land z\in F"\alpha\}.
+}
+
+Then $F(\alpha)=L_\alpha^M$ and $F\restr\alpha\in M$, as the $\in$-recursion can be done within $M$ due to $M$ being an inner model of $\zf$. Now since $y=\Def(z)$ is absolute for transitive class models of $\zf$ by Lemma \ref{Rel Levy Abs Lemma} and Lemma \ref{Def Lemma}, we have that
+\eq{
+F(\alpha)=\bigcup\{\Def(z)\mid z\in F"\alpha\}=L_\alpha
+}
+
+for all $\alpha\in\on$, so in particular $L_\alpha=(F\restr S(\alpha))(\alpha)\in M$ as $M$ is transitive and $F\restr S(\alpha)\in M$. Then
+\eq{
+L^M=\left[\bigcup_{\alpha\in\on}L_\alpha\right]^M=\bigcup_{\alpha\in\on}L_\alpha^M=\bigcup_{\alpha\in\on}L_\alpha=L,
+}
+
+where we used that $\on^M=\on$.
+}
+
+\theo{
+$L$ is the smallest inner model.
+}
+\proof{
+$L$ is transitive and $\on\subset L$ by Lemma \ref{Basic props of L Lemma}, so $L$ is an inner model by Theorem \ref{L satisfies ZF Theorem}. Assume $M$ is another inner model of $\zf$. Then $L^M=L$ by Lemma \ref{L^M=L Lemma}, so $L\subset M$.
+}
+
+\section{Axiom of Constructibility}
+\defi[$V{=}L$]{
+The \textit{Axiom of Constructibility}, abbreviated $V{=}L$, is the statement
+\eq{
+\forall x(\exists\alpha\in\on)(x\in L_\alpha).
+}
+}
+
+\theo{
+\label{(V=L)^L Theorem}
+$\zf\proves (V{=}L)^L$.
+}
+\proof{
+As $\on\subset L$, we have to show that $(\forall x\in L)(\exists\alpha\in\on)[x\in L_\alpha]^L$. But as $L_\alpha^L=L_\alpha$ by Lemma \ref{L^M=L Lemma}, it remains to show that $(\forall x\in L)(\exists\alpha\in\on)(x\in L_\alpha)$, which simply follows from the definition of $L$.
+}
+
+\lemm{
+\label{Consistency lemma}
+Let $\sigma$ be a sentence, $T\supset\zf$ a theory and $M$ a class satisfying
+\eq{
+T\proves(T+\sigma)^M.
+}
+
+Then $\con(T)\Rightarrow\con(T+\sigma)$.
+}
+\proof{
+Assume $\lnot\con(T+\sigma)$ and let $\psi_0,\hdots,\psi_n$ be a (formal) proof of a contradiction in $T+\sigma$. Then $\psi_i$ is either an axiom of $T+\sigma$ or $\psi_i$ follows logically from $\psi_0,\hdots,\psi_{i-1}$ for all $i=0,\hdots,n$, and assume without loss of generality that $\psi_n$ is $(0=1)$. Now consider the sequence $\psi_0^M,\hdots,\psi_{i-1}^M$. If $\psi_i$ follows logically from $\psi_0,\hdots,\psi_{i-1}$, then so does $\psi_i^M$ from $\psi_0^M,\hdots,\psi_{i-1}^M$, by using the same deduction rules. If $\psi_i$ is an axiom of $T+\sigma$, then $\psi_i^M$ is a theorem of $T$, by assumption on $M$. Thus $\psi_n^M$ is a theorem of $T$. But as $\psi_n^M$ is $(0=1)^M\equiv(0=1)$, we have arrived at a contradiction in $T$, concluding $\lnot\con(T)$.
+}
+
+\coro{
+\label{Con(V=L) Corollary}
+$\con(\zf)\Rightarrow\con(\zf+V{=}L)$.
+}
+\proof{
+By Theorem \ref{(V=L)^L Theorem} and Lemma \ref{Consistency lemma}.
+}
+
+\section{A global well-ordering}
+\theo{
+\label{AC^L Theorem}
+$\zf+V{=}L\proves\ac$.
+}
+\proof{
+Assume $V{=}L$, i.e that $\forall x(\exists\alpha\in\on)(x\in L_\alpha)$. We construct the sets $<_\alpha$ where $<_\alpha$ well-orders $L_\alpha$ for every $\alpha\in\on$, and satisfy the following properties:
+\begin{enumerate}
+\item $<_{\alpha+1}\restr L_\alpha=<_\alpha$ for every $\alpha\in\on$;
+\item If $x\in L_{\alpha+1}\backslash L_\alpha$ and $y\in L_\alpha$, then $y<_{\alpha+1}x$ for every $\alpha\in\on$.\\
+\end{enumerate}
+
+The first condition will ensure that the orderings agree and the second will make sure that the $<_\alpha$'s form a well-order on all of $L$. To construct the well-orderings, we first enumerate all $\mathscr L_\emptyset$-formulas ($\mathscr L$-formulas without constant symbols), by e.g. listing them lexicographically; as there are countably many such formulas, we thus have a set $\{\godel{\varphi_n}\mid n<\omega\}$, where $\godel{\varphi_n}<_{\text{lex}}\godel{\varphi_{n+1}}$ with $<_{\text{lex}}$ being the lexicographic ordering (restricted to the set). Then we define the class functions $A:L\to\on$, $N:L\to\omega$ and $P:L\to L$ as follows:
+
+\begin{itemize}
+\item $A(x):=\min\{\alpha\in\on\mid x\in L_{\alpha+1}\}$;
+\item $N(x):=\min\{n<\omega\mid x=\{y\in L_{A(x)}\mid(\exists\vec{t}\in L_{A(x)})(L_{A(x)}\models\varphi_n[y,t_1,\hdots, t_k])\}\}$;
+\item $P(x):=\{\bra{t_1,\hdots,t_k}\mid \vec{t}\in L_{A(x)}\land x=\{y\in L_{A(x)}\mid L_{A(x)}\models\varphi_{N(x)}[y,t_1,\hdots, t_k]\}\}$.\\
+\end{itemize}
+
+I.e. that $N(x)<\omega$ is least such that $x$ is definable over $L_{A(x)}$ via $\varphi_{N(x)}$ with parameters in $L_{A(x)}$ and $P(x)$ is the set of possible tuples of the parameters $\vec{t}\in L_{A(x)}$ used to define $x$ over $L_{A(x)}$ via $\varphi_{N(x)}$. Note that $A(x)\neq\emptyset$ as we assumed $V{=}L$.\\
+
+We now begin the recursive construction of the $<_\alpha$'s. Set $<_0:=\emptyset$ for $\delta$ limit; clearly it retains the properties (i) and (ii), described above. Now assume $<_\gamma$ has been constructed for all $\gamma\leq\alpha$ and let $x,y\in L_{\alpha+1}$. Then we define $x<_{\alpha+1}y$ by case analysis. Set $x<_{\alpha+1}y$ iff
+\begin{itemize}
+\item Either $A(x)\in A(y)$,
+\item or else $A(x)=A(y)$ and $N(x)\in N(y)$,
+\item or else $A(x)=A(y)$ and $N(x)=N(y)$ and $\min_{<_{A(x)}^*} P(x)<_{A(x)}^*\min_{<_{A(x)}^*} P(y)$, where $<_{A(x)}^*$ is the lexicographic ordering on the tuples induced by $<_{A(x)}$.\\
+\end{itemize}
+
+As all three orderings are well-orderings, $<_{\alpha+1}$ is as well. Furthermore both (i) and (ii) are clearly satisfied by construction. Define lastly $<_\delta:=\bigcup_{\gamma<\delta}<_\gamma$, which also retains both $(i)$ and $(ii)$. As the entire construction was done inside of $L$, we have that $<_\alpha\in L$ for all $\alpha\in\on$ by the Recursion Theorem \ref{Recursion Theorem}\footnote{It can also easily be checked that $<_\alpha\in L_{\alpha+3}$ for every $\alpha\in\on$.}. Thus given a set $x$, we can find some $\alpha\in\on$ such that $x\in L_\alpha$ as $V{=}L$, and then $<_\alpha\restr x\times x$ is a well-order of $x$.
+}
+
+For later purposes, we define the \textit{global well-order} of $L$ as $<_L:=\bigcup\{<_\alpha\mid\alpha\in\on\}$. Thus for $x,y\in L$, we have that $x<_L y$ iff $x<_\alpha y$ for some $\alpha\in\on$ such that $x,y\in L_\alpha$ (which is well-defined by properties (i) and (ii) of $<_\alpha$, given in the proof above). Note that $<_L$ is not a set, as $\{<_\alpha\mid\alpha\in\on\}$ has a bijective correspondence to $\on$, and note furthermore that $<_L$ is definable by a formula, by writing up the canonical formula expressing the definition given in the proof - see Appendix \ref{apxA} for details.\\
+
+\coro{
+\label{Con(ZFC) Corollary}
+$\con(\zf)\Rightarrow\con(\zfc)$.
+}
+\proof{
+Follows from Theorem \ref{AC^L Theorem} and \ref{Con(V=L) Corollary}, since clearly $T\proves\sigma$ implies $\con(T)\Rightarrow\con(T+\sigma)$.
+}
+
+\section{Condensation}
+\defi[Extensional structure]{
+Let $\mathcal{L}$ be a language and $\mathfrak{A}:=\bra{A,R}$ be an $\mathcal{L}$-structure where $R$ is a binary $\mathcal{L}$-relation on $A$. Then $\mathfrak{A}$ is \textit{extensional} if it satisfies the Extensionality axiom; i.e. if $(\forall x,y\in A)[(\forall z\in A)(zRx\lr zRy)\to x=y]$ or equivalently,
+\eq{
+(\forall x,y\in A)[x\neq y\to(\exists z\in A)(zRx\lr \lnot(zRy))].
+}
+}
+
+We state here the \textit{Mostowski collapse}, sometimes called the \textit{transitive collapse} of a structure. It is stated here in a very general form, because it is required in Chapter 4. As for the applications in this chapter, the structure $\mathfrak{A}$ will always be $\bra{A,\in}$ with $A$ being a set.
+
+\theo[Mostowski Collapse]{
+\label{Mostowski Theorem}
+Let $\mathfrak{A}:=\bra{A,R}$ be a (possibly proper class) structure where $R$ is a binary relation on $A$. If $R$ is well-founded and set-like, and $\mathfrak{A}$ is extensional, then there is a unique transitive structure $\bra{T,\in}$ and a unique isomorphism $\pi:\mathfrak{A}\cong\bra{T,\in}$. If $R=\in$, then $\pi$ fixes every transitive $Y\subset A$; i.e. $\pi\restr Y=\id\restr Y$.
+}
+\proof{
+We start by proving existence. Define the function $\pi$ with $\dom\pi=A$ by well-founded recursion on $R$:
+\eq{
+\pi(a):=\{\pi(x)\mid x R a\}.
+}
+
+Note that $\pi(a)$ is a set for each $a\in A$, since $R$ is set-like. Set $T:=\ran\pi$. We show that $\pi$ and $T$ are as given in the theorem. We start by showing that $\pi:A\approx T$, by showing $\pi$ is injective. Suppose not. Construct
+\eq{
+x_1:=\min_{R}\{x\in A\mid (\exists w\in A)[x\neq w\land \pi(x)=\pi(w)]\}
+}
+
+which exists as $R$ is well-founded, and let $x_2\in A$ be such that $x_1\neq x_2$ and $\pi(x_1)=\pi(x_2)$ which exists as $\pi$ is not injective \textit{ex hypothesi}. As $\mathfrak{A}$ is extensional, we can find some $y\in A$ such that either $yRx_1$ and $\lnot(yRx_2)$, or $\lnot(yRx_1)$ and $yRx_2$; assume that $yRx_1$ and $\lnot(yRx_2)$. Then $\pi(y)\in\pi(x_1)$ by definition of $\pi$ and thus $\pi(y)\in\pi(x_2)$ as well since $\pi(x_1)=\pi(x_2)$. Thus we can find some $zRx_2$ such that $\pi(y)=\pi(z)$ by definition of $\pi$. As $zRx_2$ and $\lnot(yRx_2)$, we have $y\neq z$. But then $y$ contradicts minimality of $x_1$, $\contr$. The other case is the same \textit{mutatis mutandis}. Thus we have $\pi:A\approx T$.\\
+
+We now show that $\pi:\mathfrak{A}\cong\bra{T,\in}$. Let $x,y\in A$ and assume first that $xRy$, implying $\pi(x)\in\pi(y)$ by definition. Assume conversely that $\pi(x)\in\pi(y)$. Then $\pi(x)=\pi(z)$ for some $zRy$, but then $z=x$ due to $\pi$ being injective, concluding that $\pi:\mathfrak{A}\cong\bra{T,\in}$.\\
+
+Now to show uniqueness of $\pi$ (and thus $T$ as well, as $T=\ran\pi$), suppose $\tau:\mathfrak{A}\cong\bra{M,\in}$ with $M$ being transitive. Let $x,y\in A$ and $yRx$. Then $\tau(y)\in\tau(x)$ as $\tau$ is an isomorphism, so $\{\tau(z)\mid zRx\}\subset\tau(x)$. Now let $w\in\tau(x)$, meaning $w\in M$ by transitivity. Thus $w=\tau(z)$ for some unique $z\in A$. Hence $\tau(z)\in\tau(x)$, entailing $zRx$ since $\tau$ is an isomorphism. But then $\tau(x)\subset\{\tau(y)\mid yRx\}$, so $\tau(x)=\{\tau(y)\mid yRx\}=\pi(x)$.\\
+
+Assume now that $R=\in$. To show that $\pi$ fixes every transitive $Y\subset A$, let such a $Y$ be given and assume that it is not the case. By definition we have $\pi(x)=\{\pi(z)\mid z\in x\}$ for all $x\in Y$. Construct $y_0:=\min_{\rank}\{y\in Y\mid\pi(y)\neq y\}$. Then $\pi(y)=y$ for $y\in y_0$ by minimality, so $\pi(y_0)=\{\pi(y)\mid y\in y_0\}=\{y\mid y\in y_0\}=y_0$, but $\pi(y_0)\neq y_0$ by construction, $\contr$, which completes the proof.
+}
+
+Notice that since $\in$ is automatically set-like and well-founded as well as $\bra{A,\in}$ being extensional, we \textit{always} have the unique isomorphism $\pi:\bra{A,\in}\cong\bra{T,\in}$. The constructible universe has a powerful property, called \textit{condensation}: every elementary substructure $X$ of a limit stage $L_\delta$ in the hierarchy will be isomorphic to a previous stage. In fact, it is not even required that $X$ is a full-blown elementary substructure; $X\preceq_1 L_\delta$ is enough.
+
+\theo[Condensation]{
+\label{Condensation Theorem}
+Let $\delta\in\on$ be a limit ordinal and $X\preceq_1 L_\delta$. Then there is a unique limit ordinal $\alpha\leq\delta$ and a unique isomorphism $\pi:\bra{X,\in}\cong\bra{L_\alpha,\in}$ which fixes every transitive $Y\subset X$.
+}
+\proof{
+We treat the cases $\delta=\omega$ and $\delta>\omega$ separately, so assume first $\delta=\omega$.
+
+\pagebreak
+
+\clai{
+$L_m\subset X$ for all $m<\omega$.
+}
+
+\cproof{
+Base case is trivial, so assume $L_m\subset X$ and let $x\in L_{m+1}$. Then $x=\{a_1,\hdots,a_k\}$ for $\vec{a}\in L_m$ and $L_\delta\models\sigma$, where $\sigma$ is
+\eq{
+\exists x[a_1\in x\land\cdots\land a_k\in x\land(\forall z\in x)(z=a_1\lor\cdots\lor z=a_k)].
+}
+
+As $\sigma$ is $\Sigma_1$ and $X\preceq_1 L_\delta$, $X\models\sigma$, so $x\in X$; therefore $L_{m+1}\subset X$.
+}
+
+By the claim we then also have $L_\delta=L_\omega=\bigcup_{m<\omega}L_m\subset X$. Thus $L_\delta=X$ and the theorem is trivial. Now assume $\delta>\omega$. By the Mostowski collapse we then get the unique transitive $T$ and the unique $\pi:\bra{X,\in}\cong\bra{T,\in}$; it remains to show that $T=L_\alpha$ for some limit $\alpha\leq\delta$. We set $\alpha:=T\cap\on$, which is an ordinal since $T$ is transitive.
+
+\clai{
+$\alpha$ is a limit ordinal.
+}
+
+\cproof{
+As $\delta$ is limit, we have that $L_\delta\models(\forall\zeta\in\on)(\exists\xi\in\on)(\zeta<\xi)$, so in particular we have that $(\forall\zeta\in\ot(\on\cap X))[L_\delta\models(\exists\xi\in\on)(\zeta<\xi)]$. As $X\preceq_1 L_\delta$ we have $(\forall\zeta\in\ot(\on\cap X))[X\models(\exists\xi\in\on)(\zeta<\xi)]$ and thus $X\models(\forall\zeta\in\on)(\exists\xi\in\on)(\zeta<\xi)$ and since $\bra{X,\in}\cong\bra{T,\in}$ we have $\bra{X,\in}$ is elementarily equivalent to $\bra{T,\in}$ by Lemma \ref{Iso to Equiv Lemma}, so $T\models(\forall\zeta\in\on)(\exists\xi\in\on)(\zeta<\xi)$, which is to say that $(\forall\zeta<\alpha)(\exists\xi<\alpha)(\zeta<\xi)$ since $\on^T=\on\cap T=\alpha$ and $\zeta<\xi$ is $\Delta_0$, making $\alpha$ a limit ordinal.
+}
+
+Thus $L_\alpha=\bigcup_{\gamma<\alpha}L_\gamma$, so we need to show that $T=\bigcup_{\gamma<\alpha}L_\gamma$. First of all note that since $\delta>\omega$, by Lemma \ref{v=L_gamma Lemma} we have that for all $\gamma<\delta$ and $v\in L_\delta$:
+\eqq{
+[L_\delta\models  v=L_\gamma] \Lr [v=L_\gamma].\tag*{($\dagger$)}
+}
+
+We start by showing ``$\subset$''. We have that $(\forall x\in L_\delta)(\exists v\in L_\delta)(\exists\gamma<\delta)(x\in v\land v=L_\gamma)$ by definition of $L_\delta$, so by $(\dagger)$ it holds that $(\forall x\in L_\delta)[L_\delta\models\exists v(\exists\gamma\in\on)( x\in v\land v=L_\gamma)]$ and thus in particular for all $x\in X$. As $X\preceq_1L_\delta$, we have that $X\models\forall x\exists v(\exists\gamma\in\on)(x\in v\land v=L_\gamma)$ as $v=L_\gamma$ is $\Sigma_1$ by Lemma \ref{v=L_gamma Lemma}, so $T$ satisfies the same by Lemma \ref{Iso to Equiv Lemma} since $\bra{X,\in}\cong\bra{T,\in}$. Thus $(\forall x\in T)(\exists v\in T)(\exists\gamma<\alpha)(x\in v\land[v=L_\gamma]^T)$, and as $v=L_\gamma$ is $\Sigma_1$ by Lemma \ref{v=L_gamma Lemma} and therefore upwards absolute by Lemma \ref{Levy Abs Lemma}, we have that $T\subset L_\alpha$.\\
+
+Now for ``$\supset$". As $(\forall\gamma<\delta)(\exists v\in L_\delta)(v=L_\gamma)$ holds by definition of $L_\delta$, by the same procedure, \textit{mutatis mutandis}, as for ``$\subset$", we arrive at $(\forall\gamma<\alpha)(\exists v\in T)(v=L_\gamma)$, so $L_\alpha\subset T$. Thus $T=L_\alpha$. This finishes the proof.
+}
+
+\section{Generalized Continuum Hypothesis}
+\defi[GCH]{
+The \textit{Generalized Continuum Hypothesis} is the statement that $2^{\aleph_\alpha}=\aleph_{\alpha+1}$ for all $\alpha\in\on$. \footnote{This was not how it was originally stated. The original Continuum Hypothesis postulated that every $X\subset\mathbb{R}$ satisfies either $X\approx\mathbb{N}$ or $X\approx\mathbb{R}$, which is equivalent to $2^{\aleph_0}=\aleph_1$.}
+}
+
+Note that as every infinite cardinal is of the form $\aleph_\alpha$ for some $\alpha\in\on$ by Lemma \ref{Cardinals in Aleph Lemma}, $\gch$ says that $2^\kappa=\kappa^+$ for every infinite cardinal $\kappa$.\\
+
+\theo{
+\label{GCH^L Theorem}
+$\zfc+V{=}L\proves\gch$.
+}
+\proof{
+Let $\kappa\geq\omega$ be a cardinal and let $A\subset\kappa$. We would like to find some $\beta\in\on$ such that $\beta<\kappa^+$ and $A\in L_\beta$, because then $\mathcal{P}(\kappa)\subset L_{\kappa^+}$ and thus $2^\kappa=|\mathcal{P}(\kappa)|\leq|L_{\kappa^+}|=\kappa^+$, allowing us to conclude $2^\kappa=\kappa^+$.\\
+
+Let $\alpha\in\on$ be such that $A\in L_\alpha$, which is possible as $V{=}L$. Let $X\preceq L_\alpha$ be of size $\kappa$ and such that $\kappa\cup\{A\}\subset X$, which exists by the Löwenheim-Skolem Theorem \ref{LH Theorem}. Let $\pi:X\to L_\beta$ be the collapse by the Condensation Theorem \ref{Condensation Theorem}. Since $|X|=\kappa$ we also have $|L_\beta|=\kappa$ as $\pi$ is a bijection, and then furthermore $|\beta|=\kappa$ by Lemma \ref{Basic props of L Lemma}. It remains to show that $A\in L_\beta$. As $\pi:\bra{X,\in}\cong\bra{L_\beta,\in}$, we have $a\in A\Lr\pi(a)\in\pi(A)$, which implies that $\pi(A)=\pi"A$. But $\pi"A=A$, as $A\subset\kappa$ and $\pi\restr\kappa=\id\restr\kappa$ since $\kappa$ is transitive; thus $A=\pi"A=\pi(A)\in L_\beta$ and we are done.
+}
+
+Notice that the essential bit of the argument was the use of condensation. We now arrive at Gödel's famous result, regarding the relative consistency of the generalized continuum hypothesis.
+
+\coro[Gödel]{
+\label{Con(GCH) Corollary}
+$\con(\zf)\Rightarrow\con(\zf+\gch)$.
+}
+\proof{
+By Corollaries \ref{Con(V=L) Corollary} and \ref{Con(ZFC) Corollary} we have $\con(\zf)\Rightarrow\con(\zfc+V{=}L)$, so by Theorem \ref{GCH^L Theorem} we have the result, as $T\proves\sigma$ implies that $\con(T)\Rightarrow\con(T+\sigma)$.
+}

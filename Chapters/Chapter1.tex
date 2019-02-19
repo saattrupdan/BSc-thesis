@@ -1,0 +1,449 @@
+\chapter{Preliminaries}
+\thispagestyle{fancy}
+
+\section{Basic set theory}
+Recall that Zermelo-Fraenkel set theory with Choice, \textbf{ZFC}, is given by the following axioms:\\
+
+\begin{enumerate}
+\item Extensionality: $\forall x\forall y[\forall z(z\in x\lr z\in y)\to(x=y)]$;
+\item Union: $\forall x\exists y\forall z[z\in y\lr(\exists u\in x)(z\in u)]$;
+\item Infinity: $\exists x[\exists y(y\in x)\land(\forall y\in x)(\exists z\in x)(y\in z)]$;
+\item Power Set: $\forall x\exists y\forall z[z\in y\lr z\subset x]$;
+\item Foundation: $\forall x[\exists y(y\in x)\to(\exists y\in x)(\forall z\in y)(z\notin x)]$;
+\item Comprehension schema: $\forall\vec{a}\forall x\exists y\forall z[z\in y\lr (z\in x\land\varphi(z,\vec{a}))]$;
+\item Replacement schema: $\forall\vec{a}[\forall x\exists y\varphi(y,x,\vec{a})\to\forall u\exists v(\forall x\in u)(\exists y\in v)\varphi(y,x,\vec{a})]$;
+\item Choice: $\forall x[((\forall y\in x)(y\neq\emptyset)\land(\forall y\in x)(\forall y'\in x)(y\neq y'\to\forall w(w\in y\to w\notin y')))\to\exists z[(\forall y\in x)(\exists! v\in y)(v\in z)\land(\forall v\in z)(\exists! y\in x)(v\in y)]]$.\\
+\end{enumerate}
+
+A \textbf{relation} is a set of ordered pairs $\bra{x,y}$, and a \textbf{function} is a relation satisfying that for every $x\in\dom f$ there is exactly one $y\in\ran f$ such that $\bra{x,y}\in f$. A \textbf{partial order} is a relation $R$ which is reflexive, transitive and antisymmetric. A set with a partial order is called a \textbf{poset}. A relation $R$ is said to be \textbf{well-founded} if every non-empty subset has an $R$-least element, \textbf{linear} (sometimes called \textit{total}) if it is irreflexive, transitive and satisfies trichotomy (i.e. $xRy$, $yRx$ or $y=x$ holds for all $x,y$), and \textbf{well-ordered} if it is linear and well-founded. A set with a well-ordering is called a \textbf{well-ordered set}. If a relation $R$ satisfies that $xRy$ implies that there exists some $z$ such that $xRz$ and $zRy$, then $R$ is called \textbf{dense}. A set with a dense linear ordering is abbreviated a \textbf{DLO}. A \textbf{class} is a collection $\{x\mid\varphi(x)\}$ definable by a first-order formula $\varphi$; it is not necessarily a set. A set $x$ is \textbf{transitive} if $z\in y$ and $y\in x$ implies $z\in x$ for all sets $z\in y$ and $y\in x$.
+
+\defi[Down- and up-sets]{
+Let $R$ be a binary relation on a class $M$. Then $\down x:=\{y\in M\mid yRx\}$ is called the \textit{down-set} of $x$, and $\up x:=\{y\in M\mid xRy\}$ is called the \textit{up-set}.
+}
+
+\defi[Set-like relation]{
+Let $R$ be a binary relation on a class $M$. Then $R$ is \textit{set-like} if $y$'s down-set $\downarrow y=\{x\in M\mid xRy\}$ is a set for all $y\in M$.
+}
+
+Most definitions within set theory are given recursively, which is justified by the following theorems (note that they do not depend upon choice).
+
+\theo[Well-founded recursion]{
+\label{WF Recursion Theorem}
+Let $R$ be a binary, well-founded and set-like relation on a class $M$ and let $G:V\times V\to V$ be a total class function. Then there is a unique total class function $F$ with $\dom F=M$ such that
+\eq{
+\zf\proves F(x)=G(x,F\restr(\down x)).
+}
+}
+\proof{
+See Jech \cite[Theorem 6.11]{Jech}
+}
+
+\theo[$\in$-recursion]{
+\label{Recursion Theorem}
+Let $M$ be a transitive class and let $G:V\to V$ be a total class function. Then there is a unique total class function $F$ with $\dom F=M$ such that
+\eq{
+\zf\proves F(x)=G(F\restr x).
+}
+}
+\proof{
+See Jech \cite[Theorem 6.5]{Jech}
+}
+
+An example of such a recursive definition is the notion of the \textbf{rank} of set, given by
+\eq{
+\rank(x):=\bigcup\{\rank(y)+1\mid y\in x\},
+}
+
+where $\alpha=\rank(x)$ is equivalent to $\alpha\in\on$ being the least such that $x\in V_{\alpha+1}$.\\
+
+The \textbf{ordinals} $\on$ is then the transitive sets which are well-ordered by the membership relation $\in$. We define the \textbf{successor of $\boldsymbol\alpha$} as $S(\alpha):=\alpha\cup\{\alpha\}$ for $\alpha\in\on$. The \textbf{order-type} of a well-ordered set $\bra{x,R}$ is the \textit{unique} ordinal $\alpha$ such that $\bra{x,R}\cong\bra{\alpha,\in}$, denoted $\ot(\bra{x,R})=\alpha$ (or just $\ot(x)=\alpha$ if $R$ is understood).
+
+\lemm{
+Every ordinal $\alpha$ satisfies exactly one of the following:
+\begin{itemize}
+\item $\alpha=0$;
+\item $\alpha=S(\beta)$ for some $\beta\in\on$ ($\alpha$ successor);
+\item $\alpha=\bigcup\alpha$, $\alpha>0$ ($\alpha$ limit).$\qed$
+\end{itemize}
+}
+
+\defi[Ordinal arithmetic]{
+Let $\alpha,\beta,\delta\in\on$, $\delta$ limit. Then we define ordinal addition, multiplication and exponentiation by $\in$-recursion on $\on$:
+\begin{center}
+\begin{tabular}{l l l}
+$\alpha+0:=\alpha$ &$\alpha\cdot 0:=0$ &$\alpha^0:=1$\\
+$\alpha+S(\beta):=S(\alpha+\beta)$ &$\alpha S(\beta):=\alpha\beta+\alpha$ &$\alpha^{S(\beta)}:=\alpha^\beta\alpha$.\\
+$\alpha+\delta:=\sup_{\gamma<\delta}(\alpha+\gamma)$ &$\alpha\delta:=\sup_{\gamma<\delta}\alpha\gamma$ &$\alpha^\delta:=\sup_{\gamma<\delta}\alpha^\gamma$\\
+\end{tabular}
+\end{center}
+}
+
+A \textbf{cardinal} $\kappa$ is an ordinal satisfying that for every $\lambda<\kappa$ we have $\lambda\not\approx\kappa$. If $x$ is a set, then $|x|$ is the least ordinal such that $x\approx|x|$, called the \textbf{cardinality} of $x$. Clearly $|x|$ is a cardinal for every set $x$. For $\kappa$ a cardinal, the \textbf{cardinal successor} of $\kappa$, denoted $\kappa^+$, is the least cardinal strictly greater than $\kappa$.
+
+\defi[$\aleph_\alpha$]{
+Define the \textit{Aleph hierachy} $(\aleph_\alpha)_{\alpha\in\on}$ by $\in$-recursion on $\on$:
+\begin{itemize}
+\item $\aleph_0:=\omega$;
+\item $\aleph_{\alpha+1}:=\aleph_\alpha^+$;
+\item $\aleph_\delta:=\bigcup_{\gamma<\delta}\aleph_\gamma$ for $\delta$ limit.
+\end{itemize}
+}
+
+\qlemm{
+\label{Cardinals in Aleph Lemma}
+For every infinite cardinal $\kappa$ there exists $\alpha\in\on$ such that $\kappa=\aleph_\alpha$.
+}
+
+Like for ordinals, we also have arithmetic for cardinals.
+
+\defi[Cardinal arithmetic]{
+For cardinals $\kappa, \lambda$, define $\kappa+\lambda:=|\kappa\coprod\lambda|$ (where $\coprod$ denotes the disjoint union), $\kappa\lambda:=|\kappa\times\lambda|$ and $\kappa^\lambda:=|{^\lambda}\kappa|$ (where ${^\lambda}\kappa$ denotes the set of functions from $\lambda$ to $\kappa$).
+}
+
+As there's a notational clash between ordinal- and cardinal arithmetic, we will use the greek letters $\alpha$, $\beta$, $\gamma$, $\delta$, $\xi$, $\zeta$ for ordinals (and ordinal arithmetic) and $\kappa$, $\lambda$, $\mu$, $\nu$ for cardinals (and cardinal arithmetic).
+
+\qlemm{
+Let $\kappa,\lambda$ be cardinals satisfying $0<\kappa\leq\lambda$ and $\lambda\geq\aleph_0$. Then $\kappa+\lambda=\kappa\lambda=\lambda$.
+}
+
+The \textbf{cofinality} of a limit ordinal $\delta$, denoted $\cf\delta$, is the least ordinal $\alpha$ such that there exists a function $f:\alpha\to\delta$ satisfying $\sup(\ran f)=\delta$. If $\cf(\delta)<\delta$ then $\delta$ is \textbf{singular}; otherwise it is \textbf{regular}.
+
+\section{Basic model theory}
+\defi[Language]{
+A (first-order) \textit{language} $\mathcal{L}=\{F_0,F_1,\hdots,R_0,R_1,\hdots,C_0,C_1,\hdots\}$ is a collection of function symbols $F_i$ with an attached arity $a(F_i)\geq 1$, relation symbols $R_j$ with an attached arity $a(R_i)\geq 1$ and constant symbols $C_k$, as well as the implicit first-order logical symbols $\land$, $\lnot$, $\exists$, $``("$, $``)"$ and $v_n$ for $n\geq 0$. Every language furthermore includes the binary relation symbol $=$.
+}
+
+\defi[Structure]{
+An $\mathcal{L}$-\textit{structure} $\mathfrak{A}=\bra{A,F_0^\mathfrak{A},F_1^\mathfrak{A},\hdots,R_0^\mathfrak{A},R_1^\mathfrak{A},\hdots,C_0^\mathfrak{A},C_1^\mathfrak{A},\hdots}$ for a language $\mathcal{L}$ is a set $A$ along with functions $F_i^\mathfrak{A}:A^{a(F_i)}\to A$, relations $R_j^\mathfrak{A}\subset A^{a(R_j)}$ and constants $C^\mathfrak{A}\in A$ for each function symbol $F_i$, relation symbol $R_j$ and constant symbol $C_k$ in $\mathcal{L}$, respectively. We note that the interpretation of $=$ is the usual equality of sets, given by the Extensionality axiom.
+}
+
+For every structure $\mathfrak{A},\mathfrak{B},\hdots$, we will always denote the underlying set by the corresponding regular letter $A,B,\hdots$.
+
+\defi[Substructure]{
+Let $\mathfrak{A},\mathfrak{B}$ be $\mathcal{L}$-structures. We say that $\mathfrak{A}$ is a \textit{substructure} of $\mathfrak{B}$ iff $A\subset B$, $R^\mathfrak{A}=R^\mathfrak{B}\cap A^n$ for every $n$-ary relation symbol $R$ in $\mathcal{L}$, $F^\mathfrak{A}=F^\mathfrak{B}\restr A^m$ for every $m$-ary function symbol $F$ in $\mathcal{L}$ and $C^\mathfrak{A}=C^\mathfrak{B}$ for every constant symbol $C$ in $\mathcal{L}$.
+}
+
+\defi[Terms]{
+The \textit{$\mathcal{L}$-terms} of a language $\mathcal{L}$ is defined recursively:
+\begin{itemize}
+\item Any variable or constant symbol is an $\mathcal{L}$-term;
+\item If $t_1,\hdots,t_n$ are $\mathcal{L}$-terms and $F$ is an $n$-ary function symbol in $\mathcal{L}$, then $F(t_1\hdots t_n)$ is an $\mathcal{L}$-term.
+\end{itemize}
+}
+
+\defi[Formulas]{
+The \textit{$\mathcal{L}$-formulas} of a language $\mathcal{L}$ is defined recursively:
+\begin{itemize}
+\item If $t_1,\hdots,t_n$ are $\mathcal{L}$-terms and $R$ is an $n$-ary $\mathcal{L}$-relation symbol, then $R(t_1\hdots t_n)$ is an \textit{atomic} $\mathcal{L}$-formula;
+\item If $\varphi,\psi$ are $\mathcal{L}$-formulas, then so are $(\varphi\land\psi)$, $(\lnot\varphi)$ and $(\exists x\varphi)$.
+\end{itemize}
+}
+
+We will usually write binary relations $R(t_1 t_2)$ in infix notation $t_1Rt_2$. We will denote interpreted constants as $x$ for the corresponding constant symbol $\dot x$ for clarity, instead of writing the formally more correct constant symbol $x$ and interpretation $x^\mathfrak{A}$. We will usually omit the parentheses for reading comprehension, as well as introduce the abbreviation $(\exists x\in y)\varphi$ for $\exists x(x\in y\land\varphi)$. When not otherwise specified, we will \textit{always} presume our formulas to be in the language of set theory $\mathcal{L}_\in:=\{\in\}$.
+
+\defi[Free variables]{
+Let $\varphi$ be an $\mathcal{L}$-formula. A \textit{free variable} of $\varphi$ is a variable which has a free occurrence in $\varphi$, i.e. does not occur within the scope of a quantifier. We usually write $\varphi(\vec{v})$ to denote the formula $\varphi$ with free variables among $\vec{v}$.
+}
+
+ A \textbf{sentence} $\sigma$ is a formula with no free variables. A \textbf{theory} $T$ is a collection of sentences, and any subset of a theory is called a \textbf{subtheory}. A theory is \textbf{satisfiable} if it has a model.
+
+\defi[Interpretation of terms]{
+Let $\mathfrak{A}$ be an $\mathcal{L}$-structure, $t(\vec{v})$ an $\mathcal{L}$-term and $\vec{x}\in A$. Then the \textit{interpretation} of $t(\vec{v})$ in $\mathfrak{A}$ at $\vec{x}$, denoted $t^\mathfrak{A}(x_1/v_1,\hdots,x_n/v_n)$, is defined recursively:
+\begin{itemize}
+\item If $t$ is a variable $v$ then $t^\mathfrak{A}(x/v):=x$;
+\item If $t$ is a constant symbol $c$ then $t^\mathfrak{A}(x/v):=c^\mathfrak{A}$;
+\item If $t=F(t_1\hdots t_k)$ where $F$ is a $k$-ary function symbol of $\mathcal{L}$, then $t^\mathfrak{A}(x_1/v_1,\hdots,x_n/v_n):=F^\mathfrak{A}(t_1^\mathfrak{A}(x_1/v_1,\hdots,x_n/v_n),\hdots,t_k^\mathfrak{A}(x_1/v_1,\hdots,x_n/v_n))$.
+\end{itemize}
+}
+
+Although $t^\mathfrak{A}(x_1/v_1,\hdots,x_n/v_n)$ is the more correct terminology, we will usually just write $t^\mathfrak{A}[x_1,\hdots,x_n]$ (or $t[x_1,\hdots,x_n]$ when the structure is understood) instead.
+
+\defi[Satisfaction relation]{
+Let $\mathfrak{A}$ be an $\mathcal{L}$-structure, $\varphi(\vec{v})$ an $\mathcal{L}$-formula and $\vec{x}\in A$. Then we recursively define the \textit{satisfaction relation} $\mathfrak{A}\models\varphi[\vec{x}]$ as follows, where $\psi$ and $\chi$ are $\mathcal{L}$-formulas:
+\begin{itemize}
+\item If $\varphi(\vec{v})$ is $R(t_1(\vec{v})\hdots t_n(\vec{v}))$ for an $n$-ary relation symbol $R$ in $\mathcal{L}$ and $t_1,\hdots,t_n$ $\mathcal{L}$-terms, then $\mathfrak{A}\models\varphi[\vec{x}]$ if \\$\bra{t_1^\mathfrak{A}[\vec{x}],\hdots,t_{n_j}^\mathfrak{A}[\vec{x}]}\in R_j^\mathfrak{A}$;
+\item If $\varphi(\vec{v})$ is $(\lnot\psi(\vec{v}))$ then $\mathfrak{A}\models\varphi[\vec{x}]$ if $\mathfrak{A}\nmodels\psi[\vec{x}]$;
+\item If $\varphi(\vec{v})$ is $(\psi(\vec{v})\land\chi(\vec{v}))$ then $\mathfrak{A}\models\varphi[\vec{x}]$ if $\mathfrak{A}\models\psi[\vec{x}]$ and $\mathfrak{A}\models\chi[\vec{x}]$;
+\item If $\varphi(\vec{v})$ is $(\exists y\psi(y,\vec{v}))$ then $\mathfrak{A}\models\varphi[\vec{x}]$ if $\mathfrak{A}\models\psi[y,\vec{x}]$ for some $y\in A$.
+\end{itemize}
+}
+
+If $\mathfrak{A}\models\varphi$ (where $\varphi$ has no free variables), then we say that $\mathfrak{A}$ \textit{models} $\varphi$, $\mathfrak{A}$ \textit{satisfies} $\varphi$ or $\mathfrak{A}$ \textit{is a model of} $\varphi$.
+
+\defi[Definability]{
+Let $\mathfrak{A}$ be an $\mathcal{L}$-structure, $P\subset A$ and $X\subset A^n$ for some $n\geq 1$. Then we say that $X$ is \textit{definable with parameters from $P$ in $\mathfrak{A}$} if there is an $\mathcal{L}$-formula $\varphi(\vec{v},\vec{w})$ and $\vec{p}\in P$ such that $X=\{\bra{a_1,\hdots,a_n}\in A^n\mid\mathfrak{A}\models\varphi[\vec{a},\vec{p}]\}$. If $P=\emptyset$ then we say that $X$ is \textit{definable without parameters}. $X$ is \textit{definable} in $\mathfrak{A}$ if it is definable, with possible parameters from $A$ in $\mathfrak{A}$.
+}
+
+\defi[Elementary embedding/substructure/extension]{
+Let $\mathcal{L}$ be a language and $\mathfrak{A},\mathfrak{B}$ be $\mathcal{L}$-structures. Then $j:A\to B$ is an \textit{elementary embedding}, denoted $j:\mathfrak{A}\preceq\mathfrak{B}$, if $j$ is injective and for every $\mathcal{L}$-formula $\varphi(\vec{v})$ and $\vec{x}\in A$ it holds that
+\eq{
+\mathfrak{A}\models\varphi[x_1,\hdots,x_n]\Lr\mathfrak{B}\models\varphi[j(x_1),\hdots,j(x_n)].
+}
+
+If $\mathfrak{A}$ is a substructure of $\mathfrak{B}$ and the inclusion map $A\hookrightarrow B$ is an elementary embedding, then $\mathfrak{A}$ is an \textit{elementary substructure} of $\mathfrak{B}$ ($\mathfrak{B}$ is an \textit{elementary extension} of $\mathfrak{A}$), denoted $\mathfrak{A}\preceq\mathfrak{B}$.
+}
+
+Note that $j:\mathfrak{A}\preceq\mathfrak{B}$ does not necessarily imply that $A\subset B$.
+
+\defi[Elementary equivalence]{
+Two $\mathcal{L}$-structures $\mathfrak{A},\mathfrak{B}$ are said to be \textit{elementarily equivalent} if for every $\mathcal{L}$-sentence $\sigma$ it holds that $\mathfrak{A}\models\sigma\Lr\mathfrak{B}\models\sigma$.
+}
+
+\defi[Isomorphism]{
+An isomorphism $\pi:\mathfrak{A}\cong\mathfrak{B}$ between $\mathcal{L}$-structures $\mathfrak{A}$ and $\mathfrak{B}$, is a bijection $\pi:A\approx B$ such that for all $\vec{x}\in A$ the following holds:
+\begin{enumerate}
+\item $\bra{x_1,\hdots,x_n}\in R^\mathfrak{A}$ iff $\bra{\pi(x_1),\hdots,\pi(x_n)}\in R^\mathfrak{B}$ for every $n$-ary $\mathcal{L}$-relation symbol $R$;
+\item $\pi(F^\mathfrak{A}(x_1,\hdots,x_n))=F^\mathfrak{B}(\pi(x_1),\hdots,\pi(x_n))$ for every $n$-ary $\mathcal{L}$-function symbol $F$.
+\end{enumerate}
+}
+
+\lemm{
+\label{Iso to Equiv Lemma}
+Let $\mathcal{L}$ be a language and $\mathfrak{A},\mathfrak{B}$ be $\mathcal{L}$-structures. If $\pi:\mathfrak{A}\cong\mathfrak{B}$ then for every $\mathcal{L}$-formula $\varphi(\vec{v})$ and $\vec{x}\in A$ we have that
+\eq{
+\mathfrak{A}\models\varphi[x_1,\hdots,x_n]\Lr\mathfrak{B}\models\varphi[\pi(x_1),\hdots,\pi(x_n)].
+}
+}
+\proof{
+It suffices to show the ``$\Rightarrow$''-direction, as $\pi^{-1}$ is an isomorphism as well; let $\vec{x}\in A$. We prove it by induction on $\mathcal{L}$-formulas $\varphi$. If $\varphi$ is atomic, then it follows by definition of being an isomorphism. If $\varphi$ is $\psi\land\chi$ or $\lnot\psi$ then it follows by definition of $\models$ and the induction hypothesis. Finally if $\varphi(\vec{v})$ is $\exists y\psi(y,\vec{v})$ then by definition of $\models$ we have $\mathfrak{A}\models\psi[y,\vec{x}]$ for some $y\in A$, implying $\mathfrak{B}\models\psi[\pi(y),\pi(x_1),\hdots,\pi(x_n)]$ by the induction hypothesis, and then $\mathfrak{B}\models\varphi[\pi(x_1),\hdots,\pi(x_n)]$ by definition of $\models$ again.
+}
+
+One of the tools that we will use on a frequent basis is the following theorem, which we will state without proof here.
+
+\theo[Löwenheim-Skolem]{
+\label{LH Theorem}
+Let $\mathfrak{A}$ be an $\mathcal{L}$-structure and $X\subset A$. Then there exists $\mathfrak{B}\preceq\mathfrak{A}$ such that $|B|\leq|X|+|\mathcal{L}|+\aleph_0$ and $X\subset B$. In particular, if $\mathfrak{A}$ is an infinite $\mathcal{L}$-structure and $\kappa$ an infinite cardinal such that $|\mathcal{L}|\leq\kappa\leq|A|$, then $\mathfrak{A}$ has an elementary substructure of cardinality $\kappa$.
+}
+\proof{
+See e.g. Marker \cite[Theorem 2.3.7]{Marker}.
+}
+
+\section{Absoluteness and the Lévy Hierachy}
+We will often abuse notation and write $X\models\varphi$ rather than the correct $\bra{X,\in}\models\varphi$. We begin with the notion of a relativization of a formula to a class $M$, which is intuitively constructed by simply replacing unbounded quantifiers with quantifiers bounded by $M$.
+
+\defi[Relativization]{
+Let $M$ be a class. Then the \textit{relativization} $\varphi^M$ for any formula $\varphi$ is defined by recursion on the complexity of formulas:
+\begin{itemize}
+\item $(v_0=v_1)^M$ is $v_0=v_1$ and $(v_0\in v_1)^M$ is $v_0\in v_1$;
+\item $(\varphi\land\psi)^M$ is $\varphi^M\land\psi^M$ and $(\lnot\varphi)^M$ is $\lnot\varphi^M$;
+\item $(\exists x\varphi)^M$ is $(\exists x\in M)\varphi^M$.
+\end{itemize}
+}
+
+The relativization carries along with it a notion of absoluteness of formulas. If $M$ is a class and $\varphi(\vec{v})$ is a formula, then $\varphi$ is \textbf{upwards absolute} for $M$ if $\varphi^M[\vec{x}]$ implies $\varphi[\vec{x}]$ for all $\vec{x}\in M$. Likewise $\varphi$ is \textbf{downwards absolute} for $M$, if $\varphi[\vec{x}]$ implies $\varphi^M[\vec{x}]$ for $\vec{x}\in M$. $\varphi$ is \textbf{absolute} for $M$ if it is both downwards and upwards absolute for $M$, i.e. that $\varphi^M[\vec{x}]\equiv\varphi[\vec{x}]$.
+
+\defi[$\Delta_0$ formula]{
+\label{Delta 0 Definition}
+The property of being a $\Delta_0$ formula is defined recursively on the complexity of formulas:
+\begin{itemize}
+\item $(v_0=v_1)$ and $(v_0\in v_1)$ are $\Delta_0$;
+\item If $\varphi$ and $\psi$ are $\Delta_0$, then so are $(\varphi\land\psi)$ and $(\lnot\varphi)$;
+\item If $\varphi$ is $\Delta_0$ and $y$ is a set, then $(\forall x\in y)\varphi$ and $(\exists x\in y)\varphi$ are $\Delta_0$.
+\end{itemize}
+}
+
+Intuitively, $\Delta_0$-formulas are thus formulas with only bounded quantifiers. For notational ease, we also write that a formula is $\Sigma_0$ or $\Pi_0$ iff it is $\Delta_0$. A lot of formulas are indeed $\Delta_0$. Basic formulas such as $x=y$, $x\in y$, $x\subset y$, $x=\{y_0,\hdots,y_n\}$, $x=\bra{y_1,\hdots,y_n}$, $x=y\cup z$, $x=y\cap z$, $x=\bigcup y$, $x=\bigcap y$, $x=y\backslash z$ and $x=y\times z$ are all $\Delta_0$, as one can check by writing them out. We also have that the property of being an ordered pair, relation, function, function from $x$ to $y$, injection, surjection, domain/range/image/restriction of a function, ordinal, limit ordinal, successor ordinal, successor (i.e. $x=y\cup\{y\}$), natural number and first/second element of an ordered pair (denoted $\fst$/$\snd$, i.e. $\fst\bra{x,y}=x$ and $\snd\bra{x,y}=y$) are $\Delta_0$. To summarize:
+
+\lemm{
+\label{Delta 0 Lemma}
+The following are expressible by $\Delta_0$ formulas:
+\eq{
+&x=y, x\in y, x\subset y, x=\{y_1,\hdots,y_n\}, x=\bra{y_1,\hdots,y_n}, x=y\cup z, x=y\cap z, x=\bigcup y,\\
+&x=\bigcap y, x=y\backslash z, x=y\times z, \mathsf{isOrdPair}(p), \mathsf{isRel}(r),\mathsf{isFct}(f),x=\dom r, x=\ran r,\\
+&x=f(y), x=f"y, x=f\restr y, \mathsf{on}(\alpha),\mathsf{isLimit}(\delta), \mathsf{isSucc}(\alpha),x=S(y),\\ &\mathsf{isNat}(n), f:x\to y,\mathsf{isInj}(f), \mathsf{isSurj}(f), x=\fst p, x=\snd p.
+}
+}
+\proof{
+They are all straight forward. For instance $\mathsf{on}(\alpha)$ is ``$\alpha$ is transitive''$\land$``$\alpha$ is well-ordered by $\in$'', $\mathsf{isLimit}(\delta)$ is $\mathsf{on}(\delta)\land\delta=\bigcup\delta\land\delta\neq\emptyset$, $\mathsf{isNat}(n)$ is $\textsf{on}(n)\land\lnot\mathsf{isLimit}(n)\land(\forall k\in n)\lnot\mathsf{isLimit}(k)$, $x=\fst p$ is $\mathsf{isOrdPair}(p)\land(\exists a\in p)(x\in a\land(\forall b\in a)(b=x))$ and so on.
+}
+
+From the $\Delta_0$-formulas, we proceed to construct the entirety of the so-called Lévy hierachy:
+
+\defi[Lévy hierachy]{
+\label{Levy Definition}
+Let $\varphi$ be a formula. Then
+\begin{itemize}
+\item $\varphi$ is $\Sigma_{n+1}$ if $\varphi$ is logically equivalent to $\exists x_1\exists x_2\cdots\exists x_n\psi$ where $\psi$ is $\Pi_n$;
+\item $\varphi$ is $\Pi_{n+1}$ if $\varphi$ is logically equivalent to $\forall x_1\forall x_2\cdots\forall x_n\psi$ where $\psi$ is $\Sigma_n$;
+\item $\varphi$ is $\Delta_n$ if it is both $\Sigma_n$ and $\Pi_n$.
+\end{itemize}
+}
+
+If $j:\mathfrak{A}\to\mathfrak{B}$ is an elementary embedding for all $\Sigma_n$ formulas $\varphi(\vec{v})$, we write $j:\mathfrak{A}\preceq_n\mathfrak{B}$ and analogously for $\mathfrak{A}\preceq_n\mathfrak{B}$. Note that if $j:\mathfrak{A}\preceq_n\mathfrak{B}$ then it implies that $j$ is also an elementary embedding for $\Pi_n$ and $\Delta_n$ formulas. Indeed, if $\varphi(\vec{v})$ is $\Pi_n$ and $\vec{x}\in A$, then $\lnot\varphi(\vec{v})$ is $\Sigma_n$, so $\mathfrak{A}\models\lnot\varphi[\vec{x}]$ iff $\mathfrak{B}\models\lnot\varphi[j(x_1),\hdots,j(x_n)]$; the result now follows from the fact that $\mathfrak{A}\models\lnot\varphi[\vec{x}]$ iff $\mathfrak{A}\nmodels\varphi[\vec{x}]$. For transitive classes, we have the following extremely useful lemma, which will be used repeatedly throughout the thesis.
+
+\lemm{
+\label{Levy Abs Lemma}
+Let $M$ be a transitive class and $\varphi$ a formula. Then
+\begin{enumerate}
+\item If $\varphi$ is $\Delta_0$ then $\varphi$ is absolute for $M$;
+\item If $\varphi$ is $\Sigma_1$ then $\varphi$ is upwards absolute for $M$;
+\item If $\varphi$ is $\Pi_1$ then $\varphi$ is downwards absolute for $M$;
+\item If $\varphi$ is $\Delta_1$ then $\varphi$ is absolute for $M$.
+\end{enumerate}
+}
+\proof{
+(i): We proceed by induction of the complexity of $\varphi$. If $\varphi$ is an atomic, a conjunction or a negation, then it follows by definition of relativization. Suppose now $\varphi(y,\vec{v})$ is $(\exists x\in y)\psi(x,y,\vec{v})$ with $\psi$ being absolute for $M$. Let $y,\vec{z}\in M$. We show $\varphi^M[y,\vec{z}]\Lr\varphi[y,\vec{z}]$.
+
+$``\Rightarrow"$: Assume $\varphi^M(y,\vec{z})$, meaning $[(\exists x\in y)\psi(x,y,\vec{z})]^M$. Thus there exists some $x\in M$ satisfying $x\in y$ and $\psi^M[x,y,\vec{z}]$, which by the induction hypothesis entails $\psi[x,y,\vec{z}]$. This means exactly that $(\exists x\in y)\psi[x, y,\vec{z}]$, which is to say that $\varphi[y,\vec{z}]$.
+
+$``\Leftarrow"$: Assume $\varphi[y,\vec{z}]$. So for some $x\in y$ we have that $\psi[x,y,\vec{z}]$. As $M$ is transitive, we have $x\in M$, as $y\in M$. Hence by induction we then have $\psi^M[x,y,\vec{z}]$ and thus $((\exists x\in y)\varphi[x,y,\vec{z}])^M$, meaning $\varphi^M[y,\vec{z}]$.\\
+
+(ii): Let $\varphi(\vec{v})$ be $\exists x\psi(x,\vec{v})$ with $\psi$ being $\Delta_0$, and assume $\varphi^M[\vec{z}]$ with $\vec{z}\in M$. This means that there is some $x\in M$ satisfying $\psi^M[x,\vec{z}]$. As $\psi$ is $\Delta_0$, we have $\psi[x,\vec{z}]$ by (i). Thus $\exists x\psi[x,\vec{z}]$.\\
+
+(iii): Let $\varphi(\vec{v})$ be $\forall x\psi(x,\vec{v})$ with $\psi$ being $\Delta_0$, and assume $\varphi[\vec{z}]$ with $\vec{z}\in M$. Thus for all $x$ we have that $\psi[x,\vec{z}]$, and in particular for all $x\in M$. Hence by (i), we have that $\psi^M[x,\vec{z}]$, entailing $(\forall x\in M)\psi^M[x,\vec{z}]$, which is the same as $\varphi^M[\vec{z}]$.\\
+
+(iv): Follows directly from (ii) and (iii).
+}
+
+We also have a slightly weaker analogous hierachy of formulas, with a corresponding absoluteness result.
+
+\defi[Relativized Lévy hierachy]{
+Let $\varphi$ be a formula and $T$ a subtheory of $\zf$. Then
+\begin{itemize}
+\item $\varphi$ is $\Sigma_n^T$ if $T\proves\varphi\lr\psi$, where $\psi$ is $\Sigma_n$;
+\item $\varphi$ is $\Pi_n^T$ if $T\proves\varphi\lr\psi$, where $\psi$ is $\Pi_n$;
+\item $\varphi$ is $\Delta_n^T$ if it is both $\Sigma_n^T$ and $\Pi_n^T$.
+\end{itemize}
+}
+
+Notice that, in a theory $T$ with the pairing axiom, formulas can always be reduced to ones with alternating universal and existential quantifiers, as a formula such as $\forall x\forall y\varphi(x,y)$ with $\varphi(x,y)$ being $\Sigma_n$ can be reduced to $\forall z(\mathsf{isOrdPair}(z)\to\varphi(\fst z,\snd z))$. Thus such a formula would be $\Pi_{n+1}^T$ as well, and the same argument goes through for $\Sigma$-formulas.\\
+
+\lemm{
+\label{Rel Levy Abs Lemma}
+Let $T$ be a subtheory of $\zf$, and let $M$ be a transitive class such that $T\proves\sigma^M$ for every axiom $\sigma$ of $T$. Let $\varphi(\vec{v})$ a formula. Then
+\begin{enumerate}
+\item If $\varphi$ is $\Delta_0^T$ then $\varphi$ is absolute for $M$;
+\item If $\varphi$ is $\Sigma_1^T$ then $\varphi$ is upwards absolute for $M$;
+\item If $\varphi$ is $\Pi_1^T$ then $\varphi$ is downwards absolute for $M$;
+\item If $\varphi$ is $\Delta_1^T$ then $\varphi$ is absolute for $M$.
+\end{enumerate}
+}
+\proof{
+(i): By definition of $\varphi$ being $\Delta_0^T$, there is some $\Delta_0$ formula $\psi(\vec{v})$ such that $T\proves\varphi\lr\psi$. As $T$ is a subtheory of $\zf$, we have that $\forall x_1\cdots\forall x_n(\varphi[\vec{x}]\lr\psi[\vec{x}])$. Since $M$ satisfies every axiom of $T$, this implies $[\forall x_1\cdots\forall x_n(\varphi(\vec{x})\lr\psi(\vec{x}))]^M$, which means that
+\eq{
+(\forall x_1\in M)\cdots(\forall x_n\in M)(\varphi^M[\vec{x}]\lr\psi^M[\vec{x}]).
+}
+
+As $\psi^M\equiv\psi$ by Lemma \ref{Levy Abs Lemma}, we have that
+\eq{
+(\forall x_1\in M)\cdots(\forall x_n\in M)(\varphi^M[\vec{x}]\lr\psi^M[\vec{x}]\lr\psi[\vec{x}]\lr\varphi[\vec{x}]).
+}
+
+(ii)-(iv) is analogous.
+}
+
+\lemm{
+\label{rank Lemma}
+The formula $v=\rank u$ is $\Delta_1^{\zf}$ and $\Sigma_1$.
+}
+\proof{
+First let $\varphi(f)$ be the formula
+\eq{
+\mathsf{isFct}(f)\land(\forall x\in\dom f)(x\subset\dom f\land f(x)=\bigcup\{f(y)+1\mid y\in x\}),
+}
+
+which states that $f$ is a rank function. Now
+\eq{
+(v=\rank u)\equiv\exists f(\varphi(f)\land\bra{u,v}\in f),
+}
+
+so it is clearly $\Sigma_1$, as $\varphi$ is easily seen to be $\Delta_0$. Furthermore we have that
+\eq{
+(v=\rank u)\equiv\forall f(\varphi(f)\land u\in\dom f\to\bra{u,v}\in f),
+}
+
+since the rank function is defined by $\in$-recursion and is thus unique by the Recursion Theorem \ref{Recursion Theorem}, whence we conclude that $v=\rank u$ is $\Delta_1^{\zf}$.
+}
+
+\section{Trees}
+This section will only be used in Chapter 3.\\
+
+A \textbf{tree} $\mathfrak{T}=\bra{T,<_T}$ is a poset where each down-set $\down x=\{y\in T\mid y<_Tx\}$ is well-ordered by $<_T$. For every $x\in T$, we define the \textbf{height} of $x$ to be the order-type of $\down x$, denoted $\height x$. The \textbf{$\boldsymbol\alpha$-level} of $\mathfrak{T}$ is defined as $T_\alpha:=\{x\in T\mid\height x=\alpha\}$. The \textbf{restriction} of (the underlying set of) a tree to an ordinal $\alpha$ is defined as $T\restr\alpha:=\bigcup_{\gamma<\alpha}T_\gamma$, and the restriction to the tree is given by $\mathfrak{T}\restr\alpha:=\bra{T\restr\alpha,<_{T\restr\alpha}}$, where $<_{T\restr\alpha}{:=}<_T{\restr}{(T\restr\alpha)^2}$ is the restriction of the ordering on $T$ to $T\restr\alpha$. A tree $\mathfrak{T}$ has \textbf{unique limits} if for every $x,y\in T$ we have that $\down x=\down y$ implies $x=y$.\\
+
+An \textbf{$\boldsymbol\alpha$-branch} $b\subset T$ is a downwards closed $(\down x\subset b$ for every $x\in b$) and linearly ordered set with respect to $<_T$, of order-type $\alpha$. A \textbf{maximal branch} is a branch which is not properly contained in any other branch. An \textbf{antichain} $A\subset T$ is a subset in which every pair of elements $x,y\in A$ is $<_T$-incomparable, written $x\perp y$. A \textbf{maximal antichain} is an antichain which is not properly contained in another antichain. Maximal branches and antichains always exist by Zorn's lemma, which is a well-known equivalent to the axiom of choice.\\
+
+
+Let $\alpha\in\on$, and $\kappa$ a cardinal. Then $\mathfrak{T}$ is said to be an \textbf{$\boldsymbol{(\alpha,\kappa)}$-tree} if $0<|T_\gamma|<\kappa$ for every $\gamma<\alpha$ and $T_\alpha=\emptyset$ (i.e. ``height'' $\alpha$ and ``width'' $\kappa$).
+
+\defi[Normal tree]{
+An $(\alpha,\kappa)$-tree $\mathfrak{T}$ is \textit{normal} if
+\begin{enumerate}
+\item It has unique limits;
+\item It has one root, i.e. $|T_0|=1$;
+\item Every node can be split, i.e. for every $\gamma+1<\alpha$ and $x\in T_\gamma$ there are distinct $y_1,y_2\in T_{\gamma+1}$ such that $x<_Ty_1$ and $x<_Ty_2$;
+\item Every node can be extended, i.e. for every $\gamma<\beta<\alpha$ and $x\in T_\gamma$ there is $y\in T_\beta$ such that $x<_Ty$.
+\end{enumerate}
+}
+
+A normal $(\kappa,\kappa)$-tree, where $\kappa$ is an infinite cardinal, is called a \textbf{$\boldsymbol\kappa$-tree}.
+
+\section{Clubs}
+This section will only be used in Chapter 3.\\
+
+Let $\delta$ be a limit ordinal. A set $A\subset\delta$ is \textbf{unbounded} in $\delta$ if $(\forall\gamma<\delta)(\exists a\in A)(\gamma\leq a)$. A \textbf{limit point} of $A$ is a limit ordinal $\delta\in\on$ such that $A\cap\delta$ is unbounded in $\delta$. $A$ is \textbf{closed} in $\delta$ if either of the three equivalent conditions are satisfied:
+\begin{enumerate}
+\item $\bigcup(A\cap\gamma)\in A$ for all $\gamma<\delta$;
+\item $A$ contains all its limit points below $\delta$;
+\item If $\gamma\in\on$ is limit and $(\alpha_i)_{i<\gamma}$ is a strictly increasing sequence of elements of $A$ not cofinal in $\delta$, then $\bigcup_{i<\gamma}\alpha_i\in A$.\\
+\end{enumerate}
+
+If a set is both closed and unbounded, it is called \textbf{club}. Let $A\subset\delta$. If $C\cap A\neq\emptyset$ for every club $C$ in $\delta$, then $A$ is called \textbf{stationary}. As an analogy to measure theory, one can think of club sets as sets with ``measure 1'', stationary sets as sets with ``positive measure'' and non-stationary sets as ``null sets''.
+
+\qlemm{
+Let $\kappa$ be an uncountable cardinal. If $\lambda<\cf\kappa$ and $A_i$ is a club subset of $\kappa$ for all $i<\lambda$, then $\bigcap_{i<\lambda}A_i$ is a club subset of $\kappa$.
+}
+
+The study of club and stationary sets is a part of the rich field of combinatorial set theory, and we have only included the bare minimum that we require in this text.
+
+\section{Filters}
+This section will only be used in Chapter 4.
+
+\defi[Filter]{
+Let $I$ be a set. Then a \textit{filter} $D\subset\mathcal{P}(I)$ is a family of subsets of $I$ satisfying that
+\begin{enumerate}
+\item $I\in D$;
+\item If $x\in D$, $y\in\mathcal{P}(I)$ and $y\supset x$, then $y\in D$;
+\item If $x,y\in D$, then $x\cap y\in D$.
+\end{enumerate}
+}
+
+For $D\subset\mathcal{P}(I)$ we write $D$ is a filter \textit{over} $I$ and $D$ is a filter \textit{on} $\mathcal{P}(I)$. A \textbf{principal filter} is a set of the form $\{y\in\mathcal{P}(I)\mid z\subset y\}$ for some fixed $z\in\mathcal{P}(I)$, which can be checked is indeed a filter; a non-principal filter is called a \textbf{free filter}. A \textbf{proper filter} is a filter $D$ on $I$ which is not $\mathcal{P}(I)$ itself, which is equivalent to $\emptyset\notin D$. An \textbf{ultrafilter} is a proper filter $D$ such that for every $y\in\mathcal{P}(I)$, either $y\in D$ or $I\backslash y\in D$. Ultrafilters can be viewed as being maximal:
+
+\qlemm{
+A filter $D$ over a set $I$ is an ultrafilter iff it is a maximal proper filter (i.e.\ no proper filter properly contains it).
+}
+
+We remark that ultrafilters can always be found (using axiom of choice):
+
+\qtheo{
+Any proper filter over a set $I$ can be extended to an ultrafilter over $I$.
+}
+
+\section{Ultraproducts}
+This section will only be used in Chapter 4.\\
+
+If $I\neq\emptyset$ is a set, $A_i$ is a set for each $i\in I$ and $D$ is a proper filter over $I$, then the \textbf{Cartesian product} $\prod_{i\in I}A_i$ is the set of all functions $f$ with domain $I$ satisfying $f(i)\in A_i$. Two $f,g\in\prod_{i\in I}A_i$ are \textbf{$\boldsymbol D$-equivalent}, written $f=_Dg$, if $\{i\in I\mid f(i)=g(i)\}\in D$.
+
+\qlemm{
+Let $D$ be a proper filter over a set $I$. Then the relation $=_D$ is an equivalence relation over $\prod_{i\in I}A_i$.
+}
+
+Now the \textbf{reduced product of $\boldsymbol{A_i}$ modulo $\boldsymbol D$}, denoted $\prod_{i\in I}A_i/D:=\{(f)_D\mid f\in\prod_{i\in I}A_i\}$, is the set of equivalence classes $(f)_D$ of $=_D$. If $D$ is an ultrafilter, the reduced product is an \textbf{ultraproduct}. If $A_i=A$ for all $i\in I$, then the construction is called a \textbf{reduced power} and \textbf{ultrapower}, respectively.
+
+\defi[Reduced product for models]{
+Let $I\neq\emptyset$, $D$ a proper filter over $I$ and $\mathfrak{A}_i$ an $\mathcal{L}$-model for each $i\in I$. Then the \textit{reduced product} $\mathfrak{P}:=\prod_{i\in I}\mathfrak{A}_i/D$ is the $\mathcal{L}$-structure defined as follows:
+\begin{enumerate}
+\item The underlying set is the reduced product $\prod_{i\in I}A_i/D$;
+\item For every $n$-ary relation symbol $R$ in $\mathcal{L}$, we have
+	\eq{
+		R^\mathfrak{P}((f_1)_D,\hdots,(f_n)_D)\Lr\{i\in I\mid R^{\mathfrak{A}_i}(f_1(i),\hdots,f_n(i))\}\in D;
+	}
+\item For every $n$-ary function symbol $F$ in $\mathcal{L}$, we have
+	\eq{
+		F^\mathfrak{P}((f_1)_D,\hdots,(f_n)_D):=(\{\bra{i,F^{\mathfrak{A}_i}(f_1(i),\hdots,f_n(i))}\mid i\in I\})_D;
+	}
+\item For every constant symbol $C$ in $\mathcal{L}$, we have $C^\mathfrak{P}:=(\{\bra{i,C^{\mathfrak{A}_i}}\mid i\in I\})_D$.
+\end{enumerate}
+}
+
+The \textbf{ultraproduct over models} is just the reduced product where the proper filter $D$ is an ultrafilter. The \textbf{reduced power over models} and \textbf{ultrapower over models} are defined analogously.

@@ -1,0 +1,29 @@
+\chapter{Introduction}
+\thispagestyle{fancy}
+\setlength{\parindent}{18pt}
+
+\begin{onehalfspacing}
+
+In the years 1900 and 1902, Hilbert introduced his well-known list of twenty-three problems. One of the problems, called the Continuum Hypothesis (CH), was placed at the very top of his list, which indicated the importance of the problem.
+
+\conj[CH]{
+Every subset of the reals $X\subset\mathbb{R}$ is equinumerous to either to $\mathbb{N}$ or $\mathbb{R}$.
+}
+
+In 1926, Hilbert claimed in his article ``On the Infinite'' \cite{Hilbert} to have a solution to the problem, although the proof turned out to be flawed. In 1931, Gödel shocked the Hilbert school with his proofs of his Incompleteness Theorems, of which the first stated that there would always be unprovable true propositions in a formal system which is big enough to entail Peano's Axioms of arithmetic\footnote{Actually, PA is a bit too strong, and a weaker subtheory known as \textit{Robinson arithmetic} suffices.}. As the witness of the statement in the proof was seen as a pathological example of an unprovable proposition, few actually thought that this would matter to ``real'' mathematics. But in 1938, Gödel presented his \textit{Constructible Universe} $L$, in which he showed that $\ch$ holds; which entailed that it is consistent with $\zf$ to take the Continuum Hypothesis to be true via Gödel's Completeness Theorem. In fact, he showed that a more general statement holds in $L$, the \textit{Generalized Continuum Hypothesis} ($\gch$).
+
+\conj[GCH]{
+$\aleph_{\alpha+1}=2^{\aleph_\alpha}$ for all $\alpha\in\on$.
+}
+
+Several years later, in 1963, Paul Cohen proved the converse: it is also consistent with $\zf$ to take the Continuum Hypothesis to be false. This then implied that the Continuum Hypothesis was a ``natural'' mathematical statement which witnesses Gödel's First Incompleteness Theorem within $\zfc$ set theory. Besides using $L$ to prove $\con(\zf)\Rightarrow\con(\zf+\gch)$, it was also worthy of independent interest, since it turned out to have several nice properties such as the combinatorial principles $\diamondsuit$ and $\square$, making $L$ very useful in a combinatorial setting.
+
+As for the structure of this thesis, the first chapter will be dedicated to laying down the fundamental concepts we will need in the proceeding chapters. The second chapter is dedicated to showing Gödel's result that $\con(\zf)\Rightarrow\con(\zfc+\gch)$. Firstly we will construct the constructible universe $L$, which already seems like a daunting task, and most of the details are put in the appendix. After this we show some basic properties of $L$ and move on to showing $\con(\zf)\Rightarrow\con(\zfc)$. The next task then is to show consistency of $\gch$ as well, but this turns out not to be the hardest task after we have shown that $L$ satisfies a strong property called \textit{condensation}, which briefly states that any elementary substructure of a certain stage in $L$ must be isomorphic to a previous stage.
+
+Condensation is used again in the third chapter, which deals with $L$'s \textit{combinatorial} structure. We investigate \textit{Suslin's Hypothesis} ($\sh$ for short), stating that the reals is the \textit{unique} dense linear ordering without endpoints and which satisfies that every set of disjoint intervals is countable. It turns out that this hypothesis is equivalent to the existence of a so-called \textit{Suslin tree}, and that $\diamondsuit$ implies the existence of such a tree. Lastly, by using condensation, we show that $L$ satisfies $\diamondsuit$, and thus the negation of $\sh$ as well. It turns out that both $\diamondsuit$ and $\sh$ are independent of $\zfc$, but like $\gch$ we will only show half of this theorem: namely that $\con(\zf)\Rightarrow\con(\zf+\diamondsuit)$ and $\con(\zf)\Rightarrow\con(\zf+\lnot\sh)$.
+
+In the last chapter we show Scott's Theorem, saying that there does not exist any \textit{measurable cardinal} in $L$, which is used as an argument against the \textit{axiom of constructibility}, stating that $V=L$, i.e. that every set is constructible. To be able to prove this result, we will delve into the machinery of \textit{ultraproducts}, which is a rich topic in its own right. The fact that such a measurable cardinal does not exist in $L$ raises the question though, whether there exists a universe with the same rich and canonical structure as $L$ but being large enough to allow the existence of so-called \textit{large cardinals} such as the measurable cardinals? This question spawned an entire mathematical field called \textit{inner model theory}, and the question still remains unsolved (despite significant ongoing progress).
+
+\end{onehalfspacing}
+
+\setlength{\parindent}{0pt}

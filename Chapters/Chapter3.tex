@@ -1,0 +1,234 @@
+\chapter{Combinatorics in $L$}
+\thispagestyle{fancy}
+
+We now move to an entirely different aspect of $L$, which is its surprisingly rich combinatorial structure. We will in this section show a fraction of this combinatorial structure, by proving that $L$ satisfies the so-called \textit{Suslin Hypothesis} and the combinatorial principle $\diamondsuit$.\\
+
+\section{Suslin hypothesis}
+A result from Cantor states that the real numbers are uniquely determined (up to isomorphism) as the DLO without endpoints containing a countable dense subset. Suslin asked whether we could generalize it to stating that $\mathbb{R}$ is isomorphic to a DLO without endpoints having the \textit{Suslin property}: that every collection of disjoint intervals is countable. Define a \textbf{Suslin line} $R$ to be a set $\bra{R,<_R}\ncong\bra{\mathbb{R},<_{\mathbb{R}}}$ which is a DLO without endpoints with the Suslin property. Then the \textbf{Suslin Hypothesis} ($\sh$) is defined as the statement saying that there does not exist any Suslin lines. First define a \textit{Suslin tree}:
+
+\defi[Suslin tree]{
+A \textit{Suslin tree} is an $\aleph_1$-tree with only countable antichains.
+}
+
+We start by showing a simpler condition to proving the existence of a Suslin tree.
+
+\lemm{
+\label{WLOG Suslin Lemma}
+Let $\mathfrak{T}$ be an $(\omega_1,\aleph_1)$-tree having
+\begin{enumerate}
+\item unique limits;
+\item no uncountable branch;
+\item no uncountable antichain.
+\end{enumerate}
+Then there is some $X\subset T$ such that $\mathfrak{X}:=\bra{X,<_T\restr (X\times X)}$ is a Suslin tree.
+}
+\proof{
+Since $T_0$ is countable, there is some $x_0\in T_0$ such that $\up x_0\subset T$ is uncountable. Now let $\alpha_x<\omega_1$ be the ordinal such that $x\in T_{\alpha_x}$ for $x\in T$. Define
+\eq{
+T':=\{x\in\up x_0\mid(\forall\gamma>\alpha_x)(\exists y\in T_\gamma\cap\up x_0)(x<_Ty)\},
+}
+
+i.e. the members of $\up x_0$ having extensions on all higher levels of $\up x_0$. Thus for every $x\in T'$ we can find $y,z\in T'$ such that $x<_T y$ and $x<_T z$ with $y\perp z$, since otherwise $\up x$ would be an uncountable branch. Thus we can define the function $f:\omega_1\to\omega_1$ by transfinite recursion:
+\begin{itemize}
+\item $f(0):=0$;
+\item $f(\alpha+1):=\min\{\beta>f(\alpha)\mid(\forall x\in T'_{f(\alpha)})(\exists y,z\in T'_\beta)(x<_Ty\land x<_Tz\land y\neq z)\}$;
+\item $f(\delta):=\sup_{\gamma<\delta}f(\gamma)$ for limit $\delta$.\\
+\end{itemize}
+
+Now set $X:=\bigcup_{\alpha<\omega_1}T'_{f(\alpha)}$. Then clearly $\mathfrak{X}$ is Suslin by construction.
+}
+
+An important result then reduces the existence of a Suslin line to the existence of a Suslin tree:
+
+\pagebreak
+\theo{
+\label{SH equiv no Suslin tree Theorem}
+There exists a Suslin tree iff there exists a Suslin line.
+}
+\proof{
+``$\Rightarrow$'': Let $\mathfrak{T}$ be a Suslin tree; we will construct a Suslin line. First of all we may assume that every $x\in T$ has infinitely many successors, because if not, just restrict $\mathfrak{T}$ to its limit stages, which is still Suslin. Then $|T_\alpha|=\aleph_0$ for all $\alpha<\omega_1$, so there is a bijection $\mathbb{Q}\approx T_\alpha$. Now define a dense linear order without end-points $<_\alpha$ on $T_\alpha$, induced by the dense linear order without end-points $<_\mathbb{Q}$ on $\mathbb{Q}$. Let $B$ be the set of all maximal branches of $\mathfrak{T}$ and define a dense linear order $<_B$ on $B$ as $b<_Bd$ iff $b_\alpha<_\alpha d_\alpha$, where $\alpha:=\min\{\gamma<\omega_1\mid b\cap T_\gamma\neq d\cap T_\gamma\}$ and $b_\alpha$ (resp. $d_\alpha$) denotes the unique element of $b\cap T_\alpha$ (resp. $d\cap T_\alpha$). Thus $\mathfrak{B}:=\bra{B,<_B}$ is a DLO of cardinality $\aleph_0^{\aleph_0}=2^{\aleph_0}$ by simple cardinal arithmetic.\\
+
+We thus first need to show that $\mathfrak{B}$ has the Suslin property. Let $I:=(b,d)$ be any interval in $\mathfrak{B}$ and define $\beta:=\min\{\gamma<\omega_1\mid b_\gamma\neq d_\gamma\}$. As $<_\beta$ is dense, pick $x_I\in T_\beta$ such that $b_\beta<_\beta x_I<_\beta d_\beta$, and let $e_I\in B$ be a maximal branch of $\mathfrak{T}$ containing $x_I$. Thus by definition of $<_B$, $e_I\in(b,d)$. Suppose $I$ and $J$ are disjoint intervals in $\mathfrak{B}$; then clearly $e_I\notin J$ and $e_J\notin I$, so $x_I\perp x_J$ with respect to $<_T$. As $\mathfrak{T}$ has no uncountable antichains, we then have that $\mathfrak{B}$ has the Suslin property.\\
+
+Next, we need to show that every countable subset of $B$ is not dense in $\mathfrak{B}$, so let $A\subset B$ be countable. For every $b,d\in A$ satisfying $b\neq d$, define
+\eq{
+\alpha(b,d):=\min\{\gamma<\omega_1\mid b_\gamma\neq d_\gamma\}\text{ and }\delta:=\sup\{\alpha(b,d)\mid b,d\in A\land b\neq d\}.
+}
+
+Since $A$ is countable, $\delta<\omega_1$ (a countable union of countable sets is countable). Choose some $w\in T_\delta$ and $x,y,z\in T_{\delta+1}$ such that $w<_Tx,y,z$ and $x<_{\delta+1}y<_{\delta+1}z$, which exist as we assumed every $w\in T$ had infinitely many successors. Let $b_x,b_y,b_z\in B$ be maximal branches of $\mathfrak{T}$ containing $x,y,z$, respectively. If $A$ was dense in $\mathfrak{B}$, we could find $d,d'\in A$ such that $b_x<_Bd<_Bb_y<_Bd'<_Bb_z$. But since $w\in b_x\cap b_y\cap b_z$, we have that $d_\xi=d'_\xi$ for every $\xi\leq\delta$, making $\alpha(d,d')>\delta$, contradicting the definition of $\delta$. Thus $\mathfrak{B}$ does not have a countable dense subset, making $\mathfrak{B}$ a Suslin line.\\
+
+``$\Leftarrow$'': Assume there exists a Suslin line $\mathfrak{X}$. We will construct a Suslin tree, and by Lemma \ref{WLOG Suslin Lemma} it is enough to construct an $(\omega_1,\aleph_1)$-tree which has
+\begin{enumerate}
+\item unique limits;
+\item no uncountable branches;
+\item no uncountable antichains.\\
+\end{enumerate}
+
+We define by recursion on the levels a so-called \textit{partition tree} $\mathfrak{T}:=\bra{T,\supset}$ consisting of subsets of $X$ with reverse inclusion as the order. Set $T_0:=\{X\}$. Suppose now $T_\alpha$ has been constructed. For every $I\in T_\alpha$ with $|I|>1$ choose some interior point $x_I\in I$, which exists as $<_X$ is dense. Define the sets $I_0:=\{y\in I\mid y<_X x_I\}$ and $I_1:=\{y\in I\mid x_I\leq_X y\}$, and set now
+\eq{
+T_{\alpha+1}:=\{I_0\mid I\in T_\alpha\land|I|>1\}\cup\{I_1\mid I\in T_\alpha\land|I|>1\}.
+}
+
+For $\delta$ limit and assuming $T_\gamma$ has been defined for $\gamma<\delta$, set
+\eq{
+T_\delta:=\{\bigcap b\mid\text{$b$ is a $\delta$-branch of $\mathfrak{T}\restr\delta$ such that $|\bigcap b|>1$}\}.
+}
+
+We now need to show that $\mathfrak{T}$ satisfies conditions (i)-(iii). (i) is trivially satisfied by construction of $T_\alpha$ on limit steps. For (ii), suppose $B$ was an uncountable branch of $\mathfrak{T}$ and let $(I_\alpha)_{\alpha<\omega_1}$ be the canonical enumeration of the first $\omega_1$ elements of $B$. Construct now
+\eq{
+&A_0:=\{\alpha<\omega_1\mid(\forall y\in I_{\alpha+1})(y<_X x_{I_\alpha})\}\\
+&A_1:=\{\alpha<\omega_1\mid(\forall y\in I_{\alpha+1})(x_{I_\alpha}\leq_X y)\},
+}
+
+which is a disjoint partition of $\omega_1$, visualized in Figure \ref{01graph Figure}. As $\omega_1$ is uncountable, at least one of $A_0,A_1$ has to be as well; say $A_0$. For $\alpha\in A_0$, define $J_\alpha$ as the $\mathfrak{X}$-interval $J_\alpha:=(x_{I_\beta},x_{I_\alpha})$, where $\beta:=\min\{\gamma\in A_0\mid\alpha<\gamma\}$, which exists due to $A_0$ being uncountable. If $\alpha\in A_0$ and $\alpha<\beta$, then $x_{I_\beta}<_X x_{I_\alpha}$. Thus $\{J_\alpha\mid\alpha\in A_0\}$ is an uncountable set of pairwise disjoint intervals of $\mathfrak{X}$, but $X$ has the Suslin property, $\contr$. Hence (ii) holds.
+
+\begin{figure}[h]
+\label{01graph Figure}
+\pic{gfx/01graph}{0.3}
+\caption{Bold edges represent $B$ and a node $x\in T_\alpha$ is labelled $i\in 2$ if $\alpha\in A_i$.}
+\end{figure}
+
+Now for (iii). Suppose $\{I_\alpha\mid\alpha<\omega_1\}$ was an uncountable antichain in $\mathfrak{T}$. Then we could pick $x_\alpha,y_\alpha\in I_\alpha$ such that $x_\alpha<_Xy_\alpha$ for every $\alpha<\omega_1$, which would imply that $\{(x_\alpha,y_\alpha)\mid\alpha<\omega_1\}$ is an uncountable set of pairwise disjoint intervals of $\mathfrak{X}$, $\contr$. Hence $\mathfrak{T}$ satisfies (iii) as well.\\
+
+It remains to check that $\mathfrak{T}$ is an $(\omega_1,\aleph_1)$-tree, and since $\mathfrak{T}$ is an $(\alpha,\aleph_1)$-tree for some $\alpha\leq\omega_1$ by (ii) and (iii), it suffices to show that $T$ is uncountable.
+
+\clai{
+$\{x_I\in X\mid I\in T\}$ is dense in $\mathfrak{X}$.
+}
+
+\cproof{
+Let $x_I,x_J$ for $I,J\in T$ be such that $x_I<_X x_J$ and let $\alpha_I,\alpha_J<\omega_1$ be such that $I\in T_{\alpha_I}$ and $J\in T_{\alpha_J}$. If $\alpha_I\leq\alpha_J$ then $x_I<_X x_{J_0}<_Xx_J$ and if $\alpha_J\leq\alpha_I$ then $x_I<_X x_{I_1}<_X x_J$; hence the set is dense in $\mathfrak{X}$.
+}
+
+Since $\mathfrak{X}$ contains no countable dense subset \textit{ex hypothesi}, $\{x_I\in X\mid I\in T\}$ is uncountable and hence $T$ is as well. The proof is complete.
+}
+
+\section{Diamond principle}
+\defi[$\diamondsuit$]{
+$\diamondsuit$ is the statement that there exists a sequence $(A_\alpha)_{\alpha<\omega_1}$, called a $\diamondsuit$-sequence, such that for every $A\subset\omega_1$ the set $\{\alpha\in\on\mid A\cap\alpha=A_\alpha\}$ is stationary.
+}
+
+Such a $\diamondsuit$-sequence can intuitively be seen as a sequence which miraculously can ``estimate'' any given subset $X\subset\omega_1$, since every club subset $C\subset\omega_1$ (read: a large subset) contain some $\alpha<\omega_1$, such that the $\alpha$-initial segment of $X$ is \textit{equal} to $A_\alpha$.
+
+\theo{
+\label{Diamond => not SH Theorem}
+$\diamondsuit$ implies the existence of a Suslin tree.
+}
+\proof{
+Let $(A_\alpha)_{\alpha<\omega_1}$ be a $\diamondsuit$-sequence. We will recursively construct a tree $\mathfrak{T}$ satisfying
+\begin{enumerate}
+\item $x\in T\restr\omega$ implies $x<\omega$;
+\item $T_\alpha=\{\xi\in\on\mid\omega\alpha\leq\xi<\omega(\alpha+1)\}$ for $\alpha\geq\omega$;
+\item $\mathfrak{T}\restr\alpha$ is a normal $(\alpha,\aleph_1)$-tree for every $\alpha<\omega_1$;
+\item If $A_\delta$ is a maximal antichain of $\mathfrak{T}\restr\delta$ for $\delta\in\on$ limit, then $(\forall x\in T_\delta)(\exists y\in A_\delta)(y<_Tx)$.\\
+\end{enumerate}
+
+We start by showing why these conditions imply that $\mathfrak{T}$ is Suslin. First of all, (iii) implies $\mathfrak{T}$ is an $\aleph_1$-tree, so we need to show that every antichain is countable; clearly it suffices to check that every \textit{maximal} antichain is countable. Let $A\subset\omega_1$ be a maximal antichain of $\mathfrak{T}$, and construct
+\eq{
+C:=\{\alpha<\omega_1\mid\omega\alpha=\alpha\land``A\cap\alpha\text{ is a maximal antichain of }\mathfrak{T}\restr\alpha"\}.
+}
+
+\clai{
+$C$ is club in $\omega_1$.
+}
+
+\cproof{
+Observe first that $\omega\alpha=\alpha$ implies that $T\restr\alpha=T\cap\alpha$ by (i) and (ii).\\
+
+\textit{Closure}: Let $\delta\in\on$ be limit. If $(x_i)_{i<\delta}$ is a sequence in $C$ not cofinal in $\omega_1$, then $\bigcup_{i<\delta}x_i\in C$. Indeed, $\omega\bigcup_{i<\delta}x_i=\bigcup_{i<\delta}(\omega x_i)=\bigcup_{i<\delta}x_i$ and since $x_i\cap A$ is a maximal antichain in $\mathfrak{T}\restr x_i$ for all $i<\delta$ we have that $\bigcup_{i<\delta}(A\cap x_i)$ is a maximal antichain in
+\eq{
+\bigcup_{i<\delta}(\mathfrak{T}\restr x_i)=\bigcup_{i<\delta}(\mathfrak{T}\cap x_i)=\mathfrak{T}\cap\bigcup_{i<\delta}x_i=\mathfrak{T}\restr\bigcup_{i<\delta}x_i.
+}
+
+\textit{Unboundedness}: Let $\alpha<\omega_1$. Define the sequence $(\alpha_n)_{n<\omega}$ recursively by setting $\alpha_0:=\omega^\alpha$ (ordinal exponentiation) and
+\eq{
+\alpha_{n+1}:=\min\{\gamma>\alpha_n\mid(\forall x\in T\restr\alpha_n)(\exists y\in A\cap T\restr\gamma)(x<_Ty)\land(\exists\delta<\omega_1)(\mathsf{isLimit}(\delta)\land\gamma=\omega^\delta)\}.
+}
+
+Set $\alpha_\omega:=\bigcup_{n<\omega}\alpha_n$. Then $\omega\alpha_\omega=\alpha_\omega$ and $A\cap\alpha_\omega$ is a maximal antichain in $\mathfrak{T}\cap\alpha_\omega=\mathfrak{T}\restr\alpha_\omega$, so $\alpha_\omega\in C$.
+}
+
+As $\{\alpha<\omega_1\mid A\cap\alpha=A_\alpha\}$ is stationary in $\omega_1$ by $\diamondsuit$, there is some $\alpha\in C$ with $\alpha\cap A=A_\alpha$. Then $A_\alpha$ is a maximal antichain of $\mathfrak{T}\restr\alpha$, and as $\alpha$ is limit due to $\omega\alpha=\alpha$, every element of $T_\alpha$ is above some element of $A_\alpha$ by (iv). Thus $A\cap\alpha=A_\alpha$ is a maximal antichain of $\mathfrak{T}$, and hence $A=A\cap\alpha$, making $A$ countable. Thus $\mathfrak{T}$ is Suslin.\\
+
+It thus remains to construct $\mathfrak{T}$ satisfying the four conditions (i)-(iv). We construct it recursively on the levels. Start by setting $T_0:=1$. Now assume $\alpha=\beta+1$ for some $\beta\in\on$, and that $\mathfrak{T}\restr\alpha$ has been defined. We split it into two cases. Assume first that $\beta<\omega$. Then define $\mathfrak{T}\restr(\alpha+1)$ by setting the successors of each $x\in T_\beta$ to be the next two unused finite ordinals. Formally, define a function $\text{succ}:T_\beta\times 2\to\omega$ recursively by
+\eq{
+\text{succ}(k,0)&:=\min\{n<\omega\mid(\forall x\in T_\beta)[x<n\land(x<k\to \text{succ}(x,1)<n)]\}\\
+\text{succ}(k,1)&:=\text{succ}(k,0)+1
+}
+
+and then setting $T_\alpha:=\{\text{succ}(k,i)\mid k\in T_\beta\land i\in 2\}$ and $x<_Ty$ iff $(\exists i\in 2)(y=\text{succ}(x,i))$ for all $x\in T_\beta$, $y\in T_\alpha$. If $\beta\geq\omega$ define $\mathfrak{T}\restr(\alpha+1)$ analogously by setting the successors of each $x\in T_\beta$ to be the next two unused ordinals in the set $\{\xi\in\on\mid\omega\alpha\leq\xi<\omega(\alpha+1)\}$, which is possible since $T_\beta$ is countable.\\
+
+Assume now that $\delta$ is limit and $\mathfrak{T}\restr\delta$ has been defined. We will construct a 1-1 correspondence between the $\delta$-branches of $\mathfrak{T}\restr\delta$ and $\mathfrak{T}_\delta$. For each $x\in\mathfrak{T}\restr\delta$, set $b_x$ to be a $\delta$-branch of $\mathfrak{T}\restr\delta$ containing $x$, and if $A_\delta$ is a maximal antichain of $\mathfrak{T}_\delta$ then $b_x\cap A_\delta\neq\emptyset$. The first condition is possible as $\mathfrak{T}\restr\delta$ is normal \textit{ex hypothesi} (in particular every node can be extended), and the second is due to maximality of $A_\delta$. Now fix some well-ordering $<_b$ of the $b_x$'s, and define for each $b_x$ the ordinal
+\eq{
+p_{b_x}:=\min\{\xi\in\on\mid\omega\delta\leq\xi<\omega(\delta+1)\land(\forall b_y<_b b_x)(p_{b_y}\neq\xi)\}.
+}
+
+Set $x<_Tp_{b_x}$ for each $x\in\mathfrak{T}\restr\delta$, i.e. that $p_{b_x}$ is the one-point extension of each $b_x$. We see immediately that (i)-(iv) is satisfied by how we constructed $\mathfrak{T}$. The proof is complete.
+}
+
+\section{Suslin tree in $L$}
+
+We now show that a Suslin tree exists in $L$, thereby showing that $\lnot\sh$ holds in $L$. We do this by showing that $\diamondsuit$ holds in $L$. First a useful lemma.
+
+\lemm{
+\label{Cond consequence Lemma}
+Assume $V{=}L$ and let $\kappa>\omega_1$ be a cardinal. If $X\preceq L_\kappa$ then $X\cap L_{\omega_1}=L_\alpha$ for some $\alpha\leq\omega_1$.
+}
+\proof{
+Since $X\preceq L_\kappa$, we have that $L_{\omega_1}\in X$ as $L_{\omega_1}\in L_\kappa$ is definable by a formula. Thus for any formula $\varphi(\vec{v})$ and $\vec{x}\in X\cap L_{\omega_1}$, we have
+\eq{
+L_{\omega_1}\models\varphi[\vec{x}]\Lr L_\kappa\models\varphi^{L_{\omega_1}}[\vec{x}]\Lr X\models\varphi^{L_{\omega_1}}[\vec{x}]\Lr X\cap L_{\omega_1}\models\varphi[\vec{x}],
+}
+
+so $X\cap L_{\omega_1}\preceq L_{\omega_1}$. By condensation we have $\pi:X\cap L_{\omega_1}\cong L_\alpha$ for some $\alpha\leq\omega_1$ which fixes every transitive subset. Thus, if $X\cap L_{\omega_1}$ is transitive, we will be done. Let $x\in X\cap L_{\omega_1}$; we will show $x\subset X\cap L_{\omega_1}$. As $x\in L_{\omega_1}$, $x\in L_\gamma$ for some $\gamma<\omega_1$. Then $x\subset L_\gamma$ since $L_\gamma$ is transitive, whence $x$ is countable because $L_\gamma$ is countable. Thus there exists a surjection $f:\omega\to x$. Let $f$ be the $<_L$-least such function, which is an element of $L_{\omega_1}$ as $x,\omega\in L_{\omega_1}$, and $f$ is definable by formula, since $<_L$ is definable (see Appendix \ref{apxA}). Then $f\in X\cap L_{\omega_1}$ because $X\cap L_{\omega_1}\preceq L_{\omega_1}$, and since we also have $\omega\subset X\cap L_{\omega_1}$ (natural numbers are definable), it holds that $f(n)\in X\cap L_{\omega_1}$ for every $n<\omega$ because $z=f(n)\Lr\varphi_f[n,z]$, where $f=\{\bra{n,z}\in\omega\times x\mid\varphi_f[n,z]\}$ and thus $f(n)=\bigcup\{z\in L_\gamma\mid\varphi_f[n,z]\}\in X\cap L_{\omega_1}$. Hence we conclude $x=f"\omega\subset X$.
+}
+
+\lemm{
+\label{power set Lemma}
+Assume $V{=}L$. Let $\kappa$ be an infinite cardinal. If $x\subset L_\alpha$ for some $\alpha<\kappa$, then $x\in L_\kappa$; hence $\mathcal{P}(L_\alpha)\subset L_\kappa$. In particular, $\mathcal{P}(L_\alpha)\in L_{\kappa^+}$.
+}
+\proof{
+If $\kappa=\omega$ then it is trivial, due to $V_\omega=L_\omega$, so assume $\kappa>\omega$. Pick $\alpha\in\on$ such that $\omega\leq\alpha<\kappa$ and $x\subset L_\alpha$. Fix limit $\delta\geq\kappa$ such that $x\in L_\delta$, which exists as $V{=}L$. Use the Löwenheim-Skolem Theorem \ref{LH Theorem} to find $M\preceq L_\delta$ such that $L_\alpha\cup\{x\}\subset M$ and $|M|=|L_\alpha|$. Use condensation to get $\pi:M\cong L_\gamma$ for some $\gamma\leq\delta$. As $L_\alpha\cup\{x\}$ is transitive, $\pi\restr(L_\alpha\cup\{x\})=\id\restr(L_\alpha\cup\{x\})$, and in particular $\pi(x)=x$, so $x\in L_\gamma$. Now
+\eq{
+|\gamma|=|L_\gamma|=|M|=|L_\alpha|=|\alpha|\leq\alpha<\kappa,
+}
+
+so $\gamma<\kappa$, entailing $L_\gamma\subset L_\kappa$ and thus $x\in L_\kappa$.
+}
+
+\pagebreak
+\theo{
+\label{Diamond^L Theorem}
+$V{=}L$ implies $\diamondsuit$.
+}
+\proof{
+We start by recursively constructing a sequence $(\bra{A_\alpha,C_\alpha})_{\alpha<\omega_1}$ of sets $A_\alpha\subset\alpha$ and $C_\alpha\subset\alpha$ for each $\alpha<\omega_1$. Set $A_0=C_0=\emptyset$, $A_{\alpha+1}=C_{\alpha+1}=\alpha+1$ and for limit $\delta$ set $\bra{A_\delta,C_\delta}$ to be the $<_L$-least pair of subsets of $\delta$ such that $C_\delta$ is club in $\delta$ and $(\forall\gamma\in C_\delta)(A_\delta\cap\gamma\neq A_\gamma)$ if such sets exist, and otherwise set $A_\delta=C_\delta=\delta$.\\
+
+Notice that $(\bra{A_\gamma,C_\gamma})_{\gamma<\omega_1}$ is definable in $L_{\omega_2}$ as $V{=}L$ implies that $\mathcal{P}(\gamma)\in L_{\omega_2}$ for every $\gamma<\omega_1$ by Lemma \ref{power set Lemma}, as well as $<_L$ being definable, cf. Appendix \ref{apxA}. We show that $(A_\gamma)_{\gamma<\omega_1}$ is a $\diamondsuit$-sequence. Suppose it is not, meaning that there is a set $A\subset\omega_1$ such that $\{\alpha\in\omega_1\mid A\cap\alpha=A_\alpha\}$ is not stationary in $\omega_1$; i.e. there is a club $C\subset\omega_1$ such that $A\cap\gamma\neq A_\gamma$ for every $\gamma\in C$. Let $\bra{A,C}$ be the $<_L$-least such pair, which will be definable in $L_{\omega_2}$ for the same reason as before.\\
+
+Use the Löwenheim-Skolem Theorem \ref{LH Theorem} to find some countable $X\preceq L_{\omega_2}$ and use condensation to find a unique $\pi:X\cong L_\delta$. By Lemma \ref{Cond consequence Lemma}, $X\cap L_{\omega_1}=L_\gamma$ for some $\gamma\leq\omega_1$. In particular $X\cap L_{\omega_1}$ is transitive, so $\alpha:=X\cap\omega_1=X\cap(L_{\omega_1}\cap\omega_1)=(X\cap L_{\omega_1})\cap\omega_1$ is an ordinal. We have that $\omega_1\in X$, $\bra{A,C}\in X$ and $(\bra{A_\gamma,C_\gamma})_{\gamma<\omega_1}\in X$, as all these are definable in $L_{\omega_2}$ and $X\preceq L_{\omega_2}$; hence by absoluteness we have that
+\eq{
+X\models``&\text{$\bra{A,C}$ is the $<_L$-least pair of subsets of $\omega_1$ such that $C$ is club in $\omega_1$}\\
+&\text{and $(\forall\gamma\in C)(A\cap\gamma\neq A_\gamma)$}".
+}
+
+By definition of $\pi$ we then have that $\pi(\omega_1)=\alpha$ and $\pi\restr L_\alpha=\id\restr L_\alpha$, so we furthermore have that
+\eq{
+\pi(A)=A\cap\alpha\qquad\pi(C)=C\cap\alpha\qquad\pi((\bra{A_\gamma,C_\gamma})_{\gamma<\omega_1})=(\bra{A_\gamma,C_\gamma})_{\gamma<\alpha},
+}
+
+meaning by Lemma \ref{Iso to Equiv Lemma} that
+\eq{
+L_\delta\models``&\text{$\bra{A\cap\alpha,C\cap\alpha}$ is the $<_L$-least pair of subsets of $\alpha$ such that $C\cap\alpha$ is club in $\alpha$}\\
+&\text{and $(\forall\gamma\in C\cap\alpha)(A\cap\alpha\cap\gamma\neq A_\gamma)$}".
+}
+
+Thus by absoluteness this holds in $V$ as well\footnote{For a proof of the fact that $<_L$ is $L_\delta$-absolute for limit $\delta>\omega$, see the appendix.}; hence $A_\alpha=A\cap\alpha$ and $C_\alpha=C\cap\alpha$ by definition of $\bra{A_\alpha,C_\alpha}$. But as $C\cap\alpha$ is club in $\alpha$, it is in particular unbounded in $\alpha$, so as $C$ is closed in $\omega_1$ and $\alpha<\omega_1$, we have $\alpha\in C$; thus $A\cap\alpha\neq A_\alpha$ by definition of $C$, $\contr$. Hence $(S_\gamma)_{\gamma<\omega_1}$ \textit{is} in fact a $\diamondsuit$-sequence.
+}
+
+\coro{
+$\con(\zf)\Rightarrow\con(\zf+\diamondsuit+\lnot\sh)$.
+}
+\proof{
+By Theorems \ref{SH equiv no Suslin tree Theorem}, \ref{Diamond => not SH Theorem} and \ref{Diamond^L Theorem} we have that $\zfc+V{=}L\proves\diamondsuit\land\lnot\sh$. By Corollaries \ref{Con(ZFC) Corollary} and \ref{Con(V=L) Corollary} we have $\con(\zf)\Rightarrow\con(\zfc+V{=}L)$, so the result follows from $T\proves\sigma\Rightarrow(\con(T)\Rightarrow\con(T+\sigma))$.
+}

@@ -1,0 +1,285 @@
+\chapter{Why not $V{=}L$?}
+\thispagestyle{fancy}
+
+\begin{quote}
+``\textit{$L$ takes on the character of a very thin inner model indeed, bare ruined choirs appended to the slender life-giving spine which is the class of ordinals.}"
+
+ - K. Kanamori and M. Magidor \cite{KanamoriMagidor}\\
+\end{quote}
+
+After having proved a variety of theorems in $L$ in the last chapters, one might wonder why the general mathematical community are convinced that $V{\neq}L$. Their arguments are either intrinsic, arguing that since the construction of $L$ is restrictive, it cannot be equal to the universe as our universe should be \textit{maximal}. Other arguments builds on extrinsic evidence concerning the non-existence of \textit{measurable cardinals} in $L$, which we will investigate in this chapter.
+
+\section{$\kappa$-completeness}
+A filter $D$ is $\boldsymbol\kappa$\textbf{-complete} for some infinite cardinal $\kappa$ if every subset $X\subset D$ with $|X|<\kappa$ satisfies $\bigcap X\in D$.
+
+\lemm{
+\begin{enumerate}
+\item Every filter is $\omega$-complete;
+\item A filter $D$ is $\kappa$-complete for all cardinals $\kappa$ iff $D$ is principal;
+\item If $\kappa<\lambda$, then every $\lambda$-complete filter is $\kappa$-complete.
+\end{enumerate}
+}
+\proof{
+(i): Definition of filter. (ii): $``\Rightarrow"$: $\bigcap D\in D$. $``\Leftarrow"$: Every intersection contains the generator. (iii): Trivial.
+}
+
+We will be interested in free ultrafilters, so by (ii) in the above lemma we cannot assume the filter to be $\kappa$-complete for all $\kappa$. We can restrict this result even further, by the following lemma.
+
+\lemm{
+Let $D$ be a filter over a set $I$ with $|I|=\kappa$. If $D$ is $\kappa^+$-complete, then $D$ is principal.
+}
+\proof{
+Define $E:=\{I\backslash\{i\}\mid i\in I\land I\backslash\{i\}\in D\}$. Since $|I|=\kappa$, we have $|E|\leq\kappa<\kappa^+$, so $\bigcap E\in D$ by $\kappa^+$-completeness. Now, if $X\in D$ then $\bigcap E\subset X$. Indeed, if $X=I$ it is trivial, so assume $X\neq I$; let $x\in I\backslash X$. Then $X\subset I\backslash\{x\}$, so $I\backslash\{x\}\in D$, $I\backslash\{x\}\in E$ and thus $x\notin\bigcap E$. Thus $D$ is principal, generated from $\bigcap E$.
+}
+
+We therefore have an upper bound on completeness. The cardinals $\kappa$ equipped with a free ultrafilter that is maximally complete, i.e. $\kappa$-complete, are called \textit{measurable}:
+
+\defi[Measurable cardinal]{
+A \textit{measurable cardinal} is a cardinal $\kappa$ on which there exists a free $\kappa$-complete ultrafilter.
+}
+
+Measurable cardinals are an example of a general notion of being a \textit{large cardinal}. Before we delve into these measurables however, we need some more basic results; firstly we have a handy equivalent way of stating $\kappa$-completeness.
+
+\lemm{
+\label{partition Lemma}
+Let $U$ be an ultrafilter over a set $I$. Then $U$ is $\kappa$-complete iff for every partition $\bigcup P=I$ of $I$ with $|P|<\kappa$ there is some $x\in P$ such that $x\in U$.
+}
+\proof{
+$``\Rightarrow"$: Assume $U$ is $\kappa$-complete, and let $\bigcup P=I$ be a partition of $I$; write $P=\{p_\gamma\mid\gamma<\alpha\}$ for some $\alpha<\kappa$. Since $\bigcap_{\gamma<\alpha}(I\backslash p_\gamma)=\emptyset$, there have to be some $\gamma<\alpha$ such that $I\backslash p_\gamma\notin U$, due to $U$ being $\kappa$-complete. By the ultra property, $p_\gamma\in U$.\\
+
+$``\Leftarrow"$: Assume that for every partition of $I$ in less than $\kappa$ parts, one of the parts is in $U$. Let $E\subset U$ with $|E|<\kappa$; write $E=\{e_\gamma\mid\gamma<\alpha\}$ for some $\alpha<\kappa$. Define the function $f:I\to\alpha+1$ as
+\eq{
+f(i):=\left\{\begin{array}{ll}\alpha&,i\in\bigcap E\\ \min\{\gamma<\alpha\mid i\notin e_\gamma\}&,i\in I\backslash\bigcap E\end{array}\right.
+}
+
+Now $\bigcup_{\gamma<\alpha+1}f^{-1}(\gamma)$ is a partition of $I$ in $\alpha+1<\kappa$ parts ($\kappa$ is limit), so there is some $\gamma<\alpha+1$ such that $f^{-1}(\gamma)\in U$ by assumption. But $f^{-1}(\gamma)\cap e_\gamma=\emptyset$ for all $\gamma<\alpha$ by construction of $f$, so $f^{-1}(\gamma)\notin U$ for all $\gamma<\alpha$. Hence $\bigcap E=f^{-1}(\alpha)\in U$.
+}
+
+\section{Elementary embeddings}
+
+There is a deep connection between elementary embeddings and large cardinals, and we will here investigate some of the correlations between measurable cardinals and the so-called \textit{natural embedding} from a set (or even proper class) to its ultrapower. We will start off with some basic properties of elementary embeddings.
+
+\lemm{
+\label{crit exists Lemma}
+Let $\mathfrak{A},\mathfrak{B}$ be inner models and $j:\mathfrak{A}\preceq_1 \mathfrak{B}$. Then
+\begin{enumerate}
+\item For any $\alpha\in\on$, $j(\alpha)\in\on$ and $j(\alpha)\geq\alpha$;
+\item If $j\neq\id_A$ and $B\subset A$, then $j(\alpha)>\alpha$ for some $\alpha\in\on$.
+\end{enumerate}
+}
+\proof{
+(i): As $\textsf{on}(v)$ is $\Delta_0$, we have $\on^\mathfrak{A}=\on^\mathfrak{B}=\on$, and since $j:\mathfrak{A}\preceq_1\mathfrak{B}$ we have $j(\alpha)\in\on$ for every $\alpha\in\on$. We show $j(\alpha)\geq\alpha$ for all $\alpha\in\on$ by transfinite induction. Clearly $j(0)\geq 0$. Assume $\alpha=\gamma+1$ and $j(\alpha)<\alpha$. Then $j(\alpha)\leq\gamma\leq j(\gamma)$, so $j(\alpha)\subset j(\gamma)$ and thus $\alpha\subset\gamma$ since subsets are $\Delta_0$-definable, $\contr$. Assume now $\alpha$ is limit and let $x\in\alpha=\bigcup\alpha$. Then there is some $\gamma\in\alpha$ such that $x\in\gamma$. But $\gamma\leq j(\gamma)$ by assumption, so $x\in\gamma\subset j(\gamma)\in j(\alpha)$, so $x\in\bigcup j(\alpha)=j(\bigcup\alpha)=j(\alpha)$. Thus $\alpha\subset j(\alpha)$, whence $\alpha\leq j(\alpha)$.\\
+
+(ii): As $j\neq\id_A$, let $x$ be of least rank such that $j(x)\neq x$; set $\alpha:=\rank x$. Then $x\subset j(x)$ since for every $y\in x$ we have $y=j(y)\in j(x)$. It also holds that $j(\alpha)>\alpha$: First of all $\rank(j(x))\neq\alpha$, since assuming $\rank(j(x))=\alpha$ we can pick some $z\in j(x)\backslash x\subset B\subset A$ because $x\psubset j(x)$ and thus $j(z)=z\in j(x)$ by minimality of $\alpha$, since $\alpha=\rank(j(x))>\rank z$, so $z\in x$, $\contr$. Since $\rank(j(x))=j(\alpha)$ by $\Delta_1^{\zf}$-definability of rank cf. Lemma \ref{rank Lemma}, we have $\rank(j(x))=j(\alpha)\geq\alpha$, so $j(\alpha)>\alpha$.
+}
+
+If $j\neq\id_A$, denote the \textbf{critical point of $\boldsymbol j$}, written $\crit j$, as the least ordinal $\alpha$ such that $j(\alpha)>\alpha$, which exists by (ii) in the above lemma.\\
+
+We mentioned before that we would be dealing with ultrapowers of (potentially proper) \textit{classes}. To make sense of this, we have to slightly modify our notion of an ultrapower. With our usual ultrapower construction, we would have equivalence classes $(f)_U$, which would become \textit{proper} classes when the codomain of the functions is a proper class, and the ultrapower definition ceases to make any sense (only sets can be members of classes). Scott came up with a trick to avoid this, restricting the equivalence classes to only consist of the functions with minimal rank:
+
+\defi[Class ultrapowers]{
+Let $M$ be a class, $I$ a set and $U$ an ultrafilter over $I$. Then the \textit{class ultrapower} of $M$ is defined as
+\eq{
+\prod_{i\in I}M/U^\times:=\{(f)_U^\times\mid f:I\to V\},
+}
+
+where $(f)_U^\times:=\{f\in(f)_U\mid(\forall g\in(f)_U)(\rank f\leq\rank g)\}$.
+}
+
+As all $g\in(f)_U^\times$ then have the same rank, $(f)_U^\times\subset V_\gamma$ for some ordinal $\gamma$. Hence $(f)_U^\times\in V_{\gamma+1}\subset V$, making it into a set and the class ultrapower definition is then well-defined. On top of the $=_U$ relation as an analogue to our usual $=$ relation, we also introduce the relation $\in_U$ as the analogue to $\in$. Let $(f)_U,(g)_U\in\prod_{i\in I}M/U$ for some set $M$. Then
+\eq{
+(f)_U\in_U (g)_U\Lr\{i\in I\mid f(i)\in g(i)\}\in U.
+}
+
+Of course, analogous definitions hold for the class ultrapowers. This relation then induces a \textit{class ultrapower structure}, $\ult(M,U):=\bra{\prod_{i\in I}M/U^\times,\in_U}$, and as we are mostly concerned with ultrapowers of $V$, we abbreviate $\ult:=\ult(V,U)$. The following theorem states that the truths in $V$ is in correspondence with the truths in $\ult$. The theorem is not stated in its usual form, but this version suits our needs.
+
+\theo[\L o\' s]{
+\label{Los Theorem}
+Let $U$ be an ultrafilter over a set $I$, $\varphi(\vec{v})$ a formula and $f_1,\hdots,f_n:I\to V$ class functions. Then
+\eq{
+\ult\models\varphi[(f_1)_U^\times,\hdots,(f_n)_U^\times]\Lr\{i\in I\mid\varphi[f_1(i),\hdots,f_n(i)]\}\in U.
+}
+}
+\proof{
+We prove it by induction on the complexity of $\varphi$. \textit{Atomic step:} Assume $\varphi$ is $t_1=t_2$. As there are no constant symbols in our language, we can assume that $t_1$ and $t_2$ are variables $u$ and $v$, respectively. We then have that
+\eq{
+\ult\models\varphi[(f_1)_U^\times,(f_2)_U^\times]&\Lr \ult\models u=_U v\\
+&\Lr \{i\in I\mid u=v\}\in U\\
+&\Lr \{i\in I\mid\varphi[f_1(i),f_2(i)]\}\in U.
+}
+
+Assume now $\varphi$ is $t_1\in t_2$. Recall that $\in^{\ult}$ is the relation $\in_U$:
+\eq{
+\ult\models\varphi[(f_1)_U^\times,(f_2)_U^\times]&\Lr\ult\models u\in_U v\\
+&\Lr\{i\in I\mid u\in v\}\in U\\
+&\Lr\{i\in I\mid\varphi[f_1(i),f_2(i)]\}\in U.
+}
+
+\textit{Sentential step:} Assume $\varphi$ is $\psi\land\chi$. Then
+\eq{
+&\ult\models\varphi[(f_1)_U^\times,\hdots,(f_n)_U^\times]\\
+\Lr&\ult\models\psi[(f_1)_U^\times,\hdots,(f_n)_U^\times]\text{ and }\ult\models\chi[(f_1)_U^\times,\hdots,(f_n)_U^\times]\\
+\Lr&\{i\in I\mid\psi[f_1(i),\hdots,f_n(i)]\}\in U\text{ and }\{i\in I\mid\chi[f_1(i),\hdots,f_n(i)]\}\in U\\
+\Lr&\{i\in I\mid \psi[f_1(i),\hdots,f_n(i)]\land\chi[f_1(i),\hdots,f_n(i)]\}\in U\\
+\Lr&\{i\in I\mid\varphi[f_1(i),\hdots,f_n(i)]\}\in U,
+}
+
+where we used the induction hypothesis and that $x,y\in U\Lr x\cap y\in U$ along the way. Now assume $\varphi$ is $\lnot\psi$. Then
+\eq{
+&\ult\models\varphi[(f_1)_U^\times,\hdots,(f_n)_U^\times]\\
+\Lr&\ult\nmodels\psi[(f_1)_U^\times,\hdots,(f_n)_U^\times]\\
+\Lr&\{i\in I\mid\psi[f_1(i),\hdots,f_n(i)]\}\notin U\\
+\Lr& I\backslash\{i\in I\mid\psi[f_1(i),\hdots,f_n(i)]\}\in U\\
+\Lr&\{i\in I\mid\lnot\psi[f_1(i),\hdots,f_n(i)]\}\in U\\
+\Lr&\{i\in I\mid\varphi[f_1(i),\hdots,f_n(i)]\}\in U,
+}
+
+where we used the induction hypothesis and the ultra property. \textit{Quantifier step:} Assume $\varphi$ is $\exists y\psi$. Then
+\eq{
+&\ult\models\varphi[(f_1)_U^\times,\hdots,(f_n)_U^\times]\\
+\Lr&\ult\models\exists (g)_U^\times\psi[(g)_U^\times,(f_1)_U^\times,\hdots,(f_n)_U^\times]\\
+\Lr&\text{There is a $(g)_U^\times\in\prod_{i\in I}V/U^\times$ such that } \ult\models\psi[(g)_U^\times,(f_1)_U^\times,\hdots,(f_n)_U^\times]\\
+\Lr&\text{There is a $(g)_U^\times\in\prod_{i\in I}V/U^\times$ such that } \{i\in I\mid\psi[(g)_U^\times,(f_1)_U^\times,\hdots,(f_n)_U^\times]\}\in U\\
+\Lr&\{i\in I\mid(\exists(g)_U^\times\in\prod_{i\in I}V/U^\times)\psi[g(i),f_1(i),\hdots,f_n(i)]\}\in U\\
+\Lr&\{i\in I\mid\varphi[f_1(i),\hdots,f_n(i)]\}\in U,
+}
+
+where we used the induction hypothesis.
+}
+
+Note that as $\ult$ is a proper class, \L o\' s' Theorem as stated here is really a schema, for each formula $\varphi$.
+
+\coro{
+\label{ult V elem equiv Coro}
+$\ult$ is elementarily equivalent to $V$.
+}
+\proof{
+By \L o\' s' theorem \ref{Los Theorem} we have that for every sentence $\sigma$:
+\eq{
+\ult\models\sigma\Lr\{i\in I\mid\sigma\}\in U\Lr\sigma,
+}
+
+where it was used that $\emptyset\notin U$.
+}
+
+The \textbf{natural embedding} is defined as the function $d:\bra{X,\in}\to\ult(X,U)$, given by $d(x):=(f_x)_U^\times$, where $f_x:I\to X$ is given by $f_x(i):=x$.
+
+\pagebreak
+
+\coro{
+The natural embedding $d:\bra{V,\in}\to\ult$ is an elementary embedding.
+}
+\proof{
+Let $\varphi(\vec{v})$ be a formula and let $\vec{x}$ be sets. Then by \L o\' s' theorem \ref{Los Theorem} we have
+\eq{
+\ult\models\varphi[d(x_1),\hdots,d(x_n)]\Lr\{i\in I\mid\varphi[x_1,\hdots,x_n]\}\in U\Lr\varphi[x_1,\hdots,x_n],
+}
+
+where it was used that $\emptyset\notin U$.
+}
+
+We are now getting closer to have our desired knowledge of the ultrapowers we need to prove Scott's result on measurable cardinals in $L$. Our next goal is to show that $\ult$ can be subject to the Mostowski collapse \ref{Mostowski Theorem}, granting us an inner model; we thus need to check that $\in_U$ is both well-founded and set-like, as well as checking that $\ult$ is extensional. Extensionality is due to $\ult$ being elementarily equivalent to $V$, cf. Corollary \ref{ult V elem equiv Coro}.
+
+\lemm{
+Let $U$ be an ultrafilter. Then $U$ is $\omega_1$-complete iff $\in_U$ is well-founded.
+}
+\proof{
+$``\Rightarrow"$: Let $M$ be a class and assume $\in_U$ is ill-founded. Let $\cdots\in_U(f_1)_U^\times \in_U(f_0)_U^\times$ be an infinitely descending sequence in $\prod_{i\in I}M/U^\times$. If $U$ is $\omega_1$-complete, we would have
+\eq{
+X:=\bigcap_{n<\omega}\{i\in I\mid f_{n+1}(i)\in f_n(i)\}\in U
+}
+
+by definition of $\in_U$ and $\omega_1$-completeness. As $U$ is proper, we have that $\emptyset\notin U$, so $X$ is non-empty; let $z\in X$. Then $\cdots\in f_1(z)\in f_0(z)$ is an infinitely descending $\in$-sequence, contradicting Foundation.\\
+
+$``\Leftarrow"$: Assume $U$ is $\omega_1$-incomplete. We show that $\in_U$ is ill-founded. Let $\{X_n\mid n<\omega\}\subset U$ but $\bigcap\{X_n\mid n<\omega\}\notin U$ witness the $\omega_1$-incompleteness. Define the function $g_k:I\to V$ given by
+\eq{
+g_k(i):=\left\{\begin{array}{ll}n-k&,i\in(\bigcap_{m<n}X_m)\backslash X_n, n\geq k\\ 0&,\text{otherwise}\end{array}\right.
+}
+
+Then $(\bigcap_{m\leq k}X_m)\backslash(\bigcap_{n<\omega}X_n)\in U$. Indeed, $\bigcap_{m\leq k}X_m\in U$ as it is a finite intersection, and $I\backslash\bigcap_{n<\omega}X_n\in U$ since $\bigcap_{n<\omega}X_n\notin U$ and $U$ is an ultrafilter; hence
+\eq{
+\left(\bigcap_{m\leq k}X_m\right)\backslash\left(\bigcap_{n<\omega}X_n\right)=\left(\bigcap_{m\leq k}X_m\right)\cap\left(I\backslash\bigcap_{n<\omega}X_n\right)\in U.
+}
+
+\clai{
+$\{i\in I\mid g_{k+1}(i)\in g_k(i)\}\supset\bigcap_{m\leq k}X_m\backslash\bigcap_{n<\omega}X_n$
+}
+
+\cproof{
+Let $x\in(\bigcap_{n\leq k}X_n)\backslash(\bigcap_{n<\omega}X_n)$. As $x\notin\bigcap_{n<\omega}X_n$, there is some $l>k$ such that $x\notin X_l$; let $l$ be the least such. Then $x\in\bigcap_{n<l}X_n$ and $x\notin X_l$, so $g_{k+1}(x)=l-(k+1)\in l-k=g_k(x)$ and hence $x\in\{i\in I\mid g_{k+1}(i)\in g_k(i)\}$, whence the inclusion holds.
+}
+
+But now $\{i\in I\mid g_{k+1}(i)\in g_k(i)\}\in U$ for every $k<\omega$, so $\cdots\in_U(g_1)_U^\times \in_U(g_0)_U^\times$ is infinitely descending, and $\in_U$ is thus ill-founded.
+}
+
+\pagebreak
+
+\lemm{
+$\in_U$ is set-like for every ultrafilter $U$.
+}
+\proof{
+Let $(g)_U^\times\in_U(f)_U^\times$ and $g_0\in(g)_U^\times$. Define $g_1:I\to V$ by
+\eq{
+g_1(i):=\left\{\begin{array}{ll}g_0(i)&,g_0(i)\in f(i)\\ \emptyset&,\text{otherwise}\end{array}\right.
+}
+
+Then $g_1\in(g)_U^\times$ by definition and $\rank g_1\leq\rank f$. Since all elements of $(g)_U^\times$ have the same rank, we have that $\rank((g)_U^\times)\leq\rank(f)+1$, so $(g)_U^\times\in V_{\rank(f)+2}$ and thus $\{(g)_U^\times\mid(g)_U^\times\in_U(f)_U^\times\}\in V_{\rank(f)+3}$, making it a set.
+}
+
+Now that we have shown $\ult$ is subject to the Mostowski collapse (if $U$ is $\omega_1$-complete), we have an isomorphism $\pi_U:\ult\cong\bra{M,\in}$, where $M$ is transitive. Hence we have that $d:V\preceq\ult$ and $\pi_U:\ult\cong\bra{M,\in}$, making $M$ an inner model. Defining the composite $j:=\pi_U\circ d:V\to M$, we usually write up this scenario as $j:V\preceq M\cong\ult$, due to the fact that $\pi_U$ being an isomorphism and $d$ an elementary embedding implies that $j:V\preceq M$, cf. Lemma \ref{Iso to Equiv Lemma}. We denote by $[f]_U$ the set $\pi_U((f)_U^\times)\in M$, which means that $j(\alpha)=[f_\alpha]_U$.
+
+\section{Measurable cardinals}
+We now apply the previous section to the study of measurable cardinals. As every measurable cardinal $\kappa$ comes along with a free $\kappa$-complete ultrafilter $U$, it also has a corresponding elementary embedding $j:V\preceq M\cong\ult$. Since $M$ is an inner model, $j\neq\id$ implies that $\crit j$ exists, cf. Lemma \ref{crit exists Lemma}(ii). It turns out that the $\kappa$-completeness of the ultrafilter determines exactly what $\crit j$ is.
+
+\lemm{
+\label{crit j Lemma}
+Let $U$ be a $\kappa$-complete ultrafilter over a measurable cardinal $\kappa$ with corresponding embedding $j:V\preceq M\cong\ult$. Then $j\neq\id$ and $\crit j=\kappa$.
+}
+\proof{
+
+\clai{
+$j(\alpha)=\alpha$ for all $\alpha<\kappa$.
+}
+
+\cproof{
+Assume not, and let $\alpha<\kappa$ be the least ordinal such that $j(\alpha)>\alpha$. As $\alpha\in M$ and $\pi_U:\prod_{i\in I}V/U^\times\approx M$, there is some unique $(f)_U^\times\in\prod_{i\in I}V/U^\times$ such that $[f]_U=\alpha$. Then $[f]_U=\alpha\in j(\alpha)\stackrel{\text{def}}{=}[f_\alpha]_U$, so $(f)_U^\times \in_U (f_\alpha)_U^\times$ by application of $\pi_U^{-1}$. Thus $\{\gamma<\kappa\mid f(\gamma)\in f_\alpha(\gamma)\stackrel{\text{def}}{=}\alpha\}\in U$ by definition of $\in_U$. So since
+\eq{
+\{\gamma<\kappa\mid f(\gamma)\notin\alpha\}\cup\bigcup_{\xi<\alpha}\{\gamma<\kappa\mid f(\gamma)=\xi\}
+}
+
+is a partition of $\kappa$ in $\alpha+1<\kappa$ parts, one of the parts belongs to $U$ by Lemma \ref{partition Lemma}. As $\{\gamma<\kappa\mid f(\gamma)\notin\alpha\}\notin U$ since $U$ is an ultrafilter, we must have that for some $\beta<\alpha$,
+\eq{
+\{\gamma<\kappa\mid f(\gamma)=\beta\}\in U.
+}
+
+But then $(f)_U^\times=(f_\beta)_U^\times$ and hence $\alpha=[f]_U=[f_\beta]_U=j(\beta)=\beta<\alpha$ by minimality of $\alpha$, $\contr$.
+}
+
+Now, $U$ contains no bounded subsets, because say $S\in U$ is bounded by $\alpha<\kappa$. Then $\bigcup_{\xi\in S}\{\xi\}\cup\kappa\backslash S$ is a partition of $\kappa$ in less than $\kappa$ parts, so $\{\beta\}\in U$ for some $\beta<\alpha$ by Lemma \ref{partition Lemma} because $\kappa\backslash S\notin U$ since $U$ is proper. But then either $\emptyset\in U$ or $U$ is principal, both causing a contradiction. Thus for all $\alpha<\kappa$ we have that
+\eq{
+\{\gamma<\kappa\mid\alpha<\gamma<\kappa\}\in U
+}
+
+by the ultra property. But then by definition of $\in_U$, we have $\alpha=j(\alpha)\stackrel{\text{def}}{=}[f_\alpha]_U\in[\id_\kappa]_U\in[f_\kappa]_U\stackrel{\text{def}}{=}j(\kappa)$, so $\alpha<[\id_\kappa]_U<j(\kappa)$ for all $\alpha<\kappa$, implying $\kappa\leq[\id_\kappa]_U<j(\kappa)$, so $\crit(j)=\kappa$.
+}
+
+We finally arrive at our aforementioned extrinsic evidence for $V{\neq}L$; the fact that \textit{no} measurable cardinals exists in $L$.
+
+\theo[Scott]{
+There exists no measurable cardinal in $L$.
+}
+\proof{
+Suppose $\kappa$ is the least measurable cardinal with corresponding embedding $j:V\preceq M\cong\ult$, and assume $V{=}L$. As $M$ is an inner model, we have $L\subset M\subset V=L$, so $M=L$ and hence
+\eq{
+L=V\models``\kappa\text{ is the least measurable cardinal}".
+}
+
+But we also have
+\eq{
+L=M\models``j(\kappa)\text{ is the least measurable cardinal}"
+}
+
+by elementarity, contradicting $j(\kappa)>\kappa$ from Lemma \ref{crit j Lemma}.
+}
+
+As no measurable cardinal is in $L$, we say that $L$ is too \textit{thin}: even though the cardinal itself is in $L$ since $\on\subset L$, the associated ultrafilter is not. This is due to our restriction of the power set, not being powerful enough to include such a complicated subset of $\mathcal{P}(\kappa)$ as a free $\kappa$-complete ultrafilter.\footnote{For more information about measurable cardinals, elementary embeddings and other large cardinals, see Kanamori \cite{Kanamori}.}
